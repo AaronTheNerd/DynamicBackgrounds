@@ -4,6 +4,7 @@ import math
 from helpers import interpolate
 from configs import CONFIGS, POINT_CONFIGS
 from triangulation import Triangle
+import get_drawing_objects
 
 class PlainColor(object):
     def __init__(self, COLOR=None):
@@ -127,12 +128,11 @@ class MultiLightShader(AmbientShader):
             rgb = [light_ratio * light["COLOR"][i] + rgb[i] for i in range(3)]
         return tuple([int(rgb[i]) for i in range(3)])
 
-class ShadedGradient(HSVExponentialGradientContinuous, AmbientShader):
-    def __init__(self, START_X=0, START_Y=0, END_X=CONFIGS["WIDTH"], END_Y=CONFIGS["HEIGHT"], START_COLOR=None, END_COLOR=None, ALPHA=1.0,
-            AMBIENT_VECTOR=None, AMBIENT_GAIN=1.0, AMBIENT_DEFINITION=1):
-        HSVExponentialGradientContinuous.__init__(self, START_X=START_X, START_Y=START_Y, END_X=END_X, END_Y=END_Y, START_COLOR=START_COLOR, END_COLOR=END_COLOR, ALPHA=ALPHA)
+class ShadedGradient(AmbientShader):
+    def __init__(self, GRADIENT={}, AMBIENT_VECTOR=None, AMBIENT_GAIN=1.0, AMBIENT_DEFINITION=1):
+        self.gradient = get_drawing_objects.get_triangle_coloring_object(GRADIENT)
         AmbientShader.__init__(self, AMBIENT_COLOR=None, AMBIENT_VECTOR=AMBIENT_VECTOR, AMBIENT_GAIN=AMBIENT_GAIN, AMBIENT_DEFINITION=AMBIENT_DEFINITION)
     def get_color(self, triangle):
-        gradient_color = HSVExponentialGradientContinuous.get_color(self, triangle)
+        gradient_color = self.gradient.get_color(triangle)
         facing_ratio = AmbientShader.get_facing_ratio(self, triangle)
         return tuple([int(gradient_color[i] * facing_ratio) for i in range(3)])
