@@ -200,7 +200,7 @@ Example config.json:
 - `END_Y` (int): The y-value of the ending point for the gradient line.
 - `START_COLOR` ([int]): A 0-255 RGB color code to be used as a starting color.
 - `END_COLOR` ([int]): A 0-255 RGB color code to be used as a ending color.
-- `ALPHA` (float): The scale of the exponential function.
+- `ALPHA` (float): The scale of the exponential function. **Fails when alpha is 0**.
 
 `HSVLinearGradientDiscrete`: An extension of `HSVLinearGradientContinuous`, uses the same method for finding the gradient but will only use a set number of colors.
 ```
@@ -283,9 +283,93 @@ Example config.json:
     * `INTENSITY` (float): The point of light's intensity.
     * `COLOR` ([int]): A 0-255 RGB color code for the color of the point of light.
 
+`ShadedGradient` an extension of the `AmbientShader`. Instead of using a single color, this uses another triangle coloring object.
+```
+    ...
+    "TRIANGLE_COLORING_CONFIGS": {
+        "TYPE": "ShadedGradient",
+        "KWARGS": {
+            "GRADIENT": {
+                "TYPE": "HSVExponentialGradientContinuous",
+                "KWARGS": {
+                    "START_X": 150,
+                    "START_Y": 150,
+                    "END_X": 1516,
+                    "END_Y": 918,
+                    "START_COLOR": [235, 52, 52],
+                    "END_COLOR": [66, 224, 245],
+                    "ALPHA": 0.8
+                }
+            },
+            "AMBIENT_VECTOR": [1.0, 1.0, 0.5],
+            "AMBIENT_GAIN": 55000,
+            "AMBIENT_DEFINITION": 10
+        }
+    },
+    ...
+```
+- `GRADIENT` (dict): The triangle coloring object which is used as the base color.
+    * `TYPE` (string): The type of triangle coloring object.
+    * `KWARGS` (dict): The inputs to the triangle coloring object.
+- `AMBIENT_VECTOR` ([float]): The vector which points in the direction of the 'light source'.
+- `AMBIENT_GAIN` (float): How bright the ambient light is.
+- `AMBIENT_DEFINITION` (int): How defined the light is.
+
 ## Line Drawing
+`SolidLine`: Draws all lines with a set color and width.
+```
+    ...
+    "LINE_DRAWING_CONFIGS": {
+        "DRAW_LINES": true,
+        "TYPE": "SolidLine",
+        "KWARGS": {
+            "COLOR": [255, 255, 255],
+            "WIDTH": 2
+        }
+    },
+    ...
+```
+- `COLOR`([int]): The 0-255 RGB color the lines will be.
+- `WIDTH` (int): The width the lines will be.
+
+`FadingLine`: A way of coloring the lines based off of how long they are. **The color of the line will be linearly interpolated when the length of the line is between `MIN_DIST` and `MAX_DIST`.** 
+```
+    ...
+    "LINE_DRAWING_CONFIGS": {
+        "DRAW_LINES": true,
+        "TYPE": "FadingLine",
+        "KWARGS": {
+            "START_COLOR": [255, 255, 255],
+            "END_COLOR": [0, 0, 0],
+            "MIN_DIST": 20,
+            "MAX_DIST": 250,
+            "WIDTH": 5
+        }
+    },
+    ...
+```
+- `START_COLOR` ([int]): The 0-255 RGB color code for when the line's length is <= `MIN_DIST`.
+- `END_COLOR` ([int]): The 0-255 RGB color code for when the length is >= `MAX_DIST`.
+- `MIN_DIST` (float): The minimum length the line can be .
+- `MAX_DIST` (float): The maximum length the line can be.
+- `WIDTH` (int): The width of the line.
 
 ## Point Drawing
+`PlainPoint`: Draws all points with a specific thickness and color.
+```
+    ...
+    "POINT_DRAWING_CONFIGS": {
+        "DRAW_POINTS": true,
+        "TYPE": "PlainPoint",
+        "KWARGS": {
+            "COLOR": [255, 255, 255],
+            "WIDTH": 5
+        }
+    }
+    ...
+```
+- `COLOR` ([int]): A 0-255 RGB color code for the color of the points.
+- `WIDTH` (int): The width of the points. 
 
 ## Future Work
 
