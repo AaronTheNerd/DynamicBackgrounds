@@ -4,7 +4,7 @@
 
 
 ## Installation
----
+
 *Python 3.8 required*
 
 Required Python Dependencies:
@@ -16,11 +16,11 @@ Third Party Dependencies:
 - [ImageMagick](https://imagemagick.org/script/download.php)
 
 ## Notes on Usage
----
+
 The only file which needs to be modified in order to customize the gifs is `config.json`. However, if the file structure is changed there will be some issues in the source code (either `src/main.py` or `src/configs.py` depending on what is moved).
 
 ## `config.json` Attribute Notes
----
+
 Example config.json:
 ```
 {
@@ -140,7 +140,7 @@ Example config.json:
 
 
 ## Triangle Coloring
----
+
 `PlainColor`: Draws all triangles the same color.
 ```
     ...
@@ -176,6 +176,57 @@ Example config.json:
 - `END_Y` (int): The y-value of the ending point for the gradient line.
 - `START_COLOR` ([int]): A 0-255 RGB color code to be used as a starting color.
 - `END_COLOR` ([int]): A 0-255 RGB color code to be used as a ending color.
+
+`HSVExponentialGradientContinuous`: An extension of `HSVLinearGradientContinuous`, uses the same method for finding the gradient but instead of using a linear interpolation, the value is scaled by an exponential to squeeze toghether colors.
+```
+    ...
+    "TRIANGLE_COLORING_CONFIGS": {
+        "TYPE": "HSVExponentialGradientContinuous",
+        "KWARGS": {
+            "START_X": 0,
+            "START_Y": 0,
+            "END_X": 1366,
+            "END_Y": 768,
+            "START_COLOR": [255, 0, 0],
+            "END_COLOR": [0, 0, 255],
+            "ALPHA": 0.8
+        }
+    },
+    ...
+```
+- `START_X` (int): The x-value of the starting point for the gradient line.
+- `START_Y` (int): The y-value of the starting point for the gradient line.
+- `END_X` (int): The x-value of the ending point for the gradient line.
+- `END_Y` (int): The y-value of the ending point for the gradient line.
+- `START_COLOR` ([int]): A 0-255 RGB color code to be used as a starting color.
+- `END_COLOR` ([int]): A 0-255 RGB color code to be used as a ending color.
+- `ALPHA` (float): The scale of the exponential function.
+
+`HSVLinearGradientDiscrete`: An extension of `HSVLinearGradientContinuous`, uses the same method for finding the gradient but will only use a set number of colors.
+```
+    ...
+    "TRIANGLE_COLORING_CONFIGS": {
+        "TYPE": "HSVLinearGradientDiscrete",
+        "KWARGS": {
+            "START_X": 0,
+            "START_Y": 0,
+            "END_X": 1366,
+            "END_Y": 768,
+            "START_COLOR": [255, 0, 0],
+            "END_COLOR": [0, 0, 255],
+            "NUM_OF_COLORS": 5
+        }
+    },
+    ...
+```
+- `START_X` (int): The x-value of the starting point for the gradient line.
+- `START_Y` (int): The y-value of the starting point for the gradient line.
+- `END_X` (int): The x-value of the ending point for the gradient line.
+- `END_Y` (int): The y-value of the ending point for the gradient line.
+- `START_COLOR` ([int]): A 0-255 RGB color code to be used as a starting color.
+- `END_COLOR` ([int]): A 0-255 RGB color code to be used as a ending color.
+- `NUM_OF_COLORS` (int): The number of colors the gradient should have.
+
 
 ## Line Drawing
 
