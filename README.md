@@ -227,6 +227,61 @@ Example config.json:
 - `END_COLOR` ([int]): A 0-255 RGB color code to be used as a ending color.
 - `NUM_OF_COLORS` (int): The number of colors the gradient should have.
 
+`AmbientShader`: Uses a simple shading approach to shade the gif. This does not create accurate shadows and instead uses how closely the triangle is facing the 'light source' to find how bright the triangle should be.
+```
+    ...
+    "TRIANGLE_COLORING_CONFIGS": {
+        "TYPE": "AmbientShader",
+        "KWARGS": {
+            "AMBIENT_COLOR": [98, 182, 227],
+            "AMBIENT_VECTOR": [1.0, 1.0, 1.0],
+            "AMBIENT_GAIN": 50000,
+            "AMBIENT_DEFINITION": 20
+        }
+    },
+    ...
+```
+- `AMBIENT_COLOR` ([int]): A 0-255 RGB color code for the brightest color of the gif.
+- `AMBIENT_VECTOR` ([float]): The vector which points in the direction of the 'light source'.
+- `AMBIENT_GAIN` (float): How bright the ambient light is.
+- `AMBIENT_DEFINITION` (int): How defined the light is.
+
+`MultiLightShader`: An extension of the `AmbientShader`, this includes extra point light sources.
+```
+    ...
+    "TRIANGLE_COLORING_CONFIGS": {
+        "TYPE": "MultiLightShader",
+        "KWARGS": {
+            "AMBIENT_COLOR": [156, 47, 11],
+            "AMBIENT_VECTOR": [0, 1.0, 0.2],
+            "AMBIENT_GAIN": 3000000,
+            "AMBIENT_DEFINITION": 10,
+            "GAIN": 1000,
+            "LIGHTS": [
+                {
+                    "POS": [703, 0, 1000],
+                    "INTENSITY": 500,
+                    "COLOR": [255, 0, 81]
+                },
+                {
+                    "POS": [1406, 808, 1000],
+                    "INTENSITY": 200,
+                    "COLOR": [255, 247, 0]
+                }
+            ]
+        }
+    },
+    ...
+```
+- `AMBIENT_COLOR` ([int]): A 0-255 RGB color code for the brightest color of the gif.
+- `AMBIENT_VECTOR` ([float]): The vector which points in the direction of the 'light source'.
+- `AMBIENT_GAIN` (float): How bright the ambient light is.
+- `AMBIENT_DEFINITION` (int): How defined the light is.
+- `GAIN` (float): How bright the light sources are.
+- `LIGHTS` ([dict]): The variables for the point sources of light.
+    * `POS` ([int]): The point of light's position.
+    * `INTENSITY` (float): The point of light's intensity.
+    * `COLOR` ([int]): A 0-255 RGB color code for the color of the point of light.
 
 ## Line Drawing
 
