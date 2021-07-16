@@ -1,6 +1,17 @@
-from colorsys import hsv_to_rgb, rgb_to_hsv
-from helpers import interpolate
 import math
+from abc import ABC, abstractmethod
+from colorsys import hsv_to_rgb, rgb_to_hsv
+
+from helpers import interpolate
+
+class LineDrawer(ABC):
+    @abstractmethod
+    def get_color(self, edge):
+        pass
+
+    @abstractmethod
+    def get_width(self, edge):
+        pass
 
 class SolidLine(object):
     def __init__(self, COLOR=None, WIDTH=1):
