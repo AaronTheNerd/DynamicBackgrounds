@@ -18,6 +18,10 @@ def get_triangle_coloring_object(configs=TRIANGLE_COLORING_CONFIGS):
         return MultiLightShader(**configs["KWARGS"])
     elif configs["TYPE"] == 'ShadedGradient':
         return ShadedGradient(**configs["KWARGS"])
+    elif configs["TYPE"] == 'StaticNoise':
+        return StaticNoise(**configs["KWARGS"])
+    elif configs["TYPE"] == 'TieDyeSwirl':
+        return TieDyeSwirl(**configs["KWARGS"])
     else:
         raise RuntimeError(f"Incorrect configs attribute 'TYPE': {configs['TYPE']}")
 

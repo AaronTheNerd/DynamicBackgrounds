@@ -1,18 +1,25 @@
-from colorsys import hsv_to_rgb, rgb_to_hsv
 import math
+from abc import ABC, abstractmethod
+from colorsys import hsv_to_rgb, rgb_to_hsv
 
-from helpers import interpolate
-from configs import CONFIGS, POINT_CONFIGS
-from triangulation import Triangle
+from opensimplex import OpenSimplex
+
 import get_drawing_objects
+from configs import CONFIGS
+from helpers import interpolate
 
-class PlainColor(object):
+class TriangleColorer(ABC):
+    @abstractmethod
+    def get_color(self, triangle):
+        pass
+
+class PlainColor(TriangleColorer):
     def __init__(self, COLOR=None):
         self.color = COLOR if COLOR is not None else [255] * 3
     def get_color(self, triangle):
         return self.color    
 
-class HSVLinearGradientContinuous(object):
+class HSVLinearGradientContinuous(TriangleColorer):
     def __init__(self, START_X=0, START_Y=0, END_X=CONFIGS["WIDTH"], END_Y=CONFIGS["WIDTH"], START_COLOR=None, END_COLOR=None):
         self.start_x = START_X
         self.start_y = START_Y
@@ -67,7 +74,7 @@ class HSVLinearGradientDiscrete(HSVLinearGradientContinuous):
     
 # All credit to Scratchapixel 2.0 for how to properly shade the triangles
 # https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/shading-normals
-class AmbientShader(object):
+class AmbientShader(TriangleColorer):
     def __init__(self, AMBIENT_COLOR=None, AMBIENT_VECTOR=None, AMBIENT_GAIN=1.0, AMBIENT_DEFINITION=1):
         self.ambient_color = AMBIENT_COLOR if AMBIENT_COLOR is not None else [255] * 3
         self.ambient_vector = AmbientShader.normalize3d(AMBIENT_VECTOR) if AMBIENT_VECTOR is not None else [0.0, 0.0, 1.0]
@@ -136,3 +143,52 @@ class ShadedGradient(AmbientShader):
         gradient_color = self.gradient.get_color(triangle)
         facing_ratio = AmbientShader.get_facing_ratio(self, triangle)
         return tuple([int(gradient_color[i] * facing_ratio) for i in range(3)])
+
+class StaticNoise(TriangleColorer):
+    def __init__(self, SCALE=1, START_COLOR=None, END_COLOR=None):
+        self.open_simplex = OpenSimplex(seed=CONFIGS["SEED"])
+        self.scale = SCALE
+        if START_COLOR is None:
+            self.start_color = rgb_to_hsv(*([1.0] * 3))
+        else:
+            self.start_color = rgb_to_hsv(*[START_COLOR[i] / 255 for i in range(3)])
+        if END_COLOR is None:
+            self.end_color = rgb_to_hsv(*([1.0] * 3))
+        else:
+            self.end_color = rgb_to_hsv(*[END_COLOR[i] / 255 for i in range(3)])
+    def get_color(self, triangle):
+        center = triangle.center()
+        x, y, z = center[0], center[1], center[2]
+        t = (self.open_simplex.noise3d(x=x * self.scale, y=y * self.scale, z=z * self.scale) + 1) / 2
+        return HSVLinearGradientContinuous.get_color_at(self, t)
+
+class TieDyeSwirl(TriangleColorer):
+    def __init__(self, START_X=0, START_Y=0, SCALE=1, ALPHA=1):
+        self.start_x = START_X
+        self.start_y = START_Y
+        self.scale = SCALE
+        self.alpha = ALPHA
+        self.colors = [
+            rgb_to_hsv(1.0, 0.0, 0.0),
+            rgb_to_hsv(1.0, 1.0, 0),
+            rgb_to_hsv(0.1, 1.0, 0.0),
+            rgb_to_hsv(0.1, 0.0, 1.0),
+            rgb_to_hsv(0.36, 0.0, 0.64)
+        ]
+    def get_color(self, triangle):
+        center = triangle.center()
+        x, y = center[0], center[1]
+        w = [x - self.start_x, y - self.start_y] # Vector pointing from center of tie dye to triangle center
+        v = [0, 1] # Vertical vector
+        theta = math.atan2(w[1] * v[0] - w[0] * v[1], w[0] * v[0] + w[1] * v[1]) # Angle between v and w
+        theta += 2 * math.pi if theta < 0.0 else 0.0
+        radial_offset = math.fmod(theta, 2 * math.pi / (len(self.colors) + 1)) # 0 <= radial_offset < 2 * math.pi / len(self.colors)
+        radial_offset *= ((len(self.colors) + 1) / (2 * math.pi)) # 0 <= radial_offset < 1
+        radial_offset *= self.scale
+        dist = math.sqrt(sum([w[i] ** 2 for i in range(2)]))
+        dist_scaled = math.pow(dist, self.alpha)
+        offset_dist = dist_scaled + radial_offset
+        offset = math.floor(theta / (2 * math.pi) * (len(self.colors) + 1))
+        color_index = (int(offset_dist / self.scale) + offset) % len(self.colors)
+        rgb_color = hsv_to_rgb(*self.colors[color_index])
+        return [int(255 * rgb_color[i]) for i in range(3)]
