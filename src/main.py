@@ -1,6 +1,7 @@
 import json
 import os
-import time
+import random
+import sys
 
 import numpy as np
 from PIL import Image, ImageDraw
@@ -45,11 +46,14 @@ def run():
     os.system(f"rm {GIFS_PATH}/{GIF_CONFIGS['NUM']}/*")
     # Generate random seed if necessary
     if CONFIGS["RANDOM_SEED"]:
-        CONFIGS["SEED"] = round(time.time())
+        CONFIGS["SEED"] = random.randint(-2147483648, 2147483647)
         CONFIGS["RANDOM_SEED"] = False
     # Seed components
     generate_points.seed(CONFIGS["SEED"])
     point.seed(CONFIGS["SEED"])
+    # Create copy of configs to be able to remake the gif
+    with open(f"{GIFS_PATH}/{GIF_CONFIGS['NUM']}/config.json", 'w+') as file:
+        json.dump(CONFIGS, file, indent=4)
     # Generate objects needed to color the gif
     triangle_coloring = get_triangle_coloring_object()
     line_coloring = get_line_drawing_object()
@@ -69,9 +73,6 @@ def run():
     os.system(f"convert -delay {GIF_CONFIGS['MS_PER_FRAME']} -loop 0 {GIFS_PATH}/{GIF_CONFIGS['NUM']}/*.bmp -crop {CONFIGS['WIDTH']}x{CONFIGS['HEIGHT']}+{GIF_CONFIGS['MARGIN']}+{GIF_CONFIGS['MARGIN']} +repage {GIFS_PATH}/{GIF_CONFIGS['NUM']}/gif{GIF_CONFIGS['NUM']}.gif")
     # Remove frames
     os.system(f"rm {GIFS_PATH}/{GIF_CONFIGS['NUM']}/*.bmp")
-    # Create copy of configs to be able to remake the gif
-    with open(f"{GIFS_PATH}/{GIF_CONFIGS['NUM']}/config.json", 'w+') as file:
-        json.dump(CONFIGS, file, indent=4)
 
 if __name__ == "__main__":
     run()
