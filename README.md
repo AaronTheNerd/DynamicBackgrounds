@@ -19,6 +19,62 @@ Third Party Dependencies:
 
 The only file which needs to be modified in order to customize the gifs is `config.json`. However, if the file structure is changed there will be some issues in the source code (either `src/main.py` or `src/configs.py` depending on what is moved).
 
+## File Structure
+
+```
+.
+├── gifs
+│   ├── 1
+│   │   ├── config.json
+│   │   └── gif1.gif
+│   ├── 2
+│   │   ├── config.json
+│   │   └── gif2.gif
+│   ├── 3
+│   │   ├── config.json
+│   │   └── gif3.gif
+│   ├── 4
+│   │   ├── config.json
+│   │   └── gif4.gif
+│   ├── 5
+│   │   ├── config.json
+│   │   └── gif5.gif
+│   ├── 6
+│   │   ├── config.json
+│   │   └── gif6.gif
+│   ├── 7
+│   │   ├── config.json
+│   │   └── gif7.gif
+│   └── 8
+│       ├── config.json
+│       └── gif8.gif
+├── src
+│   ├── configs.py
+│   ├── generate_points.py
+│   ├── get_drawing_objects.py
+│   ├── helpers.py
+│   ├── line_drawing.py
+│   ├── main.py
+│   ├── point_drawing.py
+│   ├── point.py
+│   ├── triangle_coloring.py
+│   └── triangulation.py
+├── config.json
+├── LICENSE
+└── README.md
+```
+- `src/configs.py`: Houses all global variables needed for the project.
+- `src/generate_points.py`: Methods for generating the initial points.
+- `src/get_drawing_objects.py`: Methods for converting dictionary's into classes.
+- `src/helpers.py`: Useful methods which exist outside of the other files.
+- `src/line_drawing`: Classes for drawing the lines of the gif.
+- `src/main.py`: The main function of the project. Creates and compiles frames into gifs.
+- `src/point_drawing.py`: Classes for drawing the points of the gif.
+- `src/point.py`: Classes for the different types of points in the gif.
+- `src/triangle_coloring.py`: Classes for drawing the triangles of the gifs.
+- `src/triangulation.py`: Houses the triangle class and has any methods needed to turn a list of points into a triangular mesh.
+- `config.json`: Has all of the global variables needed for the project. More info in the next section.
+
 ## `config.json` Attribute Notes
 
 Example config.json:
@@ -29,11 +85,7 @@ Example config.json:
     "WIDTH": 1366,
     "HEIGHT": 768,
     "NUM_OF_FRAMES": 250,
-    "BACKGROUND_COLOR": [
-        0,
-        0,
-        0
-    ],
+    "BACKGROUND_COLOR": [0, 0, 0],
     "GIF_CONFIGS": {
         "NUM": 5,
         "MS_PER_FRAME": 11,
@@ -107,7 +159,7 @@ Example config.json:
     * `MS_PER_FRAME` (int): The number of milliseconds between frames.
     * `MARGIN` (int): The maximum distance past the edge of the screen that a point can move to.
 - `POINT_CONFIGS`:
-    * `AMPLITUDE` (float): How far points can travel compared to where initial position.
+    * `AMPLITUDE` (float): How far points can travel compared tov initial position.
     * `INTENSITY` (float): How quickly points can change directions.
     * `SCALE` (float): How 'zoomed in' the noise should be (affects smoothness of motion).
     * `OFFSET_Y` (float): *There is almost no reason to modify this.* When the noise function is calculated it gives a scalar value based on the point's position. In order for the x-offset to not be equal to the y-offset the calculation for the y-offset must have a different position than the x-offset's calculation. This attribute moves the point's position for the y-offset calculation.
@@ -371,6 +423,39 @@ Example config.json:
 - `COLOR` ([int]): A 0-255 RGB color code for the color of the points.
 - `WIDTH` (int): The width of the points. 
 
+## Contributing
+
+I have tried to make it fairly simple to add options to this project. If you have any ideas for different ways to color the triangles, lines, or points you can suggest them with an issue marked as an `idea` or you can create the function by creating a new class which extends one of the following abstract classes:
+```
+class TriangleColorer(ABC):
+    @abstractmethod
+    def get_color(self, triangle):
+        pass
+```
+
+```
+class LineDrawer(ABC):
+    @abstractmethod
+    def get_color(self, edge):
+        pass
+
+    @abstractmethod
+    def get_width(self, edge):
+        pass
+```
+
+```
+class PointDrawer(ABC):
+    @abstractmethod
+    def get_color(self, x, y):
+        pass
+
+    @abstractmethod
+    def get_width(self, x, y):
+        pass
+```
+If you have an idea for other functionality, add an issue marked `idea` or you can clone the repository and try it out for yourself.
+
 ## Future Work
 
-Something that I would like to do with this is to make the points move more, currently it appears like the points slowly oscillate back and forth. One way to do this is to potentially add a 'drift' to the points. Constantly pulling them one direction such that they always appear back where they started. Another thing I would like to do is add an HCL gradient. Finally, I would like the ability to change how the OpenSimplex oscillates. I could do this by changing the circle that the OpenSimplex function takes to instead be a different, smooth, continuous shape. Perhaps randomly generated or a set shape. A potential shape could be a sort of infinity symbol.
+I would like the ability to change how the OpenSimplex oscillates. I could do this by changing the circle that the OpenSimplex function takes to instead be a different, smooth, continuous shape. Perhaps randomly generated or a set shape. A potential shape could be a sort of infinity symbol. Additionally, I would like to make a gui which would make it easier to create and preview gifs before commiting to generating and compiling. Finally, I would like to add some more options for coloring the triangles, one option would be to take a noise map to create a sort of tie-dye pattern or a gradient which extends radially as opposed to linearly.
