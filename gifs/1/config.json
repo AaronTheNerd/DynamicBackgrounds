@@ -40,16 +40,8 @@
     "TRIANGLE_COLORING_CONFIGS": {
         "TYPE": "AmbientShader",
         "KWARGS": {
-            "AMBIENT_COLOR": [
-                98,
-                182,
-                227
-            ],
-            "AMBIENT_VECTOR": [
-                1.0,
-                1.0,
-                1.0
-            ],
+            "AMBIENT_COLOR": [98, 182, 227],
+            "AMBIENT_VECTOR": [1.0, 1.0, 1.0],
             "AMBIENT_GAIN": 50000,
             "AMBIENT_DEFINITION": 20
         }

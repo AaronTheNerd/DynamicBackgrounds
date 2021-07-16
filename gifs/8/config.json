@@ -40,21 +40,26 @@
     "TRIANGLE_COLORING_CONFIGS": {
         "TYPE": "ShadedGradient",
         "KWARGS": {
-            "START_X": 150,
-            "START_Y": 150,
-            "END_X": 1516,
-            "END_Y": 918,
-            "START_COLOR": [
-                235,
-                52,
-                52
-            ],
-            "END_COLOR": [
-                66,
-                224,
-                245
-            ],
-            "ALPHA": 0.8,
+            "GRADIENT": {
+                "TYPE": "HSVExponentialGradientContinuous",
+                "KWARGS": {
+                    "START_X": 150,
+                    "START_Y": 150,
+                    "END_X": 1516,
+                    "END_Y": 918,
+                    "START_COLOR": [
+                        235,
+                        52,
+                        52
+                    ],
+                    "END_COLOR": [
+                        66,
+                        224,
+                        245
+                    ],
+                    "ALPHA": 0.8
+                }
+            },
             "AMBIENT_VECTOR": [
                 1.0,
                 1.0,
