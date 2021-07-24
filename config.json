@@ -3,30 +3,30 @@
     "SEED": 1626420044,
     "WIDTH": 1366,
     "HEIGHT": 768,
-    "NUM_OF_FRAMES": 50,
+    "NUM_OF_FRAMES": 250,
     "BACKGROUND_COLOR": [0, 0, 0],
     "GIF_CONFIGS": {
-        "NUM": 11,
+        "NUM": 12,
         "MS_PER_FRAME": 11,
-        "MARGIN": 50
+        "MARGIN": 150
     },
     "POINT_CONFIGS": {
-        "AMPLITUDE": 1000,
-        "INTENSITY": 0.01,
+        "AMPLITUDE": 0,
+        "INTENSITY": 0,
         "SCALE": 1,
         "OFFSET_Y": 100,
         "NUM_OF_POINTS": 500,
-        "SEPARATION_RADIUS": 50,
+        "SEPARATION_RADIUS": 80,
         "MAX_FAILS": 10000,
         "BORDER_CONFIGS": {
-            "TOP": true,
+            "TOP": false,
             "BOTTOM": true,
-            "LEFT": true,
+            "LEFT": false,
             "RIGHT": true,
-            "SEPARATION": 50
+            "SEPARATION": 100
         },
         "DRIFTING_CONFIGS": {
-            "PERCENTAGE": 0,
+            "PERCENTAGE": 1,
             "X_MIN": 1,
             "X_MAX": 1,
             "Y_MIN": 1,
@@ -37,17 +37,15 @@
         "TYPE": "ShadedGradient",
         "KWARGS": {
             "GRADIENT": {
-                "TYPE": "TieDyeSwirl",
+                "TYPE": "ColorShifting",
                 "KWARGS": {
-                    "START_X": 683,
-                    "START_Y": 384,
-                    "SCALE": 30,
-                    "ALPHA": 0.8
+                    "START_COLOR": [235, 52, 52],
+                    "END_COLOR": [66, 224, 245]
                 }
             },
             "AMBIENT_VECTOR": [1.0, 1.0, 0.5],
-            "AMBIENT_GAIN": 55000,
-            "AMBIENT_DEFINITION": 10
+            "AMBIENT_GAIN": 12000000,
+            "AMBIENT_DEFINITION": 15
         }
     },
     "LINE_DRAWING_CONFIGS": {

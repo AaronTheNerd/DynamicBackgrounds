@@ -367,6 +367,57 @@ Example config.json:
 - `AMBIENT_GAIN` (float): How bright the ambient light is.
 - `AMBIENT_DEFINITION` (int): How defined the light is.
 
+`StaticNoise` uses an OpenSimplex noise function to color the gif based on.
+```
+    ...
+    "TRIANGLE_COLORING_CONFIGS": {
+        "TYPE": "StaticNoise",
+        "KWARGS": {
+            "SCALE": 0.004,
+            "START_COLOR": [235, 52, 52],
+            "END_COLOR": [66, 224, 245]
+        }
+    },
+    ...
+```
+- `SCALE` (float): How 'zoomed in' the noise function is.
+- `START_COLOR` ([int]): A 0-255 RGB color code to be used as a starting color.
+- `END_COLOR` ([int]): A 0-255 RGB color code to be used as a ending color.
+
+`TieDyeSwirl` creates a spiral rainbow pattern.
+```
+    ...
+    "TRIANGLE_COLORING_CONFIGS": {
+        "TYPE": "TieDyeSwirl",
+        "KWARGS": {
+            "START_X": 683,
+            "START_Y": 384,
+            "SCALE": 30,
+            "ALPHA": 0.8
+        }
+    },
+    ...
+```
+- `START_X` (int): The x-value of the center of the spiral.
+- `START_Y` (int): The y-value of the center of the spiral.
+- `SCALE` (float): Affects the thickness of the bands of color.
+- `ALPHA` (float): Affects how quickly the bands of color turn.
+
+`ColorShifting` shifts the color of the gif between two colors.
+```
+    ...
+    "TRIANGLE_COLORING_CONFIGS": {
+        "TYPE": "ColorShifting",
+        "KWARGS": {
+            "START_COLOR": [235, 52, 52],
+            "END_COLOR": [66, 224, 245]
+        }
+    },
+    ...
+```
+- `START_COLOR` ([int]): A 0-255 RGB color code to be used as a starting color.
+- `END_COLOR` ([int]): A 0-255 RGB color code to be used as a ending color.
+
 ## Line Drawing
 `SolidLine`: Draws all lines with a set color and width.
 ```
@@ -425,7 +476,7 @@ Example config.json:
 
 ## Contributing
 
-I have tried to make it fairly simple to add options to this project. If you have any ideas for different ways to color the triangles, lines, or points you can suggest them with an issue marked as an `idea` or you can create the function by creating a new class which extends one of the following abstract classes:
+I have tried to make it fairly simple to add options to this project. If you have any ideas for different ways to color the triangles, lines, or points you can suggest them with an issue marked as an `idea` or you can create the function by creating a new class which extends one of the following abstract classes in `src/triangle_coloring.py`:
 ```
 class TriangleColorer(ABC):
     @abstractmethod
@@ -454,7 +505,7 @@ class PointDrawer(ABC):
     def get_width(self, x, y):
         pass
 ```
-If you have an idea for other functionality, add an issue marked `idea` or you can clone the repository and try it out for yourself.
+Also make sure to add the new class into `src/get_drawing_objects.py`. If you have an idea for other functionality, add an issue marked `idea` or you can clone the repository and try it out for yourself.
 
 ## Future Work
 

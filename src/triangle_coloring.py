@@ -10,13 +10,13 @@ from helpers import interpolate
 
 class TriangleColorer(ABC):
     @abstractmethod
-    def get_color(self, triangle):
+    def get_color(self, triangle, time):
         pass
 
 class PlainColor(TriangleColorer):
     def __init__(self, COLOR=None):
         self.color = COLOR if COLOR is not None else [255] * 3
-    def get_color(self, triangle):
+    def get_color(self, triangle, time):
         return self.color    
 
 class HSVLinearGradientContinuous(TriangleColorer):
@@ -39,7 +39,7 @@ class HSVLinearGradientContinuous(TriangleColorer):
         v = interpolate(self.start_color[2], self.end_color[2], t)
         rgb = hsv_to_rgb(h, s, v)
         return tuple([int(rgb[i] * 255) for i in range(3)])
-    def get_color(self, triangle):
+    def get_color(self, triangle, time):
         center = triangle.center()
         x, y = center[0], center[1]
         t = (self.delta_x * (x - self.start_x) + self.delta_y * (y - self.start_y)) / ((self.delta_x)**2 + (self.delta_y)**2)
@@ -50,7 +50,7 @@ class HSVExponentialGradientContinuous(HSVLinearGradientContinuous):
     def __init__(self, START_X=0, START_Y=0, END_X=CONFIGS["WIDTH"], END_Y=CONFIGS["HEIGHT"], START_COLOR=None, END_COLOR=None, ALPHA=1.0):
         super().__init__(START_X=START_X, START_Y=START_Y, END_X=END_X, END_Y=END_Y, START_COLOR=START_COLOR, END_COLOR=END_COLOR)
         self.alpha = ALPHA
-    def get_color(self, triangle):
+    def get_color(self, triangle, time):
         center = triangle.center()
         x, y = center[0], center[1]
         t = (self.delta_x * (x - self.start_x) + self.delta_y * (y - self.start_y)) / ((self.delta_x)**2 + (self.delta_y)**2)
@@ -62,7 +62,7 @@ class HSVLinearGradientDiscrete(HSVLinearGradientContinuous):
     def __init__(self, START_X=0, START_Y=0, END_X=CONFIGS["WIDTH"], END_Y=CONFIGS["WIDTH"], START_COLOR=None, END_COLOR=None, NUM_OF_COLORS=1):
         super().__init__(START_X=START_X, START_Y=START_Y, END_X=END_X, END_Y=END_Y, START_COLOR=START_COLOR, END_COLOR=END_COLOR)
         self.num_of_colors = NUM_OF_COLORS
-    def get_color(self, triangle):
+    def get_color(self, triangle, time):
         center = triangle.center()
         x, y = center[0], center[1]
         t = (self.delta_x * (x - self.start_x) + self.delta_y * (y - self.start_y)) / ((self.delta_x)**2 + (self.delta_y)**2)
@@ -113,7 +113,7 @@ class AmbientShader(TriangleColorer):
         facing_ratio = self.ambient_gain * max(0.0, AmbientShader.dot_product3d(normal, self.ambient_vector)) ** self.ambient_definition
         # Clamp facing ratio between 0 and 1
         return min(facing_ratio, 1.0)
-    def get_color(self, triangle):
+    def get_color(self, triangle, time):
         t = self.get_facing_ratio(triangle)
         return tuple([int(self.ambient_color[i] * t) for i in range(3)])
 
@@ -122,7 +122,7 @@ class MultiLightShader(AmbientShader):
         super().__init__(AMBIENT_COLOR=AMBIENT_COLOR, AMBIENT_VECTOR=AMBIENT_VECTOR, AMBIENT_GAIN=AMBIENT_GAIN, AMBIENT_DEFINITION=AMBIENT_DEFINITION)
         self.gain = GAIN
         self.lights = LIGHTS if LIGHTS is not None else []
-    def get_color(self, triangle):
+    def get_color(self, triangle, time):
         rgb = super().get_color(triangle)
         center = triangle.center()
         for light in self.lights:
@@ -139,8 +139,8 @@ class ShadedGradient(AmbientShader):
     def __init__(self, GRADIENT={}, AMBIENT_VECTOR=None, AMBIENT_GAIN=1.0, AMBIENT_DEFINITION=1):
         self.gradient = get_drawing_objects.get_triangle_coloring_object(GRADIENT)
         AmbientShader.__init__(self, AMBIENT_COLOR=None, AMBIENT_VECTOR=AMBIENT_VECTOR, AMBIENT_GAIN=AMBIENT_GAIN, AMBIENT_DEFINITION=AMBIENT_DEFINITION)
-    def get_color(self, triangle):
-        gradient_color = self.gradient.get_color(triangle)
+    def get_color(self, triangle, time):
+        gradient_color = self.gradient.get_color(triangle, time)
         facing_ratio = AmbientShader.get_facing_ratio(self, triangle)
         return tuple([int(gradient_color[i] * facing_ratio) for i in range(3)])
 
@@ -156,7 +156,7 @@ class StaticNoise(TriangleColorer):
             self.end_color = rgb_to_hsv(*([1.0] * 3))
         else:
             self.end_color = rgb_to_hsv(*[END_COLOR[i] / 255 for i in range(3)])
-    def get_color(self, triangle):
+    def get_color(self, triangle, time):
         center = triangle.center()
         x, y, z = center[0], center[1], center[2]
         t = (self.open_simplex.noise3d(x=x * self.scale, y=y * self.scale, z=z * self.scale) + 1) / 2
@@ -175,7 +175,7 @@ class TieDyeSwirl(TriangleColorer):
             rgb_to_hsv(0.1, 0.0, 1.0),
             rgb_to_hsv(0.36, 0.0, 0.64)
         ]
-    def get_color(self, triangle):
+    def get_color(self, triangle, time):
         center = triangle.center()
         x, y = center[0], center[1]
         w = [x - self.start_x, y - self.start_y] # Vector pointing from center of tie dye to triangle center
@@ -192,3 +192,21 @@ class TieDyeSwirl(TriangleColorer):
         color_index = (int(offset_dist / self.scale) + offset) % len(self.colors)
         rgb_color = hsv_to_rgb(*self.colors[color_index])
         return [int(255 * rgb_color[i]) for i in range(3)]
+
+class ColorShifting(TriangleColorer):
+    def __init__(self, START_COLOR, END_COLOR):
+        if START_COLOR is None:
+            self.start_color = rgb_to_hsv(*([1.0] * 3))
+        else:
+            self.start_color = rgb_to_hsv(*[START_COLOR[i] / 255 for i in range(3)])
+        if END_COLOR is None:
+            self.end_color = rgb_to_hsv(*([1.0] * 3))
+        else:
+            self.end_color = rgb_to_hsv(*[END_COLOR[i] / 255 for i in range(3)])
+    def get_color(self, triangle, time):
+        t = (math.sin(time * 2 * math.pi) + 1) / 2
+        h = interpolate(self.start_color[0], self.end_color[0], t)
+        s = interpolate(self.start_color[1], self.end_color[1], t)
+        v = interpolate(self.start_color[2], self.end_color[2], t)
+        rgb = hsv_to_rgb(h, s, v)
+        return tuple([int(rgb[i] * 255) for i in range(3)])

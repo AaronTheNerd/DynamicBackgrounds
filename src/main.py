@@ -25,7 +25,7 @@ GIFS_PATH = f"{SRC_PATH}/../gifs"
 def draw(image, t, points, triangle_coloring, line_coloring, point_coloring):
     triangles = BowyerWatson(points, t)
     for triangle in triangles:
-        triangle_color = triangle_coloring.get_color(triangle)
+        triangle_color = triangle_coloring.get_color(triangle, t)
         image.polygon([triangle.a.x, triangle.a.y, triangle.b.x, triangle.b.y, triangle.c.x, triangle.c.y], fill=tuple(triangle_color))
         if LINE_DRAWING_CONFIGS["DRAW_LINES"]:
             edges = triangle.edges()

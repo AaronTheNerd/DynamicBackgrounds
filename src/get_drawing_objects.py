@@ -22,6 +22,8 @@ def get_triangle_coloring_object(configs=TRIANGLE_COLORING_CONFIGS):
         return StaticNoise(**configs["KWARGS"])
     elif configs["TYPE"] == 'TieDyeSwirl':
         return TieDyeSwirl(**configs["KWARGS"])
+    elif configs["TYPE"] == 'ColorShifting':
+        return ColorShifting(**configs["KWARGS"])
     else:
         raise RuntimeError(f"Incorrect configs attribute 'TYPE': {configs['TYPE']}")
 
