@@ -6,6 +6,8 @@ from point_drawing import *
 def get_triangle_coloring_object(configs=TRIANGLE_COLORING_CONFIGS):
     if configs["TYPE"] == 'PlainColor':
         return PlainColor(**configs["KWARGS"])
+    elif configs["TYPE"] == 'RGBGradient':
+        return RGBGradient(**configs["KWARGS"])
     elif configs["TYPE"] == 'HSVLinearGradientContinuous':
         return HSVLinearGradientContinuous(**configs["KWARGS"])
     elif configs["TYPE"] == 'HSVLinearGradientDiscrete':

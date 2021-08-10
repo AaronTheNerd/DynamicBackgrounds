@@ -19,6 +19,30 @@ class PlainColor(TriangleColorer):
     def get_color(self, triangle, time):
         return self.color    
 
+class RGBGradient(TriangleColorer):
+    def __init__(self, START_X=0, START_Y=0, END_X=CONFIGS["WIDTH"], END_Y=CONFIGS["WIDTH"], START_COLOR=None, END_COLOR=None):
+        self.start_x = START_X
+        self.start_y = START_Y
+        self.delta_x = END_X - START_X
+        self.delta_y = END_Y - START_Y
+        if START_COLOR is None:
+            self.start_color = [255] * 3
+        else:
+            self.start_color = START_COLOR
+        if END_COLOR is None:
+            self.end_color = [255] * 3
+        else:
+            self.end_color = END_COLOR
+    def get_color(self, triangle, time):
+        center = triangle.center()
+        x, y = center[0], center[1]
+        t = (self.delta_x * (x - self.start_x) + self.delta_y * (y - self.start_y)) / ((self.delta_x)**2 + (self.delta_y)**2)
+        t = max(0.0, min(t, 1.0))
+        r = int(interpolate(self.start_color[0], self.end_color[0], t))
+        g = int(interpolate(self.start_color[1], self.end_color[1], t))
+        b = int(interpolate(self.start_color[2], self.end_color[2], t))
+        return (r, g, b)
+
 class HSVLinearGradientContinuous(TriangleColorer):
     def __init__(self, START_X=0, START_Y=0, END_X=CONFIGS["WIDTH"], END_Y=CONFIGS["WIDTH"], START_COLOR=None, END_COLOR=None):
         self.start_x = START_X
