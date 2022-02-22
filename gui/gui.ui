@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DynamicBackground</class>
+ <widget class="QMainWindow" name="DynamicBackground">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>799</width>
+    <height>539</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>799</width>
+    <height>539</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0" colspan="2">
+     <widget class="QGraphicsView" name="preview">
+      <property name="minimumSize">
+       <size>
+        <width>535</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="run_btn">
+      <property name="text">
+       <string>Run</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QProgressBar" name="generation_progress">
+      <property name="value">
+       <number>0</number>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2" rowspan="2">
+     <widget class="QToolBox" name="toolBox">
+      <property name="minimumSize">
+       <size>
+        <width>194</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="currentIndex">
+       <number>2</number>
+      </property>
+      <widget class="QWidget" name="gif_vars">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>233</width>
+         <height>351</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>14</width>
+         <height>0</height>
+        </size>
+       </property>
+       <attribute name="label">
+        <string>Gif Variables</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="9" column="0" alignment="Qt::AlignRight">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Gif Num</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0" alignment="Qt::AlignRight">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Frames</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QSpinBox" name="height_input"/>
+        </item>
+        <item row="5" column="0" colspan="2">
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Framerate</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="QSpinBox" name="gif_num_input"/>
+        </item>
+        <item row="6" column="0" alignment="Qt::AlignRight">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Width</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="1">
+         <widget class="QSpinBox" name="framerate_input"/>
+        </item>
+        <item row="4" column="1">
+         <widget class="QPushButton" name="generate_seed_btn">
+          <property name="minimumSize">
+           <size>
+            <width>129</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Generate Seed</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0" alignment="Qt::AlignRight">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Height</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0" alignment="Qt::AlignRight">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Margin</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="1">
+         <widget class="QSpinBox" name="margin_input"/>
+        </item>
+        <item row="2" column="1" alignment="Qt::AlignTop">
+         <widget class="QSpinBox" name="seed_input"/>
+        </item>
+        <item row="10" column="1">
+         <widget class="QSpinBox" name="frames_input"/>
+        </item>
+        <item row="6" column="1">
+         <widget class="QSpinBox" name="width_input"/>
+        </item>
+        <item row="8" column="0" colspan="2">
+         <widget class="Line" name="line_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Seed</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="point_vars">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>226</width>
+         <height>630</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Point Variables</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="14" column="0">
+         <widget class="QLabel" name="label_16">
+          <property name="text">
+           <string>Drifting Points</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QDoubleSpinBox" name="scale_input"/>
+        </item>
+        <item row="12" column="1">
+         <widget class="QSpinBox" name="border_separation"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Scale</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>Intensity</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="1">
+         <widget class="QCheckBox" name="border_right">
+          <property name="text">
+           <string>Right</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="1">
+         <widget class="QCheckBox" name="border_left">
+          <property name="text">
+           <string>Left</string>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="1">
+         <widget class="QDoubleSpinBox" name="drifting_percentage"/>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_15">
+          <property name="text">
+           <string>Border Points</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="intensity_input"/>
+        </item>
+        <item row="6" column="0" colspan="2">
+         <widget class="Line" name="line_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QSpinBox" name="separation_input"/>
+        </item>
+        <item row="14" column="1">
+         <spacer name="horizontalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="9" column="1">
+         <widget class="QCheckBox" name="border_bottom">
+          <property name="text">
+           <string>Bottom</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QSpinBox" name="max_fails_input"/>
+        </item>
+        <item row="3" column="1">
+         <widget class="QSpinBox" name="y_offset_input"/>
+        </item>
+        <item row="0" column="1">
+         <widget class="QDoubleSpinBox" name="amplitude_input"/>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Amplitude</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="0">
+         <widget class="QLabel" name="label_18">
+          <property name="text">
+           <string>X-Min</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="12" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Separation</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Y-Offset</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="0">
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="15" column="0">
+         <widget class="QLabel" name="label_17">
+          <property name="text">
+           <string>Percentage</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="18" column="0">
+         <widget class="QLabel" name="label_20">
+          <property name="text">
+           <string>Y-Min</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="1">
+         <widget class="QSpinBox" name="drifting_x_min"/>
+        </item>
+        <item row="18" column="1">
+         <widget class="QSpinBox" name="drifting_y_min"/>
+        </item>
+        <item row="7" column="1">
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Separation</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Max Fails</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <widget class="QCheckBox" name="border_top">
+          <property name="text">
+           <string>Top</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="17" column="0">
+         <widget class="QLabel" name="label_19">
+          <property name="text">
+           <string>X-Max</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="13" column="0" colspan="2">
+         <widget class="Line" name="line_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="17" column="1">
+         <widget class="QSpinBox" name="drifting_x_max"/>
+        </item>
+        <item row="19" column="1">
+         <widget class="QSpinBox" name="drifting_y_max"/>
+        </item>
+        <item row="19" column="0">
+         <widget class="QLabel" name="label_21">
+          <property name="text">
+           <string>Y-Max</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="triangle_vars">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>240</width>
+         <height>351</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Triangle Coloring</string>
+       </attribute>
+       <widget class="QComboBox" name="triangle_type_combo_box">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>221</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <item>
+         <property name="text">
+          <string>Plain Color</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Linear Gradient</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Exponential Gradient</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Discrete Gradient</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ambient Shader</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Multi-light Shader</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Gradient Shader</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Static Noise</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Tie Dye Swirl</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Color Shifting</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QWidget" name="triangle_args" native="true">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>221</width>
+          <height>301</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="line_vars">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>240</width>
+         <height>351</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Line Drawing</string>
+       </attribute>
+       <widget class="QCheckBox" name="draw_lines_check_box">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>110</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Draw Lines</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="line_type_combo_box">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>221</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <item>
+         <property name="text">
+          <string>Solid Line</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Fading Line</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QWidget" name="line_args" native="true">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>221</width>
+          <height>261</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="point_vars_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>240</width>
+         <height>351</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Point Drawing</string>
+       </attribute>
+       <widget class="QComboBox" name="point_type_combo">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>221</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <item>
+         <property name="text">
+          <string>Plain Point</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QCheckBox" name="draw_points_check_box">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>118</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Draw Points</string>
+        </property>
+       </widget>
+       <widget class="QWidget" name="point_args" native="true">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>221</width>
+          <height>261</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <action name="action_triangle_color_chooser">
+   <property name="text">
+    <string>_triangle_color_chooser</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>triangle_type_combo_box</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>action_triangle_color_chooser</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>670</x>
+     <y>134</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
