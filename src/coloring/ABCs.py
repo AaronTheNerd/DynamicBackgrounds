@@ -43,7 +43,7 @@ class GradientABC(ABC, Generic[T]):
         ...
 
 
-class ColorerABC(ABC):
+class TriangleColorABC(ABC):
     @abstractmethod
     def get_color(self, triangle: Triangle, t: float) -> Color:
         ...
@@ -55,13 +55,17 @@ class ShaderABC(ABC):
         ...
 
 
-class TriangleColorABC(ABC):
+class TriangleColorerABC(ABC):
     @abstractmethod
     def get_color(self, triangle: Triangle, t: float) -> Color:
         ...
 
 
 class LineColorABC(ABC):
+    ...
+
+
+class LineColorerABC(ABC):
     @abstractmethod
     def get_color(self, edge: Edge) -> Color:
         ...
@@ -71,7 +75,7 @@ class LineColorABC(ABC):
         ...
 
 
-class PointColorABC(ABC):
+class PointColorerABC(ABC):
     @abstractmethod
     def get_color(self, point: PointABC) -> Color:
         ...

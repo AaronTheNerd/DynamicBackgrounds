@@ -23,9 +23,9 @@ def draw(
     image,
     t: float,
     points: list[PointABC],
-    triangle_coloring: Optional[TriangleColorABC],
-    line_coloring: Optional[LineColorABC],
-    point_coloring: Optional[PointColorABC],
+    triangle_coloring: Optional[TriangleColorerABC],
+    line_coloring: Optional[LineColorerABC],
+    point_coloring: Optional[PointColorerABC],
 ):
     new_points = [point.at(t) for point in points]
     triangles = BowyerWatson(new_points)

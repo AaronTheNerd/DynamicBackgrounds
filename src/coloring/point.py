@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from typing import Any, Optional
 
-from coloring.ABCs import PointColorABC
+from coloring.ABCs import PointColorerABC
 from coloring.color import Color
 from configs import ObjectConfigs
 from utils.concrete_inheritors import get_object
 
 
 @dataclass
-class PlainPoint(PointColorABC):
+class PlainPoint(PointColorerABC):
     color: Color = (0, 0, 0)
     width: int = 1
 
@@ -19,5 +19,5 @@ class PlainPoint(PointColorABC):
         return self.width
 
 
-def get_point_object(configs: dict[str, Any] | ObjectConfigs) -> Optional[PointColorABC]:
-    return get_object(PointColorABC, configs)
+def get_point_object(configs: dict[str, Any] | ObjectConfigs) -> Optional[PointColorerABC]:
+    return get_object(PointColorerABC, configs)

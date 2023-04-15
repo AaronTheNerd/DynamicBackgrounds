@@ -2,7 +2,7 @@ import math
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
-from coloring.ABCs import LineColorABC
+from coloring.ABCs import LineColorerABC, LineColorABC
 from coloring.color import Color, ColorHSV, ColorRGB
 from configs import ObjectConfigs
 from triangle import Edge
@@ -10,12 +10,14 @@ from utils.concrete_inheritors import get_object
 
 
 @dataclass
-class LineColorer(LineColorABC):
-    ...
+class LineColorer(LineColorerABC):
+    line: dict[str, Any]
+    width: dict[str, Any]
+    _line: Optional[LineColorABC]
 
 
 @dataclass
-class SolidLine(LineColorABC):
+class SolidLine(LineColorerABC):
     color: Color = (0, 0, 0)
     width: int = 1
 
@@ -27,7 +29,7 @@ class SolidLine(LineColorABC):
 
 
 @dataclass
-class FadingLineRGB(LineColorABC):
+class FadingLineRGB(LineColorerABC):
     start_color: Color = (1, 1, 1)
     end_color: Color = (0, 0, 0)
     min_dist: float = 0.0
@@ -57,7 +59,7 @@ class FadingLineRGB(LineColorABC):
 
 
 @dataclass
-class FadingLine(LineColorABC):
+class FadingLine(LineColorerABC):
     start_color: Color = (0, 0, 0)
     end_color: Color = (255, 255, 255)
     min_dist: int = 0
@@ -86,5 +88,5 @@ class FadingLine(LineColorABC):
         return self.width
 
 
-def get_line_object(configs: dict[str, Any] | ObjectConfigs) -> Optional[LineColorABC]:
-    return get_object(LineColorABC, configs)
+def get_line_object(configs: dict[str, Any] | ObjectConfigs) -> Optional[LineColorerABC]:
+    return get_object(LineColorerABC, configs)
