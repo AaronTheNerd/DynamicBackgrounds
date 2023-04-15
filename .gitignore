@@ -1,2 +1,4 @@
 *.bmp
-src/__pycache__
+__pycache__/
+build/
+.vscode/

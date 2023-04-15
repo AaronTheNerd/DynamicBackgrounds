@@ -1,78 +1,108 @@
 import json
 import os
-import random
-import sys
+from typing import Optional
 
 import numpy as np
 from PIL import Image, ImageDraw
 
 import generate_points
 import point
-from configs import *
-from get_drawing_objects import *
-from triangulation import *
+from coloring.ABCs import *
+from coloring.line import get_line_object
+from coloring.point import get_point_object
+from coloring.triangle import get_triangle_object
+from configs import CONFIGS
+from bowyer_watson import BowyerWatson
+from utils.progress_bar import progress_bar
 
-# Expected directory structure for gifs:
-#
-# DynamicBackgrounds
-# +--config.json
-# +--gifs
-# |  +--GIF_NUM
-# +--src
 SRC_PATH = os.path.abspath(os.path.dirname(__file__))
 GIFS_PATH = f"{SRC_PATH}/../gifs"
 
-def draw(image, t, points, triangle_coloring, line_coloring, point_coloring):
-    triangles = BowyerWatson(points, t)
-    for triangle in triangles:
-        triangle_color = triangle_coloring.get_color(triangle, t)
-        image.polygon([triangle.a.x, triangle.a.y, triangle.b.x, triangle.b.y, triangle.c.x, triangle.c.y], fill=tuple(triangle_color))
-        if LINE_DRAWING_CONFIGS["DRAW_LINES"]:
+
+def draw(
+    image,
+    t: float,
+    points: list[PointABC],
+    triangle_coloring: Optional[TriangleColorABC],
+    line_coloring: Optional[LineColorABC],
+    point_coloring: Optional[PointColorABC],
+):
+    new_points = [point.at(t) for point in points]
+    triangles = BowyerWatson(new_points)
+    if triangle_coloring is not None:
+        for triangle in triangles:
+            triangle_color = triangle_coloring.get_color(triangle, t)
+            image.polygon(
+                [
+                    triangle.a.x,
+                    triangle.a.y,
+                    triangle.b.x,
+                    triangle.b.y,
+                    triangle.c.x,
+                    triangle.c.y,
+                ],
+                fill=tuple(triangle_color),
+            )
+    if line_coloring is not None:
+        for triangle in triangles:
             edges = triangle.edges()
             for edge in edges:
                 color = line_coloring.get_color(edge)
                 width = line_coloring.get_width(edge)
-                image.line([edge[0].x, edge[0].y, edge[1].x, edge[1].y], width=width, fill=tuple(color))
-    if POINT_DRAWING_CONFIGS["DRAW_POINTS"]:
-        for point in points:
-            color = point_coloring.get_color(point.x, point.y)
-            radius = int(point_coloring.get_width(point.x, point.y) / 2)
-            image.ellipse([point.at(t).x - radius, point.at(t).y - radius, point.at(t).x + radius, point.at(t).y + radius], fill=tuple(color))
+                image.line(
+                    [edge[0].x, edge[0].y, edge[1].x, edge[1].y], width=width, fill=tuple(color)
+                )
+    if point_coloring is not None:
+        for point in new_points:
+            color = point_coloring.get_color(point)
+            radius = int(point_coloring.get_width(point) / 2)
+            image.ellipse(
+                [
+                    point.x - radius,
+                    point.y - radius,
+                    point.x + radius,
+                    point.y + radius,
+                ],
+                fill=tuple(color),
+            )
+
 
 def run():
     # Create directory for files if necessary
-    os.system(f"mkdir {GIFS_PATH}/{GIF_CONFIGS['NUM']}")
+    os.system(f"mkdir -p {GIFS_PATH}/{CONFIGS.gif_configs.num}")
     # Remove any existing files in directory
-    os.system(f"rm {GIFS_PATH}/{GIF_CONFIGS['NUM']}/*")
-    # Generate random seed if necessary
-    if CONFIGS["RANDOM_SEED"]:
-        CONFIGS["SEED"] = random.randint(-2147483648, 2147483647)
-        CONFIGS["RANDOM_SEED"] = False
+    os.system(f"rm {GIFS_PATH}/{CONFIGS.gif_configs.num}/*")
     # Seed components
-    generate_points.seed(CONFIGS["SEED"])
-    point.seed(CONFIGS["SEED"])
+    generate_points.seed(CONFIGS.seed)
+    point.seed(CONFIGS.seed)
     # Create copy of configs to be able to remake the gif
-    with open(f"{GIFS_PATH}/{GIF_CONFIGS['NUM']}/config.json", 'w+') as file:
-        json.dump(CONFIGS, file, indent=4)
+    with open(f"{GIFS_PATH}/{CONFIGS.gif_configs.num}/config.json", "w+") as file:
+        json.dump(CONFIGS.dumpJSON(), file, indent=4)
     # Generate objects needed to color the gif
-    triangle_coloring = get_triangle_coloring_object()
-    line_coloring = get_line_drawing_object()
-    point_coloring = get_point_drawing_object()
+    triangle_coloring = get_triangle_object(CONFIGS.triangle_coloring)
+    line_coloring = get_line_object(CONFIGS.line_coloring)
+    point_coloring = get_point_object(CONFIGS.point_coloring)
     # Generate initial points
     points = generate_points.generate_points()
     # Generate frames
-    i = 0
-    for t in np.linspace(0.0, 1.0, CONFIGS["NUM_OF_FRAMES"], endpoint=False):
-        image = Image.new("RGB", (WIDTH, HEIGHT), tuple(CONFIGS["BACKGROUND_COLOR"]))
+    for i, t in enumerate(np.linspace(0.0, 1.0, CONFIGS.gif_configs.num_of_frames, endpoint=False)):
+        image = Image.new(
+            "RGB",
+            (CONFIGS.full_width, CONFIGS.full_height),
+            tuple(CONFIGS.gif_configs.background_color),
+        )
         image_draw = ImageDraw.Draw(image)
+        progress_bar(t)
         draw(image_draw, t, points, triangle_coloring, line_coloring, point_coloring)
-        file_name = f"{GIFS_PATH}/{GIF_CONFIGS['NUM']}/image#{str(i).zfill(3)}.bmp"
+        file_name = f"{GIFS_PATH}/{CONFIGS.gif_configs.num}/image#{str(i).zfill(3)}.bmp"
         image.save(file_name)
-        i += 1
     # Convert frames to gif
-    os.system(f"convert -delay {GIF_CONFIGS['MS_PER_FRAME']} -loop 0 {GIFS_PATH}/{GIF_CONFIGS['NUM']}/*.bmp -crop {CONFIGS['WIDTH']}x{CONFIGS['HEIGHT']}+{GIF_CONFIGS['MARGIN']}+{GIF_CONFIGS['MARGIN']} +repage {GIFS_PATH}/{GIF_CONFIGS['NUM']}/gif{GIF_CONFIGS['NUM']}.gif")
+    os.system(
+        f"convert -delay {CONFIGS.gif_configs.ms_per_frame} -loop 0 {GIFS_PATH}/{CONFIGS.gif_configs.num}/*.bmp -crop {CONFIGS.gif_configs.width}x{CONFIGS.gif_configs.height}+{CONFIGS.gif_configs.margin}+{CONFIGS.gif_configs.margin} +repage {GIFS_PATH}/{CONFIGS.gif_configs.num}/gif{CONFIGS.gif_configs.num}.gif"
+    )
     # Remove frames
-    os.system(f"rm {GIFS_PATH}/{GIF_CONFIGS['NUM']}/*.bmp")
+    os.system(f"rm {GIFS_PATH}/{CONFIGS.gif_configs.num}/*.bmp")
+
 
 if __name__ == "__main__":
     run()
