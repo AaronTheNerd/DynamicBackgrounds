@@ -42,7 +42,7 @@ class GradientRGB(TriangleColorABC):
         current_start_color = self._start_color.get_color(t)
         current_end_color = self._start_color.get_color(t)
         return ColorRGB.interpolate(
-            current_start_color, current_end_color, self._range.get_value(triangle, t)
+            current_start_color, current_end_color, self._range.get_value(triangle.center(), t)
         ).make_drawable()
 
 
@@ -66,7 +66,7 @@ class GradientHSV(TriangleColorABC):
         current_start_color = self._start_color.get_color(t)
         current_end_color = self._end_color.get_color(t)
         return ColorHSV.interpolate(
-            current_start_color, current_end_color, self._range.get_value(triangle, t)
+            current_start_color, current_end_color, self._range.get_value(triangle.center(), t)
         ).make_drawable()
 
 

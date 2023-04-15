@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 from coloring.ABCs import ImageRangeABC, RangeABC, PointTranslatorABC
 from configs import CONFIGS, ObjectConfigs
-from point import StaticPoint
+from point import StaticPoint, PointABC
 from triangle import Triangle
 from coloring.range import get_range_object
 from coloring.point_translator import get_point_translator_object
@@ -25,16 +25,14 @@ class Linear(ImageRangeABC):
         self._end = get_point_translator_object(self.end)
         self._range = get_range_object(self.range)
 
-    def get_value(self, triangle: Triangle, t: float) -> float:
+    def get_value(self, point: PointABC, t: float) -> float:
         if self._start is None or self._end is None:
             return 0.0
-        center = triangle.center()
-        x, y = center.x, center.y
         current_start = self._start.get_point(t)
         current_end = self._end.get_point(t)
         dx = current_end.x - current_start.x
         dy = current_end.y - current_start.y
-        t = (dx * (x - current_start.x) + dy * (y - current_start.y)) / (
+        t = (dx * (point.x - current_start.x) + dy * (point.y - current_start.y)) / (
             math.pow(dx, 2) + math.pow(dy, 2)
         )
         t = max(0.0, min(t, 1.0))
@@ -56,14 +54,12 @@ class Radial(ImageRangeABC):
         self._center = get_point_translator_object(self.center)
         self._range = get_range_object(self.range)
 
-    def get_value(self, triangle: Triangle, t: float) -> float:
+    def get_value(self, point: PointABC, t: float) -> float:
         if self._center is None:
             current_center = StaticPoint(CONFIGS.full_width / 2, CONFIGS.full_height / 2)
         else:
             current_center = self._center.get_point(t)
-        center = triangle.center()
-        x, y = center.x, center.y
-        dist = math.sqrt(math.pow(x - current_center.x, 2) + math.pow(y - current_center.y, 2))
+        dist = math.sqrt(math.pow(point.x - current_center.x, 2) + math.pow(point.y - current_center.y, 2))
         t = (dist - self.min_radius) / (self.max_radius - self.min_radius)
         t = max(0.0, min(t, 1.0))
         if self._range is not None:

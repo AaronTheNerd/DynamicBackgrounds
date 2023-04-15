@@ -15,7 +15,7 @@ class PointTranslatorABC(ABC):
 # Takes some image state and converts to a value between 0 and 1
 class ImageRangeABC(ABC):
     @abstractmethod
-    def get_value(self, triangle: Triangle, t: float) -> float:
+    def get_value(self, point: PointABC, t: float) -> float:
         ...
 
 
@@ -62,7 +62,15 @@ class TriangleColorerABC(ABC):
 
 
 class LineColorABC(ABC):
-    ...
+    @abstractmethod
+    def get_color(self, edge: Edge) -> Color:
+        ...
+
+
+class LineWidthABC(ABC):
+    @abstractmethod
+    def get_width(self, edge: Edge) -> int:
+        ...
 
 
 class LineColorerABC(ABC):
@@ -72,6 +80,18 @@ class LineColorerABC(ABC):
 
     @abstractmethod
     def get_width(self, edge: Edge) -> int:
+        ...
+
+
+class PointColorABC(ABC):
+    @abstractmethod
+    def get_color(self, point: PointABC) -> Color:
+        ...
+
+
+class PointWidthABC(ABC):
+    @abstractmethod
+    def get_width(self, point: PointABC) -> int:
         ...
 
 
