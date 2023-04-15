@@ -1,10 +1,10 @@
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
-from coloring.ABCs import TriangleColorABC, ShaderABC, TriangleColorerABC
+from coloring.ABCs import ShaderABC, TriangleColorABC, TriangleColorerABC
 from coloring.color import Color, ColorRGB
-from coloring.triangle_color import get_colorer_object
 from coloring.shader import get_shader_object
+from coloring.triangle_color import get_colorer_object
 from configs import ObjectConfigs
 from triangle import Triangle
 from utils.concrete_inheritors import get_object

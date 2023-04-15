@@ -2,17 +2,16 @@ import math
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
-from coloring.ABCs import ImageRangeABC, RangeABC, PointTranslatorABC
-from configs import CONFIGS, ObjectConfigs
-from point import StaticPoint, PointABC
-from triangle import Triangle
-from coloring.range import get_range_object
+from coloring.ABCs import PointTranslatorABC, PositionRangeABC, RangeABC
 from coloring.point_translator import get_point_translator_object
+from coloring.range import get_range_object
+from configs import CONFIGS, ObjectConfigs
+from point import PointABC, StaticPoint
 from utils.concrete_inheritors import get_object
 
 
 @dataclass
-class Linear(ImageRangeABC):
+class Linear(PositionRangeABC):
     start: dict[str, Any]
     end: dict[str, Any]
     range: dict[str, Any] = field(default_factory=dict)
@@ -42,7 +41,7 @@ class Linear(ImageRangeABC):
     
 
 @dataclass
-class Radial(ImageRangeABC):
+class Radial(PositionRangeABC):
     min_radius: float
     max_radius: float
     center: dict[str, Any]
@@ -67,5 +66,5 @@ class Radial(ImageRangeABC):
         return t
 
 
-def get_image_range_object(configs: dict[str, Any] | ObjectConfigs) -> Optional[ImageRangeABC]:
-    return get_object(ImageRangeABC, configs)
+def get_image_range_object(configs: dict[str, Any] | ObjectConfigs) -> Optional[PositionRangeABC]:
+    return get_object(PositionRangeABC, configs)

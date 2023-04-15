@@ -47,15 +47,15 @@ def draw(
         for triangle in triangles:
             edges = triangle.edges()
             for edge in edges:
-                color = line_coloring.get_color(edge)
-                width = line_coloring.get_width(edge)
+                color = line_coloring.get_color(edge, t)
+                width = line_coloring.get_width(edge, t)
                 image.line(
-                    [edge[0].x, edge[0].y, edge[1].x, edge[1].y], width=width, fill=tuple(color)
+                    [edge.a.x, edge.a.y, edge.b.x, edge.b.y], width=width, fill=tuple(color)
                 )
     if point_coloring is not None:
         for point in new_points:
-            color = point_coloring.get_color(point)
-            radius = int(point_coloring.get_width(point) / 2)
+            color = point_coloring.get_color(point, t)
+            radius = int(point_coloring.get_width(point, t) / 2)
             image.ellipse(
                 [
                     point.x - radius,

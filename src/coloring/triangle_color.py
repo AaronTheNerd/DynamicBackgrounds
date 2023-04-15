@@ -4,10 +4,10 @@ from typing import Any, Optional, TypeVar
 
 from opensimplex import OpenSimplex
 
-from coloring.ABCs import TriangleColorABC, ImageRangeABC, GradientABC
+from coloring.ABCs import GradientABC, PositionRangeABC, TriangleColorABC
 from coloring.color import Color, ColorHSV, ColorRGB
-from coloring.image_range import get_image_range_object
 from coloring.gradient import get_gradient_object
+from coloring.position_range import get_image_range_object
 from configs import CONFIGS, ObjectConfigs
 from triangle import Triangle
 from utils.concrete_inheritors import get_object
@@ -29,7 +29,7 @@ class GradientRGB(TriangleColorABC):
     range: dict[str, Any] = field(default_factory=dict)
     _start_color: Optional[GradientABC[ColorRGB]] = field(init=False)
     _end_color: Optional[GradientABC[ColorRGB]] = field(init=False)
-    _range: Optional[ImageRangeABC] = field(init=False)
+    _range: Optional[PositionRangeABC] = field(init=False)
 
     def __post_init__(self) -> None:
         self._start_color = get_gradient_object(self.start_color)
@@ -53,7 +53,7 @@ class GradientHSV(TriangleColorABC):
     range: dict[str, Any] = field(default_factory=dict)
     _start_color: Optional[GradientABC[ColorHSV]] = field(init=False)
     _end_color: Optional[GradientABC[ColorHSV]] = field(init=False)
-    _range: Optional[ImageRangeABC] = field(init=False)
+    _range: Optional[PositionRangeABC] = field(init=False)
 
     def __post_init__(self) -> None:
         self._start_color = get_gradient_object(self.start_color)

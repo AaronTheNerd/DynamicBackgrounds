@@ -12,8 +12,15 @@ class PointTranslatorABC(ABC):
         ...
 
 
-# Takes some image state and converts to a value between 0 and 1
-class ImageRangeABC(ABC):
+# Takes an edge and converts to a value between 0 and 1
+class LineRangeABC(ABC):
+    @abstractmethod
+    def get_value(self, edge: Edge, t: float) -> float:
+        ...
+
+
+# Takes some position and converts to a value between 0 and 1
+class PositionRangeABC(ABC):
     @abstractmethod
     def get_value(self, point: PointABC, t: float) -> float:
         ...
@@ -63,43 +70,43 @@ class TriangleColorerABC(ABC):
 
 class LineColorABC(ABC):
     @abstractmethod
-    def get_color(self, edge: Edge) -> Color:
+    def get_color(self, edge: Edge, t: float) -> Color:
         ...
 
 
 class LineWidthABC(ABC):
     @abstractmethod
-    def get_width(self, edge: Edge) -> int:
+    def get_width(self, edge: Edge, t: float) -> int:
         ...
 
 
 class LineColorerABC(ABC):
     @abstractmethod
-    def get_color(self, edge: Edge) -> Color:
+    def get_color(self, edge: Edge, t: float) -> Color:
         ...
 
     @abstractmethod
-    def get_width(self, edge: Edge) -> int:
+    def get_width(self, edge: Edge, t: float) -> int:
         ...
 
 
 class PointColorABC(ABC):
     @abstractmethod
-    def get_color(self, point: PointABC) -> Color:
+    def get_color(self, point: PointABC, t: float) -> Color:
         ...
 
 
 class PointWidthABC(ABC):
     @abstractmethod
-    def get_width(self, point: PointABC) -> int:
+    def get_width(self, point: PointABC, t: float) -> int:
         ...
 
 
 class PointColorerABC(ABC):
     @abstractmethod
-    def get_color(self, point: PointABC) -> Color:
+    def get_color(self, point: PointABC, t: float) -> Color:
         ...
 
     @abstractmethod
-    def get_width(self, point: PointABC) -> int:
+    def get_width(self, point: PointABC, t: float) -> int:
         ...

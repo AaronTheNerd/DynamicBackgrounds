@@ -62,7 +62,7 @@ def BowyerWatson(points: list[PointABC]) -> list[Triangle]:
                     if triangle != triangle2:
                         edges2 = triangle2.edges()
                         for edge2 in edges2:
-                            if edge[0] == edge2[0] and edge[1] == edge2[1]:
+                            if edge.a == edge2.a and edge.b == edge2.b:
                                 shared = True
                                 break
                     if shared:
@@ -72,7 +72,7 @@ def BowyerWatson(points: list[PointABC]) -> list[Triangle]:
         for bad_triangle in bad_triangles:
             triangles = [triangle for triangle in triangles if triangle != bad_triangle]
         for edge in polygon:
-            triangles.append(Triangle(edge[0], edge[1], curr_point))
+            triangles.append(Triangle(edge.a, edge.b, curr_point))
 
     for triangle in triangles:
         triangles = [

@@ -2,8 +2,10 @@ import math
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
-from coloring.ABCs import LineColorerABC, LineColorABC
+from coloring.ABCs import LineColorerABC, LineColorABC, LineWidthABC
 from coloring.color import Color, ColorHSV, ColorRGB
+from coloring.line_color import get_line_color_object
+from coloring.line_width import get_line_width_object
 from configs import ObjectConfigs
 from triangle import Edge
 from utils.concrete_inheritors import get_object
@@ -11,81 +13,24 @@ from utils.concrete_inheritors import get_object
 
 @dataclass
 class LineColorer(LineColorerABC):
-    line: dict[str, Any]
+    color: dict[str, Any]
     width: dict[str, Any]
-    _line: Optional[LineColorABC]
-
-
-@dataclass
-class SolidLine(LineColorerABC):
-    color: Color = (0, 0, 0)
-    width: int = 1
-
-    def get_color(self, edge: Edge) -> Color:
-        return self.color
-
-    def get_width(self, edge: Edge) -> int:
-        return self.width
-
-
-@dataclass
-class FadingLineRGB(LineColorerABC):
-    start_color: Color = (1, 1, 1)
-    end_color: Color = (0, 0, 0)
-    min_dist: float = 0.0
-    max_dist: float = 0.0
-    width: int = 1
-    _start_color: ColorRGB = field(init=False)
-    _end_color: ColorRGB = field(init=False)
+    _color: Optional[LineColorABC] = field(init=False)
+    _width: Optional[LineWidthABC] = field(init=False)
 
     def __post_init__(self) -> None:
-        self._start_color = ColorRGB.generate(self.start_color)
-        self._end_color = ColorRGB.generate(self.end_color)
+        self._color = get_line_color_object(self.color)
+        self._width = get_line_width_object(self.width)
 
-    def get_color_at(self, t: float) -> Color:
-        return ColorRGB.interpolate(self._start_color, self._end_color, t).make_drawable()
+    def get_color(self, edge: Edge, t: float) -> Color:
+        if self._color is None:
+            return (0, 0, 0)
+        return self._color.get_color(edge, t)
 
-    def get_color(self, edge: Edge) -> Color:
-        dist = math.sqrt((edge[0].x - edge[1].x) ** 2 + (edge[0].y - edge[1].y) ** 2)
-        if dist < self.min_dist:
-            return self.start_color
-        if dist > self.max_dist:
-            return self.end_color
-        t = (dist - self.min_dist) / (self.max_dist - self.min_dist)
-        return self.get_color_at(t)
-
-    def get_width(self, edge: Edge) -> int:
-        return self.width
-
-
-@dataclass
-class FadingLine(LineColorerABC):
-    start_color: Color = (0, 0, 0)
-    end_color: Color = (255, 255, 255)
-    min_dist: int = 0
-    max_dist: int = 0
-    width: int = 1
-    _start_color: ColorHSV = field(init=False)
-    _end_color: ColorHSV = field(init=False)
-
-    def __post_init__(self) -> None:
-        self._start_color = ColorHSV.generate(self.start_color)
-        self._end_color = ColorHSV.generate(self.end_color)
-
-    def get_color_at(self, t: float) -> Color:
-        return ColorHSV.interpolate(self._start_color, self._end_color, t).make_drawable()
-
-    def get_color(self, edge: Edge) -> Color:
-        dist = math.sqrt((edge[0].x - edge[1].x) ** 2 + (edge[0].y - edge[1].y) ** 2)
-        if dist < self.min_dist:
-            return self.start_color
-        if dist > self.max_dist:
-            return self.end_color
-        t = (dist - self.min_dist) / (self.max_dist - self.min_dist)
-        return self.get_color_at(t)
-
-    def get_width(self, edge: Edge) -> int:
-        return self.width
+    def get_width(self, edge: Edge, t: float) -> int:
+        if self._width is None:
+            return 0
+        return self._width.get_width(edge, t)
 
 
 def get_line_object(configs: dict[str, Any] | ObjectConfigs) -> Optional[LineColorerABC]:
