@@ -1,0 +1,82 @@
+{
+    "RANDOM_SEED": false,
+    "SEED": 601213452,
+    "WIDTH": 1920,
+    "HEIGHT": 1080,
+    "NUM_OF_FRAMES": 600,
+    "BACKGROUND_COLOR": [
+        0,
+        0,
+        0
+    ],
+    "GIF_CONFIGS": {
+        "NUM": 17,
+        "MS_PER_FRAME": 11,
+        "MARGIN": 75
+    },
+    "POINT_CONFIGS": {
+        "AMPLITUDE": 1200,
+        "INTENSITY": 0.075,
+        "SCALE": 30,
+        "OFFSET_Y": 100,
+        "NUM_OF_POINTS": 500,
+        "SEPARATION_RADIUS": 45,
+        "MAX_FAILS": 100,
+        "BORDER_CONFIGS": {
+            "TOP": false,
+            "BOTTOM": false,
+            "LEFT": false,
+            "RIGHT": false,
+            "SEPARATION": 75
+        },
+        "DRIFTING_CONFIGS": {
+            "REFLECTIVE": true,
+            "PERCENTAGE": 1,
+            "X_MIN": 0.25,
+            "X_MAX": 0.25,
+            "Y_MIN": 0,
+            "Y_MAX": 0
+        }
+    },
+    "TRIANGLE_COLORING_CONFIGS": {
+        "TYPE": "PlainColor",
+        "KWARGS": {
+            "color": [
+                0,
+                0,
+                0
+            ]
+        }
+    },
+    "LINE_DRAWING_CONFIGS": {
+        "DRAW_LINES": true,
+        "TYPE": "FadingLineRGB",
+        "KWARGS": {
+            "start_color": [
+                37,
+                153,
+                247
+            ],
+            "end_color": [
+                0,
+                0,
+                0
+            ],
+            "min_dist": 5,
+            "max_dist": 100,
+            "width": 3
+        }
+    },
+    "POINT_DRAWING_CONFIGS": {
+        "DRAW_POINTS": true,
+        "TYPE": "PlainPoint",
+        "KWARGS": {
+            "color": [
+                255,
+                255,
+                255
+            ],
+            "width": 4
+        }
+    }
+}

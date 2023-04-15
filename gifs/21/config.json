@@ -1,0 +1,120 @@
+{
+    "generate_seed": false,
+    "seed": 1626244211,
+    "gif_configs": {
+        "width": 1366,
+        "height": 768,
+        "num": 21,
+        "background_color": [
+            0,
+            0,
+            0
+        ],
+        "margin": 150,
+        "ms_per_frame": 11,
+        "num_of_frames": 250
+    },
+    "point_configs": {
+        "amplitude": 0,
+        "intensity": 0,
+        "scale": 0,
+        "offset_y": 100,
+        "num_of_points": 500,
+        "separation_radius": 40,
+        "max_fails": 10000,
+        "border_configs": {
+            "top": false,
+            "bottom": false,
+            "left": false,
+            "right": false,
+            "separation": 50
+        },
+        "drifting_configs": {
+            "reflective": false,
+            "percentage": 1,
+            "x_min": 1,
+            "x_max": 1,
+            "y_min": 1,
+            "y_max": 1
+        }
+    },
+    "triangle_coloring": {
+        "type": "TriangleColorer",
+        "enabled": true,
+        "kwargs": {
+            "gradient": {
+                "type": "GradientHSV",
+                "kwargs": {
+                    "start_color": {
+                        "type": "PlainHSV",
+                        "kwargs": {
+                            "color": [
+                                235,
+                                52,
+                                52
+                            ]
+                        }
+                    },
+                    "end_color": {
+                        "type": "PlainHSV",
+                        "kwargs": {
+                            "color": [
+                                66,
+                                224,
+                                245
+                            ]
+                        }
+                    },
+                    "range": {
+                        "type": "Linear",
+                        "kwargs": {
+                            "start": {
+                                "type": "Circle",
+                                "kwargs": {
+                                    "start": [
+                                        150,
+                                        150
+                                    ]
+                                }
+                            },
+                            "end": {
+                                "type": "Circle",
+                                "kwargs": {
+                                    "start": [
+                                        1516,
+                                        918
+                                    ]
+                                }
+                            },
+                            "range": {
+                                "type": "EaseInOut"
+                            }
+                        }
+                    }
+                }
+            },
+            "shader": {
+                "type": "AmbientShader",
+                "kwargs": {
+                    "ambient_vector": [
+                        1.0,
+                        1.0,
+                        0.5
+                    ],
+                    "ambient_gain": 55000,
+                    "ambient_definition": 10
+                }
+            }
+        }
+    },
+    "line_coloring": {
+        "type": "ShadedGradient",
+        "enabled": false,
+        "kwargs": {}
+    },
+    "point_coloring": {
+        "type": "ShadedGradient",
+        "enabled": false,
+        "kwargs": {}
+    }
+}

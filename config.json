@@ -4,7 +4,7 @@
   "gif_configs": {
     "width": 1366,
     "height": 768,
-    "num": 21,
+    "num": 22,
     "background_color": [0, 0, 0],
     "margin": 150,
     "ms_per_frame": 11,
@@ -15,7 +15,7 @@
     "intensity": 0,
     "scale": 0,
     "offset_y": 100,
-    "num_of_points": 500,
+    "num_of_points": 50,
     "separation_radius": 40,
     "max_fails": 10000,
     "border_configs": {
@@ -35,7 +35,7 @@
     }
   },
   "triangle_coloring": {
-    "enabled": true,
+    "enabled": false,
     "type": "TriangleColorer",
     "kwargs": {
       "gradient": {
@@ -90,9 +90,53 @@
     }
   },
   "line_coloring": {
-    "enabled": false,
-    "type": "ShadedGradient",
-    "kwargs": {}
+    "enabled": true,
+    "type": "LineColorer",
+    "kwargs": {
+      "color": {
+        "type": "GradientHSV",
+        "kwargs": {
+          "start_color": {
+            "type": "PlainHSV",
+            "kwargs": {
+              "color": [235, 52, 52]
+            }
+          },
+          "end_color": {
+            "type": "PlainHSV",
+            "kwargs": {
+              "color": [66, 224, 245]
+            }
+          },
+          "range": {
+            "type": "Linear",
+            "kwargs": {
+              "start": {
+                "type": "Circle",
+                "kwargs": {
+                  "start": [150, 150]
+                }
+              },
+              "end": {
+                "type": "Circle",
+                "kwargs": {
+                  "start": [1516, 918]
+                }
+              },
+              "range": {
+                "type": "EaseInOut"
+              }
+            }
+          }
+        }
+      },
+      "width": {
+        "type": "Static",
+        "kwargs": {
+          "width": 7
+        }
+      }
+    }
   },
   "point_coloring": {
     "enabled": false,
