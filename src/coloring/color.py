@@ -2,11 +2,10 @@ from __future__ import annotations
 
 from colorsys import hsv_to_rgb, rgb_to_hsv
 from dataclasses import dataclass
-from typing import Tuple
 
 from utils.interpolate import interpolate
 
-Color = Tuple[int, int, int]
+Color = tuple[int, int, int]
 
 
 @dataclass

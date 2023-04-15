@@ -1,11 +1,9 @@
 import math
-from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from dataclasses import dataclass
+from typing import Any, Optional
 
-from coloring.ABCs import ColorerABC, ImageRangeABC, GradientABC, ReflectiveRangeABC
-from coloring.color import Color, ColorHSV, ColorRGB
-from configs import CONFIGS, ObjectConfigs
-from triangle import Triangle
+from coloring.ABCs import ReflectiveRangeABC
+from configs import ObjectConfigs
 from utils.concrete_inheritors import get_object
 
 

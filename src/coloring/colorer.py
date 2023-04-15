@@ -1,10 +1,10 @@
 import math
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, TypeVar, Generic
+from typing import Any, Optional, TypeVar
 
 from opensimplex import OpenSimplex
 
-from coloring.ABCs import ColorerABC, ImageRangeABC, GradientABC, ReflectiveRangeABC
+from coloring.ABCs import ColorerABC, ImageRangeABC, GradientABC
 from coloring.color import Color, ColorHSV, ColorRGB
 from coloring.image_range import get_image_range_object
 from coloring.gradient import get_gradient_object
@@ -24,9 +24,9 @@ class Plain(ColorerABC):
 
 @dataclass
 class GradientRGB(ColorerABC):
-    start_color: Dict[str, Any]
-    end_color: Dict[str, Any]
-    range: Dict[str, Any] = field(default_factory=dict)
+    start_color: dict[str, Any]
+    end_color: dict[str, Any]
+    range: dict[str, Any] = field(default_factory=dict)
     _start_color: Optional[GradientABC[ColorRGB]] = field(init=False)
     _end_color: Optional[GradientABC[ColorRGB]] = field(init=False)
     _range: Optional[ImageRangeABC] = field(init=False)
@@ -48,9 +48,9 @@ class GradientRGB(ColorerABC):
 
 @dataclass
 class GradientHSV(ColorerABC):
-    start_color: Dict[str, Any]
-    end_color: Dict[str, Any]
-    range: Dict[str, Any] = field(default_factory=dict)
+    start_color: dict[str, Any]
+    end_color: dict[str, Any]
+    range: dict[str, Any] = field(default_factory=dict)
     _start_color: Optional[GradientABC[ColorHSV]] = field(init=False)
     _end_color: Optional[GradientABC[ColorHSV]] = field(init=False)
     _range: Optional[ImageRangeABC] = field(init=False)
@@ -72,7 +72,7 @@ class GradientHSV(ColorerABC):
 
 @dataclass
 class StaticNoise(ColorerABC):
-    gradient: Dict[str, Any]
+    gradient: dict[str, Any]
     scale: float
     _gradient: Optional[ColorerABC] = field(init=False)
     _open_simplex: OpenSimplex = field(init=False)
@@ -98,7 +98,7 @@ class TieDyeSwirl(ColorerABC):
     start_y: int = 0
     scale: float = 1
     alpha: float = 1
-    colors: List[ColorHSV] = field(init=False)
+    colors: list[ColorHSV] = field(init=False)
 
     def __post_init__(self) -> None:
         self.colors = [
@@ -136,7 +136,7 @@ class TieDyeSwirl(ColorerABC):
 
 @dataclass
 class ColorShifting(ColorerABC):
-    gradient: Dict[str, Any]
+    gradient: dict[str, Any]
     _gradient: Optional[ColorerABC] = field(init=False)
 
     def __post_init__(self) -> None:

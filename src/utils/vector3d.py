@@ -1,9 +1,8 @@
 import math
-from typing import Tuple
 
 from triangle import Triangle
 
-Vector3d = Tuple[float, float, float]
+Vector3d = tuple[float, float, float]
 
 
 def cross3d(v1: Vector3d, v2: Vector3d) -> Vector3d:

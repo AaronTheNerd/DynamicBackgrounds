@@ -1,6 +1,6 @@
 import math
 from dataclasses import dataclass, field
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from coloring.ABCs import LineColorABC
 from coloring.color import Color, ColorHSV, ColorRGB
@@ -81,5 +81,5 @@ class FadingLine(LineColorABC):
         return self.width
 
 
-def get_line_object(configs: Dict[str, Any] | ObjectConfigs) -> Optional[LineColorABC]:
+def get_line_object(configs: dict[str, Any] | ObjectConfigs) -> Optional[LineColorABC]:
     return get_object(LineColorABC, configs)

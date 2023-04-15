@@ -1,6 +1,6 @@
 import math
 from dataclasses import dataclass, field
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from coloring.ABCs import RangeABC
 from configs import ObjectConfigs
@@ -26,7 +26,7 @@ class Exponential(RangeABC):
 @dataclass
 class Discrete(RangeABC):
     segments: int
-    range: Dict[str, Any]
+    range: dict[str, Any]
     _range: Optional[RangeABC] = field(init=False)
 
     def __post_init__(self) -> None:
@@ -52,5 +52,5 @@ class EaseInOut(RangeABC):
         return interpolate(ease_in(t), ease_out(t), t)
 
 
-def get_range_object(configs: Dict[str, Any] | ObjectConfigs) -> Optional[RangeABC]:
+def get_range_object(configs: dict[str, Any] | ObjectConfigs) -> Optional[RangeABC]:
     return get_object(RangeABC, configs)

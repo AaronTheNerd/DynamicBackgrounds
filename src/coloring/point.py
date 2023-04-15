@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from coloring.ABCs import PointColorABC
 from coloring.color import Color
@@ -19,5 +19,5 @@ class PlainPoint(PointColorABC):
         return self.width
 
 
-def get_point_object(configs: Dict[str, Any] | ObjectConfigs) -> Optional[PointColorABC]:
+def get_point_object(configs: dict[str, Any] | ObjectConfigs) -> Optional[PointColorABC]:
     return get_object(PointColorABC, configs)

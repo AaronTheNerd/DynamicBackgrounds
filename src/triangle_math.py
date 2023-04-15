@@ -1,5 +1,4 @@
 import math
-from typing import Tuple
 
 from point import PointABC, StaticPoint
 
@@ -12,7 +11,7 @@ from point import PointABC, StaticPoint
 
 # Function to find the line given
 # two points
-def lineFromPoints(P: PointABC, Q: PointABC) -> Tuple[float, float, float]:
+def lineFromPoints(P: PointABC, Q: PointABC) -> tuple[float, float, float]:
     a = Q.y - P.y
     b = P.x - Q.x
     c = a * (P.x) + b * (P.y)
@@ -26,7 +25,7 @@ def lineFromPoints(P: PointABC, Q: PointABC) -> Tuple[float, float, float]:
 # on the bisector
 def perpenBisectorFromLine(
     P: PointABC, Q: PointABC, a: float, b: float, c: float
-) -> Tuple[float, float, float]:
+) -> tuple[float, float, float]:
     # Find the mid point
     mid_point = StaticPoint((P.x + Q.x) / 2, (P.y + Q.y) / 2)
     # c = -bx + ay

@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from coloring.ABCs import ColorerABC, ShaderABC, TriangleColorABC
-from coloring.color import Color, ColorHSV, ColorRGB
+from coloring.color import Color, ColorRGB
 from coloring.colorer import get_colorer_object
 from coloring.shader import get_shader_object
 from configs import ObjectConfigs
@@ -12,8 +12,8 @@ from utils.concrete_inheritors import get_object
 
 @dataclass
 class TriangleColorer(TriangleColorABC):
-    gradient: Optional[Dict[str, Any]]
-    shader: Optional[Dict[str, Any]]
+    gradient: Optional[dict[str, Any]]
+    shader: Optional[dict[str, Any]]
     _gradient: Optional[ColorerABC] = field(init=False)
     _shader: Optional[ShaderABC] = field(init=False)
 
@@ -35,5 +35,5 @@ class TriangleColorer(TriangleColorABC):
         ).make_drawable()
 
 
-def get_triangle_object(configs: Dict[str, Any] | ObjectConfigs) -> Optional[TriangleColorABC]:
+def get_triangle_object(configs: dict[str, Any] | ObjectConfigs) -> Optional[TriangleColorABC]:
     return get_object(TriangleColorABC, configs)

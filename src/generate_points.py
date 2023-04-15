@@ -1,6 +1,5 @@
 import math
 import random
-from typing import List
 
 from configs import CONFIGS
 from point import DriftingPoint, PointABC, StaticPoint, SwayingPoint
@@ -10,7 +9,7 @@ def seed(seed: int) -> None:
     random.seed(seed)
 
 
-def generate_border_points() -> List[PointABC]:
+def generate_border_points() -> list[PointABC]:
     border_points = []
     num_of_x_border_points = (
         math.floor(CONFIGS.full_width / CONFIGS.point_configs.border_configs.separation) + 1
@@ -69,7 +68,7 @@ def random_point() -> PointABC:
         )
 
 
-def generate_points() -> List[PointABC]:
+def generate_points() -> list[PointABC]:
     global open_simplex
     # Generate evenly separated border points
     points = generate_border_points()

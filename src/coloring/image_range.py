@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from coloring.ABCs import ImageRangeABC, RangeABC
 from configs import CONFIGS, ObjectConfigs
@@ -14,7 +14,7 @@ class Distance(ImageRangeABC):
     start_y: int = 0
     end_x: int = CONFIGS.gif_configs.width
     end_y: int = CONFIGS.gif_configs.height
-    range: Dict[str, Any] = field(default_factory=dict)
+    range: dict[str, Any] = field(default_factory=dict)
     _dx: float = field(init=False)
     _dy: float = field(init=False)
     _range: Optional[RangeABC] = field(init=False)
@@ -36,5 +36,5 @@ class Distance(ImageRangeABC):
         return t
 
 
-def get_image_range_object(configs: Dict[str, Any] | ObjectConfigs) -> Optional[ImageRangeABC]:
+def get_image_range_object(configs: dict[str, Any] | ObjectConfigs) -> Optional[ImageRangeABC]:
     return get_object(ImageRangeABC, configs)

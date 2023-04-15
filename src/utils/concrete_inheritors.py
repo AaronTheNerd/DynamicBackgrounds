@@ -1,12 +1,12 @@
 import inspect
-from typing import Any, Dict, Optional, TypeVar
+from typing import Any, Optional, TypeVar
 
 from configs import ObjectConfigs
 
 T = TypeVar("T")
 
 
-def concrete_inheritors(cls: T) -> Dict[str, T]:
+def concrete_inheritors(cls: T) -> dict[str, T]:
     subclasses = {}
     work = [cls]
     while work:

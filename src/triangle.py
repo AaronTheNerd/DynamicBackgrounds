@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Tuple
 
 from point import PointABC, StaticPoint
 from triangle_math import LineInterX, LineInterY, lineFromPoints, perpenBisectorFromLine
 
-Edge = Tuple[PointABC, PointABC]
+Edge = tuple[PointABC, PointABC]
 
 
 @dataclass(slots=True)
@@ -21,7 +20,7 @@ class Triangle:
     def __post_init__(self):
         self.circumcenter, self.radius_sq = self.circumscribe()
 
-    def edges(self) -> Tuple[Edge, Edge, Edge]:
+    def edges(self) -> tuple[Edge, Edge, Edge]:
         return ((self.a, self.b), (self.a, self.c), (self.b, self.c))
 
     def has_point(self, p: PointABC) -> bool:
@@ -41,7 +40,7 @@ class Triangle:
             (self.a.z + self.b.z + self.c.z) / 3,
         )
 
-    def circumscribe(self) -> Tuple[StaticPoint, float]:
+    def circumscribe(self) -> tuple[StaticPoint, float]:
         P = self.a
         Q = self.b
         R = self.c

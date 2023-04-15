@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 import utils.vector3d as utils
 from coloring.ABCs import ShaderABC
@@ -29,5 +29,5 @@ class AmbientShader(ShaderABC):
         return min(facing_ratio, 1.0)
 
 
-def get_shader_object(configs: Dict[str, Any] | ObjectConfigs) -> Optional[ShaderABC]:
+def get_shader_object(configs: dict[str, Any] | ObjectConfigs) -> Optional[ShaderABC]:
     return get_object(ShaderABC, configs)
