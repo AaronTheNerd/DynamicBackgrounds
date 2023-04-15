@@ -2,8 +2,14 @@ from abc import ABC, abstractmethod
 from typing import TypeVar, Generic
 
 from coloring.color import Color
-from point import PointABC
+from point import PointABC, StaticPoint
 from triangle import Edge, Triangle
+
+
+class PointTranslatorABC(ABC):
+    @abstractmethod
+    def get_point(self, t: float) -> StaticPoint:
+        ...
 
 
 # Takes some image state and converts to a value between 0 and 1

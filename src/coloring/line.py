@@ -10,6 +10,11 @@ from utils.concrete_inheritors import get_object
 
 
 @dataclass
+class LineColorer(LineColorABC):
+    ...
+
+
+@dataclass
 class SolidLine(LineColorABC):
     color: Color = (0, 0, 0)
     width: int = 1

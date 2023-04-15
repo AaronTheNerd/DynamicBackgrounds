@@ -4,7 +4,7 @@
   "gif_configs": {
     "width": 1366,
     "height": 768,
-    "num": 19,
+    "num": 21,
     "background_color": [0, 0, 0],
     "margin": 150,
     "ms_per_frame": 11,
@@ -42,32 +42,32 @@
         "type": "GradientHSV",
         "kwargs": {
           "start_color": {
-            "type": "GradientHSV",
+            "type": "PlainHSV",
             "kwargs": {
-              "start_color": [235, 52, 52],
-              "end_color": [66, 224, 245],
-              "range": {
-                "type": "Cosine"
-              }
+              "color": [235, 52, 52]
             }
           },
           "end_color": {
-            "type": "GradientHSV",
+            "type": "PlainHSV",
             "kwargs": {
-              "start_color": [66, 224, 245],
-              "end_color": [235, 52, 52],
-              "range": {
-                "type": "Cosine"
-              }
+              "color": [66, 224, 245]
             }
           },
           "range": {
-            "type": "Distance",
+            "type": "Linear",
             "kwargs": {
-              "start_x": 150,
-              "start_y": 150,
-              "end_x": 1516,
-              "end_y": 918,
+              "start": {
+                "type": "Circle",
+                "kwargs": {
+                  "start": [150, 150]
+                }
+              },
+              "end": {
+                "type": "Circle",
+                "kwargs": {
+                  "start": [1516, 918]
+                }
+              },
               "range": {
                 "type": "EaseInOut"
               }

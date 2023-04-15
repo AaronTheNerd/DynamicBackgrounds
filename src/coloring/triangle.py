@@ -3,7 +3,7 @@ from typing import Any, Optional
 
 from coloring.ABCs import ColorerABC, ShaderABC, TriangleColorABC
 from coloring.color import Color, ColorRGB
-from coloring.colorer import get_colorer_object
+from coloring.triangle_colorer import get_colorer_object
 from coloring.shader import get_shader_object
 from configs import ObjectConfigs
 from triangle import Triangle
