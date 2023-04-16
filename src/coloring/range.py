@@ -1,6 +1,6 @@
 import math
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import Any
 
 from coloring.ABCs import RangeABC
 from configs import ObjectConfigs
@@ -27,14 +27,12 @@ class Exponential(RangeABC):
 class Discrete(RangeABC):
     segments: int
     range: dict[str, Any]
-    _range: Optional[RangeABC] = field(init=False)
+    _range: RangeABC = field(init=False)
 
     def __post_init__(self) -> None:
         self._range = get_object(RangeABC, self.range)
 
     def get_value(self, t: float) -> float:
-        if self._range is None:
-            return 0.0
         t = self._range.get_value(t)
         t *= self.segments
         t = int(t)
@@ -52,5 +50,5 @@ class EaseInOut(RangeABC):
         return interpolate(ease_in(t), ease_out(t), t)
 
 
-def get_range_object(configs: dict[str, Any] | ObjectConfigs) -> Optional[RangeABC]:
+def get_range_object(configs: dict[str, Any] | ObjectConfigs) -> RangeABC:
     return get_object(RangeABC, configs)

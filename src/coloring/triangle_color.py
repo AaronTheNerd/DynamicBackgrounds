@@ -26,10 +26,10 @@ class Plain(TriangleColorABC):
 class GradientRGB(TriangleColorABC):
     start_color: dict[str, Any]
     end_color: dict[str, Any]
-    range: dict[str, Any] = field(default_factory=dict)
-    _start_color: Optional[GradientABC[ColorRGB]] = field(init=False)
-    _end_color: Optional[GradientABC[ColorRGB]] = field(init=False)
-    _range: Optional[PositionRangeABC] = field(init=False)
+    range: dict[str, Any]
+    _start_color: GradientABC[ColorRGB] = field(init=False)
+    _end_color: GradientABC[ColorRGB] = field(init=False)
+    _range: PositionRangeABC = field(init=False)
 
     def __post_init__(self) -> None:
         self._start_color = get_gradient_object(self.start_color)
@@ -37,8 +37,6 @@ class GradientRGB(TriangleColorABC):
         self._range = get_image_range_object(self.range)
 
     def get_color(self, triangle: Triangle, t: float) -> Color:
-        if self._start_color is None or self._end_color is None or self._range is None:
-            return (0, 0, 0)
         current_start_color = self._start_color.get_color(t)
         current_end_color = self._start_color.get_color(t)
         return ColorRGB.interpolate(
@@ -50,10 +48,10 @@ class GradientRGB(TriangleColorABC):
 class GradientHSV(TriangleColorABC):
     start_color: dict[str, Any]
     end_color: dict[str, Any]
-    range: dict[str, Any] = field(default_factory=dict)
-    _start_color: Optional[GradientABC[ColorHSV]] = field(init=False)
-    _end_color: Optional[GradientABC[ColorHSV]] = field(init=False)
-    _range: Optional[PositionRangeABC] = field(init=False)
+    range: dict[str, Any]
+    _start_color: GradientABC[ColorHSV] = field(init=False)
+    _end_color: GradientABC[ColorHSV] = field(init=False)
+    _range: PositionRangeABC = field(init=False)
 
     def __post_init__(self) -> None:
         self._start_color = get_gradient_object(self.start_color)
@@ -61,8 +59,6 @@ class GradientHSV(TriangleColorABC):
         self._range = get_image_range_object(self.range)
 
     def get_color(self, triangle: Triangle, t: float) -> Color:
-        if self._start_color is None or self._end_color is None or self._range is None:
-            return (0, 0, 0)
         current_start_color = self._start_color.get_color(t)
         current_end_color = self._end_color.get_color(t)
         return ColorHSV.interpolate(
@@ -74,16 +70,14 @@ class GradientHSV(TriangleColorABC):
 class StaticNoise(TriangleColorABC):
     gradient: dict[str, Any]
     scale: float
-    _gradient: Optional[TriangleColorABC] = field(init=False)
+    _gradient: TriangleColorABC = field(init=False)
     _open_simplex: OpenSimplex = field(init=False)
 
     def __post_init__(self) -> None:
-        self._gradient = get_colorer_object(self.gradient)
+        self._gradient = get_triangle_color_object(self.gradient)
         self._open_simplex = OpenSimplex(CONFIGS.seed)
 
     def get_color(self, triangle: Triangle, t: float) -> Color:
-        if self._gradient is None:
-            return (0, 0, 0)
         center = triangle.center()
         x, y, z = center.x, center.y, center.z
         t = (
@@ -140,7 +134,7 @@ class ColorShifting(TriangleColorABC):
     _gradient: Optional[TriangleColorABC] = field(init=False)
 
     def __post_init__(self) -> None:
-        self._gradient = get_colorer_object(self.gradient)
+        self._gradient = get_triangle_color_object(self.gradient)
 
     def get_color(self, triangle: Triangle, t: float) -> Color:
         if self._gradient is None:
@@ -148,5 +142,5 @@ class ColorShifting(TriangleColorABC):
         return self._gradient.get_color(triangle, t)
 
 
-def get_colorer_object(configs: ObjectConfigs | dict[str, Any]) -> Optional[TriangleColorABC]:
+def get_triangle_color_object(configs: ObjectConfigs | dict[str, Any]) -> TriangleColorABC:
     return get_object(TriangleColorABC, configs)

@@ -1,6 +1,6 @@
 import math
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import Any
 
 from coloring.ABCs import (GradientABC, LineColorABC, LineRangeABC,
                            PositionRangeABC)
@@ -25,10 +25,10 @@ class Plain(LineColorABC):
 class GradientRGB(LineColorABC):
     start_color: dict[str, Any]
     end_color: dict[str, Any]
-    range: dict[str, Any] = field(default_factory=dict)
-    _start_color: Optional[GradientABC[ColorRGB]] = field(init=False)
-    _end_color: Optional[GradientABC[ColorRGB]] = field(init=False)
-    _range: Optional[PositionRangeABC] = field(init=False)
+    range: dict[str, Any]
+    _start_color: GradientABC[ColorRGB] = field(init=False)
+    _end_color: GradientABC[ColorRGB] = field(init=False)
+    _range: PositionRangeABC = field(init=False)
 
     def __post_init__(self) -> None:
         self._start_color = get_gradient_object(self.start_color)
@@ -36,8 +36,6 @@ class GradientRGB(LineColorABC):
         self._range = get_image_range_object(self.range)
 
     def get_color(self, edge: Edge, t: float) -> Color:
-        if self._start_color is None or self._end_color is None or self._range is None:
-            return (0, 0, 0)
         current_start_color = self._start_color.get_color(t)
         current_end_color = self._start_color.get_color(t)
         return ColorRGB.interpolate(
@@ -50,9 +48,9 @@ class GradientHSV(LineColorABC):
     start_color: dict[str, Any]
     end_color: dict[str, Any]
     range: dict[str, Any]
-    _start_color: Optional[GradientABC[ColorHSV]] = field(init=False)
-    _end_color: Optional[GradientABC[ColorHSV]] = field(init=False)
-    _range: Optional[PositionRangeABC] = field(init=False)
+    _start_color: GradientABC[ColorHSV] = field(init=False)
+    _end_color: GradientABC[ColorHSV] = field(init=False)
+    _range: PositionRangeABC = field(init=False)
 
     def __post_init__(self) -> None:
         self._start_color = get_gradient_object(self.start_color)
@@ -60,8 +58,6 @@ class GradientHSV(LineColorABC):
         self._range = get_image_range_object(self.range)
 
     def get_color(self, edge: Edge, t: float) -> Color:
-        if self._start_color is None or self._end_color is None or self._range is None:
-            return (0, 0, 0)
         current_start_color = self._start_color.get_color(t)
         current_end_color = self._end_color.get_color(t)
         return ColorHSV.interpolate(
@@ -74,9 +70,9 @@ class LineGradientRGB(LineColorABC):
     start_color: dict[str, Any]
     end_color: dict[str, Any]
     range: dict[str, Any]
-    _start_color: Optional[GradientABC[ColorRGB]] = field(init=False)
-    _end_color: Optional[GradientABC[ColorRGB]] = field(init=False)
-    _range: Optional[LineRangeABC] = field(init=False)
+    _start_color: GradientABC[ColorRGB] = field(init=False)
+    _end_color: GradientABC[ColorRGB] = field(init=False)
+    _range: LineRangeABC = field(init=False)
 
     def __post_init__(self) -> None:
         self._start_color = get_gradient_object(self.start_color)
@@ -84,12 +80,10 @@ class LineGradientRGB(LineColorABC):
         self._range = get_line_range_object(self.range)
 
     def get_color(self, edge: Edge, t: float) -> Color:
-        if self._start_color is None or self._end_color is None or self._range is None:
-            return (0, 0, 0)
         current_start_color = self._start_color.get_color(t)
         current_end_color = self._end_color.get_color(t)
         return ColorRGB.interpolate(
-            current_start_color, current_end_color, self._range.get_value(edge.midpoint(), t)
+            current_start_color, current_end_color, self._range.get_value(edge, t)
         ).make_drawable()
 
 
@@ -98,9 +92,9 @@ class LineGradientHSV(LineColorABC):
     start_color: dict[str, Any]
     end_color: dict[str, Any]
     range: dict[str, Any]
-    _start_color: Optional[GradientABC[ColorHSV]] = field(init=False)
-    _end_color: Optional[GradientABC[ColorHSV]] = field(init=False)
-    _range: Optional[LineRangeABC] = field(init=False)
+    _start_color: GradientABC[ColorHSV] = field(init=False)
+    _end_color: GradientABC[ColorHSV] = field(init=False)
+    _range: LineRangeABC = field(init=False)
 
     def __post_init__(self) -> None:
         self._start_color = get_gradient_object(self.start_color)
@@ -108,14 +102,12 @@ class LineGradientHSV(LineColorABC):
         self._range = get_line_range_object(self.range)
 
     def get_color(self, edge: Edge, t: float) -> Color:
-        if self._start_color is None or self._end_color is None or self._range is None:
-            return (0, 0, 0)
         current_start_color = self._start_color.get_color(t)
         current_end_color = self._end_color.get_color(t)
         return ColorHSV.interpolate(
-            current_start_color, current_end_color, self._range.get_value(edge.midpoint(), t)
+            current_start_color, current_end_color, self._range.get_value(edge, t)
         ).make_drawable()
 
 
-def get_line_color_object(configs: ObjectConfigs | dict[str, Any]) -> Optional[LineColorABC]:
+def get_line_color_object(configs: ObjectConfigs | dict[str, Any]) -> LineColorABC:
     return get_object(LineColorABC, configs)

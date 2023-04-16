@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import Any
 
 from coloring.ABCs import GradientABC, ReflectiveRangeABC
 from coloring.color import Color, ColorHSV, ColorRGB
@@ -39,7 +39,7 @@ class GradientRGB(GradientABC[ColorRGB]):
     range: dict[str, Any]
     _start_color: ColorRGB = field(init=False)
     _end_color: ColorRGB = field(init=False)
-    _range: Optional[ReflectiveRangeABC] = field(init=False)
+    _range: ReflectiveRangeABC = field(init=False)
 
     def __post_init__(self) -> None:
         self._start_color = ColorRGB.generate(self.start_color)
@@ -47,8 +47,6 @@ class GradientRGB(GradientABC[ColorRGB]):
         self._range = get_reflective_range_object(self.range)
 
     def get_color(self, t: float) -> ColorRGB:
-        if self._range is None:
-            return ColorRGB(0, 0, 0)
         t = self._range.get_value(t)
         return ColorRGB.interpolate(self._start_color, self._end_color, t)
     
@@ -60,7 +58,7 @@ class GradientHSV(GradientABC[ColorHSV]):
     range: dict[str, Any]
     _start_color: ColorHSV = field(init=False)
     _end_color: ColorHSV = field(init=False)
-    _range: Optional[ReflectiveRangeABC] = field(init=False)
+    _range: ReflectiveRangeABC = field(init=False)
 
     def __post_init__(self) -> None:
         self._start_color = ColorHSV.generate(self.start_color)
@@ -68,11 +66,9 @@ class GradientHSV(GradientABC[ColorHSV]):
         self._range = get_reflective_range_object(self.range)
 
     def get_color(self, t: float) -> ColorHSV:
-        if self._range is None:
-            return ColorHSV(0, 0, 0)
         t = self._range.get_value(t)
         return ColorHSV.interpolate(self._start_color, self._end_color, t)
 
 
-def get_gradient_object(configs: ObjectConfigs | dict[str, Any]) -> Optional[GradientABC]:
+def get_gradient_object(configs: ObjectConfigs | dict[str, Any]) -> GradientABC:
     return get_object(GradientABC, configs)

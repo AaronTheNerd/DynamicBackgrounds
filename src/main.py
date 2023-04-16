@@ -79,9 +79,15 @@ def run():
     with open(f"{GIFS_PATH}/{CONFIGS.gif_configs.num}/config.json", "w+") as file:
         json.dump(CONFIGS.dumpJSON(), file, indent=4)
     # Generate objects needed to color the gif
-    triangle_coloring = get_triangle_object(CONFIGS.triangle_coloring)
-    line_coloring = get_line_object(CONFIGS.line_coloring)
-    point_coloring = get_point_object(CONFIGS.point_coloring)
+    triangle_coloring = None
+    if CONFIGS.triangle_coloring:
+        triangle_coloring = get_triangle_object(CONFIGS.triangle_coloring)
+    line_coloring = None
+    if CONFIGS.line_coloring:
+        line_coloring = get_line_object(CONFIGS.line_coloring)
+    point_coloring = None
+    if CONFIGS.point_coloring:
+        point_coloring = get_point_object(CONFIGS.point_coloring)
     # Generate initial points
     points = generate_points.generate_points()
     # Generate frames

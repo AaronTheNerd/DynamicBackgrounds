@@ -1,6 +1,6 @@
 import math
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any
 
 from coloring.ABCs import ReflectiveRangeABC
 from configs import ObjectConfigs
@@ -29,5 +29,5 @@ class Linear(ReflectiveRangeABC):
         return 2 * t if t <= 0.5 else (1 - t) * 2
 
 
-def get_reflective_range_object(configs: ObjectConfigs | dict[str, Any]) -> Optional[ReflectiveRangeABC]:
+def get_reflective_range_object(configs: ObjectConfigs | dict[str, Any]) -> ReflectiveRangeABC:
     return get_object(ReflectiveRangeABC, configs)

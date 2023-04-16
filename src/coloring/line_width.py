@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any
 
 from coloring.ABCs import LineWidthABC
 from configs import ObjectConfigs
@@ -15,5 +15,5 @@ class Static(LineWidthABC):
         return self.width
 
 
-def get_line_width_object(configs: ObjectConfigs | dict[str, Any]) -> Optional[LineWidthABC]:
+def get_line_width_object(configs: ObjectConfigs | dict[str, Any]) -> LineWidthABC:
     return get_object(LineWidthABC, configs)

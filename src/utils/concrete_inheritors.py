@@ -19,10 +19,8 @@ def concrete_inheritors(cls: T) -> dict[str, T]:
     return subclasses
 
 
-def get_object(cls: type[T], configs: ObjectConfigs | dict[str, Any]) -> Optional[T]:
+def get_object(cls: type[T], configs: ObjectConfigs | dict[str, Any]) -> T:
     if not isinstance(configs, ObjectConfigs):
         configs = ObjectConfigs(**configs)
-    if not configs.enabled:
-        return None
     subclasses = concrete_inheritors(cls)
     return subclasses[configs.type](**configs.kwargs)

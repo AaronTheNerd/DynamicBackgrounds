@@ -1,19 +1,19 @@
 {
-  "generate_seed": false,
+  "generate_seed": true,
   "seed": 1626244211,
   "gif_configs": {
-    "width": 1366,
-    "height": 768,
-    "num": 22,
+    "width": 500,
+    "height": 500,
+    "num": 1,
     "background_color": [0, 0, 0],
     "margin": 150,
     "ms_per_frame": 11,
     "num_of_frames": 250
   },
   "point_configs": {
-    "amplitude": 0,
-    "intensity": 0,
-    "scale": 0,
+    "amplitude": 3000,
+    "intensity": 0.005,
+    "scale": 20,
     "offset_y": 100,
     "num_of_points": 50,
     "separation_radius": 40,
@@ -28,101 +28,35 @@
     "drifting_configs": {
       "reflective": false,
       "percentage": 1,
-      "x_min": 1,
+      "x_min": -1,
       "x_max": 1,
-      "y_min": 1,
+      "y_min": -1,
       "y_max": 1
     }
   },
-  "triangle_coloring": {
-    "enabled": false,
-    "type": "TriangleColorer",
-    "kwargs": {
-      "gradient": {
-        "type": "GradientHSV",
-        "kwargs": {
-          "start_color": {
-            "type": "PlainHSV",
-            "kwargs": {
-              "color": [235, 52, 52]
-            }
-          },
-          "end_color": {
-            "type": "PlainHSV",
-            "kwargs": {
-              "color": [66, 224, 245]
-            }
-          },
-          "range": {
-            "type": "Linear",
-            "kwargs": {
-              "start": {
-                "type": "Circle",
-                "kwargs": {
-                  "start": [150, 150]
-                }
-              },
-              "end": {
-                "type": "Circle",
-                "kwargs": {
-                  "start": [1516, 918]
-                }
-              },
-              "range": {
-                "type": "EaseInOut"
-              }
-            }
-          }
-        }
-      },
-      "shader": {
-        "type": "AmbientShader",
-        "kwargs": {
-          "ambient_vector": [
-            1.0,
-            1.0,
-            0.5
-          ],
-          "ambient_gain": 55000,
-          "ambient_definition": 10
-        }
-      }
-    }
-  },
   "line_coloring": {
-    "enabled": true,
     "type": "LineColorer",
     "kwargs": {
       "color": {
-        "type": "GradientHSV",
+        "type": "LineGradientHSV",
         "kwargs": {
           "start_color": {
             "type": "PlainHSV",
             "kwargs": {
-              "color": [235, 52, 52]
+              "color": [0, 255, 0]
             }
           },
           "end_color": {
             "type": "PlainHSV",
             "kwargs": {
-              "color": [66, 224, 245]
+              "color": [255, 0, 0]
             }
           },
           "range": {
-            "type": "Linear",
+            "type": "Length",
             "kwargs": {
-              "start": {
-                "type": "Circle",
-                "kwargs": {
-                  "start": [150, 150]
-                }
-              },
-              "end": {
-                "type": "Circle",
-                "kwargs": {
-                  "start": [1516, 918]
-                }
-              },
+              "min_length": 20,
+              "max_length": 250,
               "range": {
                 "type": "EaseInOut"
               }
@@ -133,14 +67,9 @@
       "width": {
         "type": "Static",
         "kwargs": {
-          "width": 7
+          "width": 6
         }
       }
     }
-  },
-  "point_coloring": {
-    "enabled": false,
-    "type": "ShadedGradient",
-    "kwargs": {}
   }
 }

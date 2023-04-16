@@ -2,7 +2,7 @@ import json
 import os
 import random
 from dataclasses import dataclass, field, fields, is_dataclass
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Optional
 
 
 @dataclass
@@ -51,7 +51,6 @@ class GIFConfigs:
 @dataclass
 class ObjectConfigs:
     type: str
-    enabled: bool = True
     kwargs: dict[str, Any] = field(default_factory=dict)
 
 
@@ -61,9 +60,9 @@ class Configs:
     seed: int
     gif_configs: GIFConfigs
     point_configs: PointConfigs
-    triangle_coloring: ObjectConfigs
-    line_coloring: ObjectConfigs
-    point_coloring: ObjectConfigs
+    triangle_coloring: Optional[ObjectConfigs] = None
+    line_coloring: Optional[ObjectConfigs] = None
+    point_coloring: Optional[ObjectConfigs] = None
     full_width: int = field(init=False)
     full_height: int = field(init=False)
 

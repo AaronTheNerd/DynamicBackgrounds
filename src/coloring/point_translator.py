@@ -10,14 +10,11 @@ from utils.concrete_inheritors import get_object
 
 @dataclass
 class Static(PointTranslatorABC):
-    point: Optional[list[float]] = None
+    point: list[float]
     _point: StaticPoint = field(init=False)
     
     def __post_init__(self) -> None:
-        if self.point is None:
-            self._point = StaticPoint(CONFIGS.full_width / 2, CONFIGS.full_height / 2)
-        else:
-            self._point = StaticPoint(self.point[0], self.point[1])
+        self._point = StaticPoint(self.point[0], self.point[1])
 
     def get_point(self, t: float) -> StaticPoint:
         return self._point
@@ -26,17 +23,14 @@ class Static(PointTranslatorABC):
 @dataclass
 class Circle(PointTranslatorABC):
     start: list[float]
-    center: Optional[list[float]] = None
+    center: list[float]
     CW: bool = True
     _start: StaticPoint = field(init=False)
     _center: StaticPoint = field(init=False)
 
     def __post_init__(self) -> None:
         self._start = StaticPoint(self.start[0], self.start[1])
-        if self.center is None:
-            self._center = StaticPoint(CONFIGS.full_width / 2, CONFIGS.full_height / 2)
-        else:
-            self._center = StaticPoint(self.center[0], self.center[1])
+        self._center = StaticPoint(self.center[0], self.center[1])
 
 
     def get_point(self, t: float) -> StaticPoint:
@@ -52,5 +46,5 @@ class Circle(PointTranslatorABC):
         return point
 
 
-def get_point_translator_object(configs: ObjectConfigs | dict[str, Any]) -> Optional[PointTranslatorABC]:
+def get_point_translator_object(configs: ObjectConfigs | dict[str, Any]) -> PointTranslatorABC:
     return get_object(PointTranslatorABC, configs)
