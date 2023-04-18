@@ -22,5 +22,20 @@ class _Sway(ZMoverABC):
         )
 
 
+@dataclass
+class _NoiseMap(ZMoverABC):
+    amplitude: float
+    x_scale: float
+    y_scale: float
+    x_offset: float
+    y_offset: float
+
+    def get_offset(self, t: float, state: MoverState) -> float:
+        return self.amplitude * state.open_simplex.noise2(
+            x=state.current_pos.x * self.x_scale + self.x_offset,
+            y=state.current_pos.y * self.y_scale + self.y_offset,
+        )
+
+
 def get_zmover_object(configs: ObjectConfigs | dict[str, Any]) -> ZMoverABC:
     return get_object(ZMoverABC, configs)
