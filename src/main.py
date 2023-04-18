@@ -7,11 +7,14 @@ from opensimplex import OpenSimplex
 from PIL import Image, ImageDraw
 
 import point.generator.generate as generate_points
+from point.ABCs import PointABC
 from bowyer_watson import BowyerWatson
-from coloring.ABCs import *
-from coloring.line import get_line_object
-from coloring.point import get_point_object
-from coloring.triangle import get_triangle_object
+from coloring.triangle.ABCs import TriangleDrawerABC
+from coloring.line.ABCs import LineDrawerABC
+from coloring.point.ABCs import PointDrawerABC
+from coloring.line.line import get_line_object
+from coloring.point.point import get_point_object
+from coloring.triangle.triangle import get_triangle_object
 from configs import CONFIGS
 from utils.progress_bar import progress_bar
 
@@ -23,9 +26,9 @@ def draw(
     image,
     t: float,
     points: list[PointABC],
-    triangle_coloring: Optional[TriangleColorerABC],
-    line_coloring: Optional[LineColorerABC],
-    point_coloring: Optional[PointColorerABC],
+    triangle_coloring: Optional[TriangleDrawerABC],
+    line_coloring: Optional[LineDrawerABC],
+    point_coloring: Optional[PointDrawerABC],
 ):
     new_points = [point.at(t) for point in points]
     triangles = BowyerWatson(new_points)
@@ -101,6 +104,8 @@ def run():
         file_name = f"{GIFS_PATH}/{CONFIGS.gif_configs.num}/image#{str(i).zfill(3)}.bmp"
         image.save(file_name)
     # Convert frames to gif
+    progress_bar(1.0)
+    print("\nCompiling Frames...")
     os.system(
         f"convert -delay {CONFIGS.gif_configs.ms_per_frame} -loop 0 {GIFS_PATH}/{CONFIGS.gif_configs.num}/*.bmp -crop {CONFIGS.gif_configs.width}x{CONFIGS.gif_configs.height}+{CONFIGS.gif_configs.margin}+{CONFIGS.gif_configs.margin} +repage {GIFS_PATH}/{CONFIGS.gif_configs.num}/gif{CONFIGS.gif_configs.num}.gif"
     )

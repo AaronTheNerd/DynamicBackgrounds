@@ -1,9 +1,10 @@
 from dataclasses import dataclass, field
 from typing import Any
 
-from coloring.ABCs import GradientABC, ReflectiveRangeABC
+from coloring.ABCs import GradientABC
 from coloring.color import Color, ColorHSV, ColorRGB
-from coloring.reflective_range import get_reflective_range_object
+from coloring.range.ABCs import ReflectiveRangeABC
+from coloring.range.reflective_range import get_reflective_range_object
 from configs import ObjectConfigs
 from utils.concrete_inheritors import get_object
 

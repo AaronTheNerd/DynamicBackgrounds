@@ -4,10 +4,12 @@ from typing import Any, Optional, TypeVar
 
 from opensimplex import OpenSimplex
 
-from coloring.ABCs import GradientABC, PositionRangeABC, TriangleColorABC
+from coloring.ABCs import GradientABC
 from coloring.color import Color, ColorHSV, ColorRGB
 from coloring.gradient import get_gradient_object
-from coloring.position_range import get_image_range_object
+from coloring.range.ABCs import PositionRangeABC
+from coloring.range.position_range import get_image_range_object
+from coloring.triangle.ABCs import ColorABC
 from configs import CONFIGS, ObjectConfigs
 from triangle import Triangle
 from utils.concrete_inheritors import get_object
@@ -16,7 +18,7 @@ T = TypeVar("T")
 
 
 @dataclass
-class Plain(TriangleColorABC):
+class Plain(ColorABC):
     color: Color = (255, 255, 255)
 
     def get_color(self, triangle: Triangle, t: float) -> Color:
@@ -24,7 +26,7 @@ class Plain(TriangleColorABC):
 
 
 @dataclass
-class GradientRGB(TriangleColorABC):
+class GradientRGB(ColorABC):
     start_color: dict[str, Any]
     end_color: dict[str, Any]
     range: dict[str, Any]
@@ -46,7 +48,7 @@ class GradientRGB(TriangleColorABC):
 
 
 @dataclass
-class GradientHSV(TriangleColorABC):
+class GradientHSV(ColorABC):
     start_color: dict[str, Any]
     end_color: dict[str, Any]
     range: dict[str, Any]
@@ -68,10 +70,10 @@ class GradientHSV(TriangleColorABC):
 
 
 @dataclass
-class StaticNoise(TriangleColorABC):
+class StaticNoise(ColorABC):
     gradient: dict[str, Any]
     scale: float
-    _gradient: TriangleColorABC = field(init=False)
+    _gradient: ColorABC = field(init=False)
     _open_simplex: OpenSimplex = field(init=False)
 
     def __post_init__(self) -> None:
@@ -88,7 +90,7 @@ class StaticNoise(TriangleColorABC):
 
 
 @dataclass
-class TieDyeSwirl(TriangleColorABC):
+class TieDyeSwirl(ColorABC):
     start_x: int = 0
     start_y: int = 0
     scale: float = 1
@@ -130,9 +132,9 @@ class TieDyeSwirl(TriangleColorABC):
 
 
 @dataclass
-class ColorShifting(TriangleColorABC):
+class ColorShifting(ColorABC):
     gradient: dict[str, Any]
-    _gradient: Optional[TriangleColorABC] = field(init=False)
+    _gradient: Optional[ColorABC] = field(init=False)
 
     def __post_init__(self) -> None:
         self._gradient = get_triangle_color_object(self.gradient)
@@ -143,5 +145,5 @@ class ColorShifting(TriangleColorABC):
         return self._gradient.get_color(triangle, t)
 
 
-def get_triangle_color_object(configs: ObjectConfigs | dict[str, Any]) -> TriangleColorABC:
-    return get_object(TriangleColorABC, configs)
+def get_triangle_color_object(configs: ObjectConfigs | dict[str, Any]) -> ColorABC:
+    return get_object(ColorABC, configs)

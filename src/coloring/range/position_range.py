@@ -2,9 +2,10 @@ import math
 from dataclasses import dataclass, field
 from typing import Any
 
-from coloring.ABCs import PointTranslatorABC, PositionRangeABC, RangeABC
+from coloring.ABCs import PointTranslatorABC
 from coloring.point_translator import get_point_translator_object
-from coloring.range import get_range_object
+from coloring.range.ABCs import PositionRangeABC, RangeABC
+from coloring.range.range import get_range_object
 from configs import ObjectConfigs
 from point.ABCs import PointABC
 from utils.concrete_inheritors import get_object

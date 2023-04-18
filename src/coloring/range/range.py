@@ -2,7 +2,7 @@ import math
 from dataclasses import dataclass, field
 from typing import Any
 
-from coloring.ABCs import RangeABC
+from coloring.range.ABCs import RangeABC
 from configs import ObjectConfigs
 from utils.concrete_inheritors import get_object
 from utils.interpolate import interpolate

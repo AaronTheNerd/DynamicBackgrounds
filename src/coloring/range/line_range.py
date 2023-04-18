@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 from typing import Any
 
-from coloring.ABCs import LineRangeABC, RangeABC
-from coloring.range import get_range_object
+from coloring.range.ABCs import LineRangeABC, RangeABC
+from coloring.range.range import get_range_object
 from configs import ObjectConfigs
 from triangle import Edge
 from utils.concrete_inheritors import get_object

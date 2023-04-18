@@ -2,7 +2,7 @@ import math
 from dataclasses import dataclass
 from typing import Any
 
-from coloring.ABCs import ReflectiveRangeABC
+from coloring.range.ABCs import ReflectiveRangeABC
 from configs import ObjectConfigs
 from utils.concrete_inheritors import get_object
 

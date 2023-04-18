@@ -2,18 +2,20 @@ import math
 from dataclasses import dataclass, field
 from typing import Any
 
-from coloring.ABCs import GradientABC, LineColorABC, LineRangeABC, PositionRangeABC
+from coloring.ABCs import GradientABC
 from coloring.color import Color, ColorHSV, ColorRGB
 from coloring.gradient import get_gradient_object
-from coloring.line_range import get_line_range_object
-from coloring.position_range import get_image_range_object
+from coloring.line.ABCs import ColorABC
+from coloring.range.ABCs import LineRangeABC, PositionRangeABC
+from coloring.range.line_range import get_line_range_object
+from coloring.range.position_range import get_image_range_object
 from configs import ObjectConfigs
 from triangle import Edge
 from utils.concrete_inheritors import get_object
 
 
 @dataclass
-class Plain(LineColorABC):
+class Plain(ColorABC):
     color: Color
 
     def get_color(self, edge: Edge, t: float) -> Color:
@@ -21,7 +23,7 @@ class Plain(LineColorABC):
 
 
 @dataclass
-class GradientRGB(LineColorABC):
+class GradientRGB(ColorABC):
     start_color: dict[str, Any]
     end_color: dict[str, Any]
     range: dict[str, Any]
@@ -43,7 +45,7 @@ class GradientRGB(LineColorABC):
 
 
 @dataclass
-class GradientHSV(LineColorABC):
+class GradientHSV(ColorABC):
     start_color: dict[str, Any]
     end_color: dict[str, Any]
     range: dict[str, Any]
@@ -65,7 +67,7 @@ class GradientHSV(LineColorABC):
 
 
 @dataclass
-class LineGradientRGB(LineColorABC):
+class LineGradientRGB(ColorABC):
     start_color: dict[str, Any]
     end_color: dict[str, Any]
     range: dict[str, Any]
@@ -87,7 +89,7 @@ class LineGradientRGB(LineColorABC):
 
 
 @dataclass
-class LineGradientHSV(LineColorABC):
+class LineGradientHSV(ColorABC):
     start_color: dict[str, Any]
     end_color: dict[str, Any]
     range: dict[str, Any]
@@ -108,5 +110,5 @@ class LineGradientHSV(LineColorABC):
         ).make_drawable()
 
 
-def get_line_color_object(configs: ObjectConfigs | dict[str, Any]) -> LineColorABC:
-    return get_object(LineColorABC, configs)
+def get_line_color_object(configs: ObjectConfigs | dict[str, Any]) -> ColorABC:
+    return get_object(ColorABC, configs)
