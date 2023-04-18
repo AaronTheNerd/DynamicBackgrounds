@@ -38,12 +38,16 @@ class ReflectiveDrift(MoverGeneratorABC):
 @dataclass
 class Sway(MoverGeneratorABC):
     amplitude: float
-    scale: float
+    x_scale: float
+    y_scale: float
     intensity: float
-    offset: float
+    x_offset: float
+    y_offset: float
 
     def generate(self) -> MoverABC:
-        return _Sway(self.amplitude, self.scale, self.intensity, self.offset)
+        return _Sway(
+            self.amplitude, self.x_scale, self.y_scale, self.intensity, self.x_offset, self.y_offset
+        )
 
 
 def get_mover_generator_object(configs: ObjectConfigs | dict[str, Any]) -> MoverGeneratorABC:

@@ -11,12 +11,14 @@ from utils.concrete_inheritors import get_object
 @dataclass
 class Sway(ZMoverGeneratorABC):
     amplitude: float
-    scale: float
+    x_scale: float
+    y_scale: float
     intensity: float
-    offset: float
+    x_offset: float
+    y_offset: float
 
     def generate(self) -> ZMoverABC:
-        return _Sway(self.amplitude, self.scale, self.intensity, self.offset)
+        return _Sway(self.amplitude, self.x_scale, self.y_scale, self.intensity, self.x_offset, self.y_offset)
 
 
 @dataclass
