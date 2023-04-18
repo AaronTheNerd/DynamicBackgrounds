@@ -40,5 +40,17 @@ class _NoiseMap(ZMoverABC):
         )
 
 
+@dataclass
+class _Wave(ZMoverABC):
+    amplitude: float
+    speed: int
+    wavelength: float
+    axis: str
+
+    def get_offset(self, t: float, state: MoverState) -> float:
+        pos = state.current_pos.x if self.axis == "x" else state.current_pos.y
+        return self.amplitude * math.sin(2 * math.pi * self.speed * t + self.wavelength / state.max_value * pos)
+
+
 def get_zmover_object(configs: ObjectConfigs | dict[str, Any]) -> ZMoverABC:
     return get_object(ZMoverABC, configs)

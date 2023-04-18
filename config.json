@@ -4,7 +4,7 @@
   "gif_configs": {
     "width": 1366,
     "height": 768,
-    "num": 2,
+    "num": 4,
     "background_color": [0, 0, 0],
     "margin": 150,
     "ms_per_frame": 11,
@@ -49,17 +49,6 @@
     ],
     "y_movers": [
       {
-        "type": "Drift",
-        "kwargs": {
-          "frequency": {
-            "type": "Integer",
-            "kwargs": {
-              "value": 1
-            }
-          }
-        }
-      },
-      {
         "type": "Sway",
         "kwargs": {
           "amplitude": 30,
@@ -91,6 +80,14 @@
           "y_scale": 50,
           "x_offset": 100,
           "y_offset": 0
+        }
+      },
+      {
+        "type": "Wave",
+        "kwargs": {
+          "amplitude": 2,
+          "speed": 3,
+          "wavelength": 5
         }
       }
     ]
