@@ -2,18 +2,18 @@
   "generate_seed": true,
   "seed": 1626244211,
   "gif_configs": {
-    "width": 1920,
-    "height": 1080,
-    "num": 3,
+    "width": 1366,
+    "height": 768,
+    "num": 2,
     "background_color": [0, 0, 0],
-    "margin": 75,
+    "margin": 150,
     "ms_per_frame": 11,
-    "num_of_frames": 600
+    "num_of_frames": 250
   },
   "point_generation_configs": {
     "num_of_points": 500,
-    "separation_radius": 45,
-    "max_fails": 100,
+    "separation_radius": 40,
+    "max_fails": 10000,
     "border_configs": {
       "top": false,
       "bottom": false,
@@ -25,13 +25,12 @@
   "point_movement_configs": {
     "x_movers": [
       {
-        "type": "ReflectiveDrift",
+        "type": "Drift",
         "kwargs": {
           "frequency": {
-            "type": "Normal",
+            "type": "Integer",
             "kwargs": {
-              "mean": 0.25,
-              "std_dev": 0.0625
+              "value": 1
             }
           }
         }
@@ -39,49 +38,98 @@
       {
         "type": "Sway",
         "kwargs": {
-          "amplitude": 1200,
-          "intensity": 0.075,
-          "scale": 30,
-          "offset": 0
+          "amplitude": 60,
+          "intensity": 1,
+          "x_scale": 0.004,
+          "y_scale": 0.01,
+          "x_offset": 0,
+          "y_offset": 0
         }
       }
     ],
     "y_movers": [
       {
+        "type": "Drift",
+        "kwargs": {
+          "frequency": {
+            "type": "Integer",
+            "kwargs": {
+              "value": 1
+            }
+          }
+        }
+      },
+      {
         "type": "Sway",
         "kwargs": {
-          "amplitude": 1200,
-          "intensity": 0.075,
-          "scale": 30,
-          "offset": 100
+          "amplitude": 30,
+          "intensity": 1,
+          "x_scale": 0.004,
+          "y_scale": 0.01,
+          "x_offset": 100,
+          "y_offset": 100
         }
       }
     ],
-    "z_movers": []
+    "z_movers": [
+      {
+        "type": "NoiseMap",
+        "kwargs": {
+          "amplitude": 3,
+          "x_scale": 0.004,
+          "y_scale": 0.004,
+          "x_offset": 0,
+          "y_offset": 0
+        }
+      },
+      {
+        "type": "Sway",
+        "kwargs": {
+          "amplitude": 0.5,
+          "intensity": 0.005,
+          "x_scale": 50,
+          "y_scale": 50,
+          "x_offset": 100,
+          "y_offset": 0
+        }
+      }
+    ]
   },
-  "line_coloring": {
-    "type": "LineColorer",
+  "triangle_coloring": {
+    "type": "TriangleDrawer",
     "kwargs": {
-      "color": {
-        "type": "LineGradientRGB",
+      "gradient": {
+        "type": "GradientHSV",
         "kwargs": {
           "start_color": {
-            "type": "PlainRGB",
+            "type": "PlainHSV",
             "kwargs": {
-              "color": [37, 153, 247]
+              "color": [235, 52, 52]
             }
           },
           "end_color": {
-            "type": "PlainRGB",
+            "type": "PlainHSV",
             "kwargs": {
-              "color": [0, 0, 0]
+              "color": [66, 224, 245]
             }
           },
           "range": {
-            "type": "Length",
+            "type": "Linear",
             "kwargs": {
-              "min_length": 20,
-              "max_length": 100,
+              "start": {
+                "type": "Circle",
+                "kwargs": {
+                  "start": [150, 150],
+                  "center": [833, 534]
+                }
+              },
+              "end": {
+                "type": "Circle",
+                "kwargs": {
+                  "start": [1516, 918],
+                  "center": [833, 534]
+                }
+              },
               "range": {
                 "type": "EaseInOut"
               }
@@ -89,19 +137,14 @@
           }
         }
       },
-      "width": {
-        "type": "Static",
+      "shader": {
+        "type": "AmbientShader",
         "kwargs": {
-          "width": 3
+          "ambient_vector": [1.0, 1.0, 0.5],
+          "ambient_gain": 110000,
+          "ambient_definition": 11
         }
       }
-    }
-  },
-  "point_coloring": {
-    "type": "PlainPoint",
-    "kwargs": {
-      "color": [255, 255, 255],
-      "width": 4
     }
   }
 }
