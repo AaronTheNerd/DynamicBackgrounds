@@ -18,7 +18,7 @@ class PlainRGB(GradientABC[ColorRGB]):
 
     def get_color(self, t: float) -> ColorRGB:
         return self._color
-    
+
 
 @dataclass
 class PlainHSV(GradientABC[ColorHSV]):
@@ -49,7 +49,7 @@ class GradientRGB(GradientABC[ColorRGB]):
     def get_color(self, t: float) -> ColorRGB:
         t = self._range.get_value(t)
         return ColorRGB.interpolate(self._start_color, self._end_color, t)
-    
+
 
 @dataclass
 class GradientHSV(GradientABC[ColorHSV]):

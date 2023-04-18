@@ -49,9 +49,7 @@ def draw(
             for edge in edges:
                 color = line_coloring.get_color(edge, t)
                 width = line_coloring.get_width(edge, t)
-                image.line(
-                    [edge.a.x, edge.a.y, edge.b.x, edge.b.y], width=width, fill=tuple(color)
-                )
+                image.line([edge.a.x, edge.a.y, edge.b.x, edge.b.y], width=width, fill=tuple(color))
     if point_coloring is not None:
         for point in new_points:
             color = point_coloring.get_color(point, t)

@@ -2,12 +2,12 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from configs import ObjectConfigs
-from point.random.ABCs import RandomFloatABC, RandomIntABC
-from point.mover.ABCs import MoverABC
 from point.generator.ABCs import MoverGeneratorABC
-from point.mover.mover import _Drift, _Sway, _ReflectiveDrift
-from point.random.int import get_rand_int_object
+from point.mover.ABCs import MoverABC
+from point.mover.mover import _Drift, _ReflectiveDrift, _Sway
+from point.random.ABCs import RandomFloatABC, RandomIntABC
 from point.random.float import get_rand_float_object
+from point.random.int import get_rand_int_object
 from utils.concrete_inheritors import get_object
 
 
@@ -21,7 +21,7 @@ class Drift(MoverGeneratorABC):
 
     def generate(self) -> MoverABC:
         return _Drift(self.frequency_generator.get_value())
-    
+
 
 @dataclass
 class ReflectiveDrift(MoverGeneratorABC):

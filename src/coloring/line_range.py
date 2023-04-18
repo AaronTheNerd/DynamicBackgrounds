@@ -24,7 +24,7 @@ class Length(LineRangeABC):
         t = max(0.0, min(t, 1.0))
         t = self._range.get_value(t)
         return t
-    
+
 
 def get_line_range_object(configs: dict[str, Any] | ObjectConfigs) -> LineRangeABC:
     return get_object(LineRangeABC, configs)

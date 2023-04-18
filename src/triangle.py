@@ -5,8 +5,7 @@ from dataclasses import dataclass, field
 
 from point.ABCs import PointABC
 from point.point import Static
-from triangle_math import (LineInterX, LineInterY, lineFromPoints,
-                           perpenBisectorFromLine)
+from triangle_math import LineInterX, LineInterY, lineFromPoints, perpenBisectorFromLine
 
 
 @dataclass(slots=True)

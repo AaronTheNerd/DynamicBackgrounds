@@ -38,15 +38,15 @@ class Discrete(RangeABC):
         t = int(t)
         t /= self.segments - 1
         return t
-    
+
 
 @dataclass
 class EaseInOut(RangeABC):
     degree: int = 2
 
     def get_value(self, t: float) -> float:
-        ease_in = lambda x: math.pow(t, self.degree)
-        ease_out = lambda x: 1 - math.pow(1 - t, self.degree)
+        ease_in = lambda x: math.pow(x, self.degree)
+        ease_out = lambda x: 1 - math.pow(1 - x, self.degree)
         return interpolate(ease_in(t), ease_out(t), t)
 
 

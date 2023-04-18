@@ -1,6 +1,8 @@
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from abc import abstractmethod, ABC
+
 from point.mover.ABCs import MoverABC, ZMoverABC
+
 
 @dataclass
 class MoverGeneratorABC(ABC):

@@ -1,7 +1,9 @@
 from dataclasses import dataclass
-from point.ABCs import PointABC
 
 from opensimplex import OpenSimplex
+
+from point.ABCs import PointABC
+
 
 @dataclass
 class MoverState:

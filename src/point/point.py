@@ -1,16 +1,17 @@
 from dataclasses import dataclass
 
+from opensimplex import OpenSimplex
+
 from configs import CONFIGS
 from point.ABCs import PointABC
 from point.mover.ABCs import MoverABC, ZMoverABC
 from point.state import MoverState
 
-from opensimplex import OpenSimplex
 
 class Static(PointABC):
     def at(self, t: float) -> PointABC:
         return Static(self.x, self.y, self.z)
-    
+
 
 @dataclass
 class Moving(PointABC):

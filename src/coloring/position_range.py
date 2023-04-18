@@ -35,7 +35,7 @@ class Linear(PositionRangeABC):
         t = max(0.0, min(t, 1.0))
         t = self._range.get_value(t)
         return t
-    
+
 
 @dataclass
 class Radial(PositionRangeABC):
@@ -52,7 +52,9 @@ class Radial(PositionRangeABC):
 
     def get_value(self, point: PointABC, t: float) -> float:
         current_center = self._center.get_point(t)
-        dist = math.sqrt(math.pow(point.x - current_center.x, 2) + math.pow(point.y - current_center.y, 2))
+        dist = math.sqrt(
+            math.pow(point.x - current_center.x, 2) + math.pow(point.y - current_center.y, 2)
+        )
         t = (dist - self.min_radius) / (self.max_radius - self.min_radius)
         t = max(0.0, min(t, 1.0))
         t = self._range.get_value(t)

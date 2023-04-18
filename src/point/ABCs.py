@@ -9,7 +9,7 @@ class PointABC(ABC):
     x: float
     y: float
     z: float
-    
+
     @abstractmethod
     def at(self, t: float) -> PointABC:
         ...

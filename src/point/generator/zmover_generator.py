@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from typing import Any
 
 from configs import ObjectConfigs
-from point.mover.ABCs import ZMoverABC
 from point.generator.ABCs import ZMoverGeneratorABC
+from point.mover.ABCs import ZMoverABC
 from point.mover.zmover import _Sway
 from utils.concrete_inheritors import get_object
 

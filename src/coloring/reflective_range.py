@@ -13,7 +13,7 @@ class Sine(ReflectiveRangeABC):
 
     def get_value(self, t: float) -> float:
         return (math.sin(t * self.frequency * 2 * math.pi) + 1) / 2
-    
+
 
 @dataclass
 class Cosine(ReflectiveRangeABC):

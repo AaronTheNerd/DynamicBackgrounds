@@ -2,7 +2,7 @@ import json
 import os
 import random
 from dataclasses import dataclass, field, fields, is_dataclass
-from typing import Any, TypeVar, Optional
+from typing import Any, Optional, TypeVar
 
 
 @dataclass

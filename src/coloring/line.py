@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Any
 
-from coloring.ABCs import LineColorerABC, LineColorABC, LineWidthABC
+from coloring.ABCs import LineColorABC, LineColorerABC, LineWidthABC
 from coloring.color import Color
 from coloring.line_color import get_line_color_object
 from coloring.line_width import get_line_width_object

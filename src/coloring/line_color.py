@@ -2,8 +2,7 @@ import math
 from dataclasses import dataclass, field
 from typing import Any
 
-from coloring.ABCs import (GradientABC, LineColorABC, LineRangeABC,
-                           PositionRangeABC)
+from coloring.ABCs import GradientABC, LineColorABC, LineRangeABC, PositionRangeABC
 from coloring.color import Color, ColorHSV, ColorRGB
 from coloring.gradient import get_gradient_object
 from coloring.line_range import get_line_range_object

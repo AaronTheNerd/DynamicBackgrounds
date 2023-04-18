@@ -13,7 +13,7 @@ class _Drift(MoverABC):
 
     def get_offset(self, t: float, state: MoverState) -> float:
         return state.max_value * self.frequency * t
-    
+
 
 @dataclass
 class _ReflectiveDrift(MoverABC):

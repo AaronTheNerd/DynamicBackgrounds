@@ -14,6 +14,7 @@ from utils.concrete_inheritors import get_object
 
 T = TypeVar("T")
 
+
 @dataclass
 class Plain(TriangleColorABC):
     color: Color = (255, 255, 255)
@@ -81,7 +82,7 @@ class StaticNoise(TriangleColorABC):
         center = triangle.center()
         x, y, z = center.x, center.y, center.z
         t = (
-            self._open_simplex.noise3d(x=x * self.scale, y=y * self.scale, z=z * self.scale) + 1
+            self._open_simplex.noise3(x=x * self.scale, y=y * self.scale, z=z * self.scale) + 1
         ) / 2
         return self._gradient.get_color(triangle, t)
 
