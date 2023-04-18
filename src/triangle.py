@@ -3,7 +3,8 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 
-from point import PointABC, StaticPoint
+from point.ABCs import PointABC
+from point.point import Static
 from triangle_math import (LineInterX, LineInterY, lineFromPoints,
                            perpenBisectorFromLine)
 
@@ -13,8 +14,8 @@ class Edge:
     a: PointABC
     b: PointABC
 
-    def midpoint(self) -> StaticPoint:
-        return StaticPoint((self.a.x + self.b.x) / 2, (self.a.y + self.b.y) / 2)
+    def midpoint(self) -> Static:
+        return Static((self.a.x + self.b.x) / 2, (self.a.y + self.b.y) / 2, 0)
 
     def length(self) -> float:
         return math.sqrt(math.pow(self.a.x - self.b.x, 2) + math.pow(self.a.y - self.b.y, 2))
@@ -45,20 +46,20 @@ class Triangle:
             or (self.a is p)
         )
 
-    def center(self) -> StaticPoint:
-        return StaticPoint(
+    def center(self) -> Static:
+        return Static(
             (self.a.x + self.b.x + self.c.x) / 3,
             (self.a.y + self.b.y + self.c.y) / 3,
             (self.a.z + self.b.z + self.c.z) / 3,
         )
 
-    def circumscribe(self) -> tuple[StaticPoint, float]:
+    def circumscribe(self) -> tuple[Static, float]:
         P = self.a
         Q = self.b
         R = self.c
         # Store the coordinates
         # radius of circumcircle
-        r = StaticPoint(0, 0)
+        r = Static(0, 0, 0)
         # Line PQ is represented
         # as ax + by = c
         a, b, c = lineFromPoints(P, Q)

@@ -8,7 +8,8 @@
 import math
 
 from configs import CONFIGS
-from point import PointABC, StaticPoint
+from point.ABCs import PointABC
+from point.point import Static
 from triangle import Triangle
 
 ################################### Methods ###################################
@@ -17,7 +18,7 @@ from triangle import Triangle
 def isInside(t: Triangle, p: PointABC) -> bool:
     if t.circumcenter.x == math.inf or t.circumcenter.y == math.inf:
         return True
-    dist_sq = (t.circumcenter.x - p.x) ** 2 + (t.circumcenter.y - p.y) ** 2
+    dist_sq = math.pow(t.circumcenter.x - p.x, 2) + math.pow(t.circumcenter.y - p.y, 2)
     return dist_sq < t.radius_sq
 
 
@@ -46,9 +47,9 @@ def isInside(t: Triangle, p: PointABC) -> bool:
 #    Point a: (WIDTH / 2, -HEIGHT)                                            #
 ###############################################################################
 def BowyerWatson(points: list[PointABC]) -> list[Triangle]:
-    super_a = StaticPoint(CONFIGS.full_width / 2, -CONFIGS.full_height)
-    super_b = StaticPoint(-CONFIGS.full_width / 2, CONFIGS.full_height)
-    super_c = StaticPoint(3 * CONFIGS.full_width / 2, CONFIGS.full_height)
+    super_a = Static(CONFIGS.full_width / 2, -CONFIGS.full_height, 0)
+    super_b = Static(-CONFIGS.full_width / 2, CONFIGS.full_height, 0)
+    super_c = Static(3 * CONFIGS.full_width / 2, CONFIGS.full_height, 0)
     triangles = [Triangle(super_a, super_b, super_c)]
     points = sorted(points, key=lambda x: [x.x, x.y])
     for curr_point in points:

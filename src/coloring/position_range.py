@@ -6,7 +6,7 @@ from coloring.ABCs import PointTranslatorABC, PositionRangeABC, RangeABC
 from coloring.point_translator import get_point_translator_object
 from coloring.range import get_range_object
 from configs import ObjectConfigs
-from point import PointABC
+from point.ABCs import PointABC
 from utils.concrete_inheritors import get_object
 
 

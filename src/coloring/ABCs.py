@@ -2,13 +2,14 @@ from abc import ABC, abstractmethod
 from typing import TypeVar, Generic
 
 from coloring.color import Color
-from point import PointABC, StaticPoint
+from point.ABCs import PointABC
+from point.point import Static
 from triangle import Edge, Triangle
 
 
 class PointTranslatorABC(ABC):
     @abstractmethod
-    def get_point(self, t: float) -> StaticPoint:
+    def get_point(self, t: float) -> Static:
         ...
 
 

@@ -3,16 +3,16 @@ import os
 from typing import Optional
 
 import numpy as np
+from opensimplex import OpenSimplex
 from PIL import Image, ImageDraw
 
-import generate_points
-import point
+import point.generator.generate as generate_points
+from bowyer_watson import BowyerWatson
 from coloring.ABCs import *
 from coloring.line import get_line_object
 from coloring.point import get_point_object
 from coloring.triangle import get_triangle_object
 from configs import CONFIGS
-from bowyer_watson import BowyerWatson
 from utils.progress_bar import progress_bar
 
 SRC_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -74,7 +74,7 @@ def run():
     os.system(f"rm {GIFS_PATH}/{CONFIGS.gif_configs.num}/*")
     # Seed components
     generate_points.seed(CONFIGS.seed)
-    point.seed(CONFIGS.seed)
+    open_simplex = OpenSimplex(CONFIGS.seed)
     # Create copy of configs to be able to remake the gif
     with open(f"{GIFS_PATH}/{CONFIGS.gif_configs.num}/config.json", "w+") as file:
         json.dump(CONFIGS.dumpJSON(), file, indent=4)
@@ -89,7 +89,7 @@ def run():
     if CONFIGS.point_coloring:
         point_coloring = get_point_object(CONFIGS.point_coloring)
     # Generate initial points
-    points = generate_points.generate_points()
+    points = generate_points.generate_points(open_simplex)
     # Generate frames
     for i, t in enumerate(np.linspace(0.0, 1.0, CONFIGS.gif_configs.num_of_frames, endpoint=False)):
         image = Image.new(

@@ -1,6 +1,7 @@
 import math
 
-from point import PointABC, StaticPoint
+from point.ABCs import PointABC
+from point.point import Static
 
 ########################## Start GeeksForGeeks Code ###########################
 # https://www.geeksforgeeks.org/find-if-a-point-lies-inside-outside-or-on-the-circumcircle-of-three-points-a-b-c/
@@ -27,7 +28,7 @@ def perpenBisectorFromLine(
     P: PointABC, Q: PointABC, a: float, b: float, c: float
 ) -> tuple[float, float, float]:
     # Find the mid point
-    mid_point = StaticPoint((P.x + Q.x) / 2, (P.y + Q.y) / 2)
+    mid_point = Static((P.x + Q.x) / 2, (P.y + Q.y) / 2, 0)
     # c = -bx + ay
     c = -b * (mid_point.x) + a * (mid_point.y)
     # Assign the coefficient of

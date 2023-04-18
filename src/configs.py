@@ -25,16 +25,18 @@ class DriftingConfigs:
 
 
 @dataclass
-class PointConfigs:
-    amplitude: int
-    intensity: float
-    scale: float
-    offset_y: float
+class PointGenerationConfigs:
     num_of_points: float
     separation_radius: float
     max_fails: int
     border_configs: BorderConfigs
-    drifting_configs: DriftingConfigs
+
+
+@dataclass
+class PointMovementConfigs:
+    x_movers: list[dict[str, Any]]
+    y_movers: list[dict[str, Any]]
+    z_movers: list[dict[str, Any]]
 
 
 @dataclass
@@ -59,7 +61,8 @@ class Configs:
     generate_seed: bool
     seed: int
     gif_configs: GIFConfigs
-    point_configs: PointConfigs
+    point_generation_configs: PointGenerationConfigs
+    point_movement_configs: PointMovementConfigs
     triangle_coloring: Optional[ObjectConfigs] = None
     line_coloring: Optional[ObjectConfigs] = None
     point_coloring: Optional[ObjectConfigs] = None

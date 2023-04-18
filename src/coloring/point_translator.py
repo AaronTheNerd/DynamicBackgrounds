@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 from coloring.ABCs import PointTranslatorABC
 from configs import CONFIGS, ObjectConfigs
-from point import StaticPoint
+from point.point import Static as StaticPoint
 from utils.concrete_inheritors import get_object
 
 
@@ -14,7 +14,7 @@ class Static(PointTranslatorABC):
     _point: StaticPoint = field(init=False)
     
     def __post_init__(self) -> None:
-        self._point = StaticPoint(self.point[0], self.point[1])
+        self._point = StaticPoint(self.point[0], self.point[1], 0)
 
     def get_point(self, t: float) -> StaticPoint:
         return self._point
@@ -29,18 +29,19 @@ class Circle(PointTranslatorABC):
     _center: StaticPoint = field(init=False)
 
     def __post_init__(self) -> None:
-        self._start = StaticPoint(self.start[0], self.start[1])
-        self._center = StaticPoint(self.center[0], self.center[1])
+        self._start = StaticPoint(self.start[0], self.start[1], 0)
+        self._center = StaticPoint(self.center[0], self.center[1], 0)
 
 
     def get_point(self, t: float) -> StaticPoint:
         rad = t * 2 * math.pi
         if not self.CW:
             rad = -rad
-        point = StaticPoint(self._start.x - self._center.x, self._start.y - self._center.y)
+        point = StaticPoint(self._start.x - self._center.x, self._start.y - self._center.y, 0)
         point = StaticPoint(
             point.x * math.cos(rad) - point.y * math.sin(rad),
-            point.y * math.cos(rad) + point.x * math.sin(rad))
+            point.y * math.cos(rad) + point.x * math.sin(rad),
+            0)
         point.x += self._center.x
         point.y += self._center.y
         return point
