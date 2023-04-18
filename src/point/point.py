@@ -28,6 +28,7 @@ class Moving(PointABC):
             offset = mover.get_offset(t, state)
             current_point.x += offset
         state.current_pos = current_point
+        state.max_value = CONFIGS.full_height
         for mover in self.y_movers:
             offset = mover.get_offset(t, state)
             current_point.y += offset
