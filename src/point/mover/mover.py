@@ -17,10 +17,11 @@ class _Drift(MoverABC):
 
 @dataclass
 class _ReflectiveDrift(MoverABC):
-    frequency: float
+    amplitude: float
+    frequency: int
 
     def get_offset(self, t: float, state: MoverState) -> float:
-        return state.max_value * self.frequency * math.sin(2 * math.pi * t)
+        return state.max_value * self.amplitude * math.sin(2 * math.pi * self.frequency * t)
 
 
 @dataclass
