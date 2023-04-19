@@ -4,7 +4,7 @@
   "gif_configs": {
     "width": 1366,
     "height": 768,
-    "num": 4,
+    "num": 5,
     "background_color": [0, 0, 0],
     "margin": 150,
     "ms_per_frame": 11,
@@ -85,8 +85,8 @@
       {
         "type": "Wave",
         "kwargs": {
-          "amplitude": 2,
-          "speed": 3,
+          "amplitude": 1,
+          "speed": 5,
           "wavelength": 5
         }
       }

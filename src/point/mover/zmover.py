@@ -2,7 +2,7 @@ import math
 from dataclasses import dataclass
 from typing import Any
 
-from configs import ObjectConfigs
+from configs import CONFIGS, ObjectConfigs
 from point.mover.ABCs import MoverState, ZMoverABC
 from utils.concrete_inheritors import get_object
 
@@ -49,7 +49,11 @@ class _Wave(ZMoverABC):
 
     def get_offset(self, t: float, state: MoverState) -> float:
         pos = state.current_pos.x if self.axis == "x" else state.current_pos.y
-        return self.amplitude * math.sin(2 * math.pi * self.speed * t + self.wavelength / state.max_value * pos)
+        dist = CONFIGS.full_width if self.axis == "x" else CONFIGS.full_height
+
+        return self.amplitude * math.sin(
+            2 * math.pi * (self.speed * t + self.wavelength / dist * pos)
+        )
 
 
 def get_zmover_object(configs: ObjectConfigs | dict[str, Any]) -> ZMoverABC:
