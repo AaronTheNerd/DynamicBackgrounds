@@ -86,7 +86,7 @@
         "type": "Wave",
         "kwargs": {
           "amplitude": 1,
-          "speed": 5,
+          "speed": -5,
           "wavelength": 5
         }
       }
