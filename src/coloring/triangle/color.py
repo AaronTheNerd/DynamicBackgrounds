@@ -3,6 +3,8 @@ from dataclasses import dataclass, field
 from typing import Any, Optional, TypeVar
 
 from opensimplex import OpenSimplex
+import skimage
+import numpy
 
 from coloring.ABCs import GradientABC
 from coloring.color import Color, ColorHSV, ColorRGB
@@ -143,6 +145,21 @@ class ColorShifting(ColorABC):
         if self._gradient is None:
             return (0, 0, 0)
         return self._gradient.get_color(triangle, t)
+
+
+@dataclass
+class ImageBlur(ColorABC):
+    filepath: str
+    _image: numpy.ndarray = field(init=False)
+
+    def __post_init__(self) -> None:
+        self._image = skimage.transform.resize(skimage.io.imread(self.filepath), (CONFIGS.full_height, CONFIGS.full_width))
+
+    def get_color(self, triangle: Triangle, t: float) -> Color:
+        polygon = numpy.array([[triangle.a.x, triangle.a.y], [triangle.b.x, triangle.b.y], [triangle.c.x, triangle.c.y]])
+        pixels = self._image[skimage.draw.polygon(polygon[:, 1], polygon[:, 0])]
+        channels = numpy.average(pixels, 0).astype(float)
+        return tuple([int(255 * value) for value in channels])
 
 
 def get_triangle_color_object(configs: ObjectConfigs | dict[str, Any]) -> ColorABC:

@@ -14,8 +14,8 @@ from utils.concrete_inheritors import get_object
 class TriangleDrawer(TriangleDrawerABC):
     gradient: Optional[dict[str, Any]] = None
     shader: Optional[dict[str, Any]] = None
-    _gradient: Optional[ColorABC] = field(init=False)
-    _shader: Optional[ShaderABC] = field(init=False)
+    _gradient: Optional[ColorABC] = field(init=False, default=None)
+    _shader: Optional[ShaderABC] = field(init=False, default=None)
 
     def __post_init__(self) -> None:
         if self.gradient is not None:

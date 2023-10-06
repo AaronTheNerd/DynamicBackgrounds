@@ -8,6 +8,14 @@ from utils.concrete_inheritors import get_object
 
 
 @dataclass
+class Float(RandomFloatABC):
+    value: float
+
+    def get_value(self) -> float:
+        return self.value
+
+
+@dataclass
 class Choice(RandomFloatABC):
     choices: list[float]
 

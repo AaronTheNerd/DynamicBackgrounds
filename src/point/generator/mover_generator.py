@@ -28,11 +28,11 @@ class ReflectiveDrift(MoverGeneratorABC):
     amplitude: dict[str, Any]
     frequency: dict[str, Any]
     amplitude_generator: RandomFloatABC = field(init=False)
-    frequency_generator: RandomIntABC = field(init=False)
+    frequency_generator: RandomFloatABC = field(init=False)
 
     def __post_init__(self) -> None:
         self.amplitude_generator = get_rand_float_object(self.amplitude)
-        self.frequency_generator = get_rand_int_object(self.frequency)
+        self.frequency_generator = get_rand_float_object(self.frequency)
 
     def generate(self) -> MoverABC:
         return _ReflectiveDrift(
