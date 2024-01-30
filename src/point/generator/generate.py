@@ -58,6 +58,7 @@ def random_point(
 
 
 def generate_points(open_simplex: OpenSimplex) -> list[PointABC]:
+    print("Generating Initial Points...", end="   ")
     # Generate evenly separated border points
     points = generate_border_points()
     # Find how many points are border points
@@ -97,4 +98,6 @@ def generate_points(open_simplex: OpenSimplex) -> list[PointABC]:
         if not failed:
             points.append(new_point)
             fails = 0
+    print("FINISHED")
+    print(f"Generated {len(points)} points")
     return points
