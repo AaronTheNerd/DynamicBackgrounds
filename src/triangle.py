@@ -13,6 +13,9 @@ class Edge:
     a: PointABC
     b: PointABC
 
+    def __eq__(self, value: Edge) -> bool:
+        return (self.a.x == value.a.x and self.b.x == value.b.x) or (self.b.x == value.a.x and self.a.x == value.b.x)
+
     def midpoint(self) -> Static:
         return Static((self.a.x + self.b.x) / 2, (self.a.y + self.b.y) / 2, 0)
 
@@ -44,6 +47,12 @@ class Triangle:
             or (self.c == p)
             or (self.a is p)
         )
+    
+    def has_edge(self, e: Edge) -> bool:
+        edges = self.edges()
+        for edge in edges:
+            if edge == e: return True
+        return False
 
     def center(self) -> Static:
         return Static(
