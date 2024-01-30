@@ -158,6 +158,8 @@ class ImageBlur(ColorABC):
     def get_color(self, triangle: Triangle, t: float) -> Color:
         polygon = numpy.array([[triangle.a.x, triangle.a.y], [triangle.b.x, triangle.b.y], [triangle.c.x, triangle.c.y]])
         pixels = self._image[skimage.draw.polygon(polygon[:, 1], polygon[:, 0])]
+        if len(pixels) == 0:
+            return (0,0,0)
         channels = numpy.average(pixels, 0).astype(float)
         return tuple([int(255 * value) for value in channels])
 
