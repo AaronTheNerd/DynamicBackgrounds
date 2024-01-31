@@ -1,4 +1,7 @@
 *.bmp
+*.png
+*.jpg
+*.jpeg
 __pycache__/
 build/
 .vscode/
