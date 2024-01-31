@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import math
 from dataclasses import dataclass, field
-from typing import Any, Optional, TypeVar
+from typing import Any, TypeVar
 
 from opensimplex import OpenSimplex
 import skimage
@@ -23,72 +25,89 @@ T = TypeVar("T")
 class Plain(ColorABC):
     color: Color = (255, 255, 255)
 
+    @classmethod
+    def from_json(cls, color: Color) -> Plain:
+        return cls(color)
+
     def get_color(self, triangle: Triangle, t: float) -> Color:
         return self.color
 
 
 @dataclass
 class GradientRGB(ColorABC):
-    start_color: dict[str, Any]
-    end_color: dict[str, Any]
-    range: dict[str, Any]
-    _start_color: GradientABC[ColorRGB] = field(init=False)
-    _end_color: GradientABC[ColorRGB] = field(init=False)
-    _range: PositionRangeABC = field(init=False)
+    start_color: GradientABC[ColorRGB]
+    end_color: GradientABC[ColorRGB]
+    range: PositionRangeABC
 
-    def __post_init__(self) -> None:
-        self._start_color = get_gradient_object(self.start_color)
-        self._end_color = get_gradient_object(self.end_color)
-        self._range = get_image_range_object(self.range)
+    @classmethod
+    def from_json(
+        cls,
+        start_color: dict[str, Any],
+        end_color: dict[str, Any],
+        range: dict[str, Any]
+    ) -> GradientRGB:
+        return cls(
+            start_color=get_gradient_object(start_color),
+            end_color=get_gradient_object(end_color),
+            range=get_image_range_object(range)
+        )
 
     def get_color(self, triangle: Triangle, t: float) -> Color:
-        current_start_color = self._start_color.get_color(t)
-        current_end_color = self._start_color.get_color(t)
+        current_start_color = self.start_color.get_color(t)
+        current_end_color = self.start_color.get_color(t)
         return ColorRGB.interpolate(
-            current_start_color, current_end_color, self._range.get_value(triangle.center(), t)
+            current_start_color, current_end_color, self.range.get_value(triangle.center(), t)
         ).make_drawable()
 
 
 @dataclass
 class GradientHSV(ColorABC):
-    start_color: dict[str, Any]
-    end_color: dict[str, Any]
-    range: dict[str, Any]
-    _start_color: GradientABC[ColorHSV] = field(init=False)
-    _end_color: GradientABC[ColorHSV] = field(init=False)
-    _range: PositionRangeABC = field(init=False)
+    start_color: GradientABC[ColorHSV]
+    end_color: GradientABC[ColorHSV]
+    range: PositionRangeABC
 
-    def __post_init__(self) -> None:
-        self._start_color = get_gradient_object(self.start_color)
-        self._end_color = get_gradient_object(self.end_color)
-        self._range = get_image_range_object(self.range)
+    @classmethod
+    def from_json(
+        cls,
+        start_color: dict[str, Any],
+        end_color: dict[str, Any],
+        range: dict[str, Any]
+    ) -> GradientHSV:
+        return cls(
+            start_color=get_gradient_object(start_color),
+            end_color=get_gradient_object(end_color),
+            range=get_image_range_object(range)
+        )
 
     def get_color(self, triangle: Triangle, t: float) -> Color:
-        current_start_color = self._start_color.get_color(t)
-        current_end_color = self._end_color.get_color(t)
+        current_start_color = self.start_color.get_color(t)
+        current_end_color = self.end_color.get_color(t)
         return ColorHSV.interpolate(
-            current_start_color, current_end_color, self._range.get_value(triangle.center(), t)
+            current_start_color, current_end_color, self.range.get_value(triangle.center(), t)
         ).make_drawable()
 
 
 @dataclass
 class StaticNoise(ColorABC):
-    gradient: dict[str, Any]
+    gradient: ColorABC
     scale: float
-    _gradient: ColorABC = field(init=False)
-    _open_simplex: OpenSimplex = field(init=False)
+    open_simplex: OpenSimplex
 
-    def __post_init__(self) -> None:
-        self._gradient = get_triangle_color_object(self.gradient)
-        self._open_simplex = OpenSimplex(CONFIGS.seed)
+    @classmethod
+    def from_json(cls, gradient: dict[str, Any], scale: float) -> StaticNoise:
+        return cls(
+            gradient=get_triangle_color_object(gradient),
+            scale=scale,
+            open_simplex=OpenSimplex(CONFIGS.seed)
+        )
 
     def get_color(self, triangle: Triangle, t: float) -> Color:
         center = triangle.center()
         x, y, z = center.x, center.y, center.z
         t = (
-            self._open_simplex.noise3(x=x * self.scale, y=y * self.scale, z=z * self.scale) + 1
+            self.open_simplex.noise3(x=x * self.scale, y=y * self.scale, z=z * self.scale) + 1
         ) / 2
-        return self._gradient.get_color(triangle, t)
+        return self.gradient.get_color(triangle, t)
 
 
 @dataclass
@@ -99,14 +118,27 @@ class TieDyeSwirl(ColorABC):
     alpha: float = 1
     colors: list[ColorHSV] = field(init=False)
 
-    def __post_init__(self) -> None:
-        self.colors = [
-            ColorHSV(1.0, 0.0, 0.0),
-            ColorHSV(1.0, 1.0, 0),
-            ColorHSV(0.1, 1.0, 0.0),
-            ColorHSV(0.1, 0.0, 1.0),
-            ColorHSV(0.36, 0.0, 0.64),
-        ]
+    @classmethod
+    def from_json(
+        cls,
+        start_x: int,
+        start_y: int,
+        scale: float,
+        alpha: float
+    ) -> TieDyeSwirl:
+        return cls(
+            start_x,
+            start_y,
+            scale,
+            alpha,
+            [
+                ColorHSV(1.0, 0.0, 0.0),
+                ColorHSV(1.0, 1.0, 0),
+                ColorHSV(0.1, 1.0, 0.0),
+                ColorHSV(0.1, 0.0, 1.0),
+                ColorHSV(0.36, 0.0, 0.64),
+            ]
+        )
 
     def get_color(self, triangle: Triangle, t: float) -> Color:
         center = triangle.center()
@@ -135,29 +167,30 @@ class TieDyeSwirl(ColorABC):
 
 @dataclass
 class ColorShifting(ColorABC):
-    gradient: dict[str, Any]
-    _gradient: Optional[ColorABC] = field(init=False)
+    gradient: ColorABC
 
-    def __post_init__(self) -> None:
-        self._gradient = get_triangle_color_object(self.gradient)
+    @classmethod
+    def from_json(cls, gradient: dict[str, Any]) -> ColorShifting:
+        return cls(get_triangle_color_object(gradient))
 
     def get_color(self, triangle: Triangle, t: float) -> Color:
-        if self._gradient is None:
-            return (0, 0, 0)
-        return self._gradient.get_color(triangle, t)
+        return self.gradient.get_color(triangle, t)
 
 
 @dataclass
 class ImageBlur(ColorABC):
-    filepath: str
-    _image: numpy.ndarray = field(init=False)
+    image: numpy.ndarray
 
-    def __post_init__(self) -> None:
-        self._image = skimage.transform.resize(skimage.io.imread(self.filepath), (CONFIGS.full_height, CONFIGS.full_width))
+    @classmethod
+    def from_json(cls, filepath: str) -> ImageBlur:
+        return cls(image=skimage.transform.resize(
+            skimage.io.imread(filepath),
+            (CONFIGS.full_height, CONFIGS.full_width)
+        ))
 
     def get_color(self, triangle: Triangle, t: float) -> Color:
         polygon = numpy.array([[triangle.a.x, triangle.a.y], [triangle.b.x, triangle.b.y], [triangle.c.x, triangle.c.y]])
-        pixels = self._image[skimage.draw.polygon(polygon[:, 1], polygon[:, 0])]
+        pixels = self.image[skimage.draw.polygon(polygon[:, 1], polygon[:, 0])]
         if len(pixels) == 0:
             return (0,0,0)
         channels = numpy.average(pixels, 0).astype(float)

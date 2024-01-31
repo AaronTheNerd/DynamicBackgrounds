@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import Any
 
 from configs import ObjectConfigs
 from point.generator.ABCs import MoverGeneratorABC
 from point.mover.ABCs import MoverABC
-from point.mover.mover import _Drift, _ReflectiveDrift, _Sway
+from point.mover.mover import Drift, ReflectiveDrift, Sway
 from point.random.ABCs import RandomFloatABC, RandomIntABC
 from point.random.float import get_rand_float_object
 from point.random.int import get_rand_int_object
@@ -12,36 +14,41 @@ from utils.concrete_inheritors import get_object
 
 
 @dataclass
-class Drift(MoverGeneratorABC):
-    frequency: dict[str, Any]
-    frequency_generator: RandomIntABC = field(init=False)
+class DriftGenerator(MoverGeneratorABC):
+    frequency: RandomIntABC
 
-    def __post_init__(self) -> None:
-        self.frequency_generator = get_rand_int_object(self.frequency)
+    @classmethod
+    def from_json(cls, frequency: dict[str, Any]) -> DriftGenerator:
+        return cls(get_rand_int_object(frequency))
 
     def generate(self) -> MoverABC:
-        return _Drift(self.frequency_generator.get_value())
+        return Drift(self.frequency.get_value())
 
 
 @dataclass
-class ReflectiveDrift(MoverGeneratorABC):
-    amplitude: dict[str, Any]
-    frequency: dict[str, Any]
-    amplitude_generator: RandomFloatABC = field(init=False)
-    frequency_generator: RandomFloatABC = field(init=False)
+class ReflectiveDriftGenerator(MoverGeneratorABC):
+    amplitude: RandomFloatABC
+    frequency: RandomIntABC
 
-    def __post_init__(self) -> None:
-        self.amplitude_generator = get_rand_float_object(self.amplitude)
-        self.frequency_generator = get_rand_float_object(self.frequency)
+    @classmethod
+    def from_json(
+        cls,
+        amplitude: dict[str, Any],
+        frequency: dict[str, Any]
+    ) -> ReflectiveDriftGenerator:
+        return cls(
+            get_rand_float_object(amplitude),
+            get_rand_int_object(frequency)
+        )
 
     def generate(self) -> MoverABC:
-        return _ReflectiveDrift(
-            self.amplitude_generator.get_value(), self.frequency_generator.get_value()
+        return ReflectiveDrift(
+            self.amplitude.get_value(), self.frequency.get_value()
         )
 
 
 @dataclass
-class Sway(MoverGeneratorABC):
+class SwayGenerator(MoverGeneratorABC):
     amplitude: float
     x_scale: float
     y_scale: float
@@ -49,8 +56,12 @@ class Sway(MoverGeneratorABC):
     x_offset: float
     y_offset: float
 
+    @classmethod
+    def from_json(cls, *args, **kwargs) -> SwayGenerator:
+        return cls(*args, **kwargs)
+
     def generate(self) -> MoverABC:
-        return _Sway(
+        return Sway(
             self.amplitude, self.x_scale, self.y_scale, self.intensity, self.x_offset, self.y_offset
         )
 

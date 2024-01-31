@@ -1,4 +1,5 @@
-import math
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -18,95 +19,119 @@ from utils.concrete_inheritors import get_object
 class Plain(ColorABC):
     color: Color
 
+    @classmethod
+    def from_json(cls, color: Color) -> Plain:
+        return cls(color)
+
     def get_color(self, edge: Edge, t: float) -> Color:
         return self.color
 
 
 @dataclass
 class GradientRGB(ColorABC):
-    start_color: dict[str, Any]
-    end_color: dict[str, Any]
-    range: dict[str, Any]
-    _start_color: GradientABC[ColorRGB] = field(init=False)
-    _end_color: GradientABC[ColorRGB] = field(init=False)
-    _range: PositionRangeABC = field(init=False)
+    start_color: GradientABC[ColorRGB]
+    end_color: GradientABC[ColorRGB]
+    range: PositionRangeABC
 
-    def __post_init__(self) -> None:
-        self._start_color = get_gradient_object(self.start_color)
-        self._end_color = get_gradient_object(self.end_color)
-        self._range = get_image_range_object(self.range)
+    @classmethod
+    def from_json(
+        cls,
+        start_color: dict[str, Any],
+        end_color: dict[str, Any],
+        range: dict[str, Any]
+    ) -> GradientRGB:
+        return cls(
+            start_color=get_gradient_object(start_color),
+            end_color=get_gradient_object(end_color),
+            range=get_image_range_object(range)
+        )
 
     def get_color(self, edge: Edge, t: float) -> Color:
-        current_start_color = self._start_color.get_color(t)
-        current_end_color = self._start_color.get_color(t)
+        current_start_color = self.start_color.get_color(t)
+        current_end_color = self.start_color.get_color(t)
         return ColorRGB.interpolate(
-            current_start_color, current_end_color, self._range.get_value(edge.midpoint(), t)
+            current_start_color, current_end_color, self.range.get_value(edge.midpoint(), t)
         ).make_drawable()
 
 
 @dataclass
 class GradientHSV(ColorABC):
-    start_color: dict[str, Any]
-    end_color: dict[str, Any]
-    range: dict[str, Any]
-    _start_color: GradientABC[ColorHSV] = field(init=False)
-    _end_color: GradientABC[ColorHSV] = field(init=False)
-    _range: PositionRangeABC = field(init=False)
+    start_color: GradientABC[ColorHSV]
+    end_color: GradientABC[ColorHSV]
+    range: PositionRangeABC
 
-    def __post_init__(self) -> None:
-        self._start_color = get_gradient_object(self.start_color)
-        self._end_color = get_gradient_object(self.end_color)
-        self._range = get_image_range_object(self.range)
+    @classmethod
+    def from_json(
+        cls,
+        start_color: dict[str, Any],
+        end_color: dict[str, Any],
+        range: dict[str, Any]
+    ) -> GradientHSV:
+        return cls(
+            start_color=get_gradient_object(start_color),
+            end_color=get_gradient_object(end_color),
+            range=get_image_range_object(range)
+        )
 
     def get_color(self, edge: Edge, t: float) -> Color:
-        current_start_color = self._start_color.get_color(t)
-        current_end_color = self._end_color.get_color(t)
+        current_start_color = self.start_color.get_color(t)
+        current_end_color = self.end_color.get_color(t)
         return ColorHSV.interpolate(
-            current_start_color, current_end_color, self._range.get_value(edge.midpoint(), t)
+            current_start_color, current_end_color, self.range.get_value(edge.midpoint(), t)
         ).make_drawable()
 
 
 @dataclass
 class LineGradientRGB(ColorABC):
-    start_color: dict[str, Any]
-    end_color: dict[str, Any]
-    range: dict[str, Any]
-    _start_color: GradientABC[ColorRGB] = field(init=False)
-    _end_color: GradientABC[ColorRGB] = field(init=False)
-    _range: LineRangeABC = field(init=False)
+    start_color: GradientABC[ColorRGB]
+    end_color: GradientABC[ColorRGB]
+    range: LineRangeABC
 
-    def __post_init__(self) -> None:
-        self._start_color = get_gradient_object(self.start_color)
-        self._end_color = get_gradient_object(self.end_color)
-        self._range = get_line_range_object(self.range)
+    @classmethod
+    def from_json(
+        cls,
+        start_color: dict[str, Any],
+        end_color: dict[str, Any],
+        range: dict[str, Any]
+    ) -> GradientHSV:
+        return cls(
+            start_color=get_gradient_object(start_color),
+            end_color=get_gradient_object(end_color),
+            range=get_line_range_object(range)
+        )
 
     def get_color(self, edge: Edge, t: float) -> Color:
-        current_start_color = self._start_color.get_color(t)
-        current_end_color = self._end_color.get_color(t)
+        current_start_color = self.start_color.get_color(t)
+        current_end_color = self.end_color.get_color(t)
         return ColorRGB.interpolate(
-            current_start_color, current_end_color, self._range.get_value(edge, t)
+            current_start_color, current_end_color, self.range.get_value(edge, t)
         ).make_drawable()
 
 
 @dataclass
 class LineGradientHSV(ColorABC):
-    start_color: dict[str, Any]
-    end_color: dict[str, Any]
-    range: dict[str, Any]
-    _start_color: GradientABC[ColorHSV] = field(init=False)
-    _end_color: GradientABC[ColorHSV] = field(init=False)
-    _range: LineRangeABC = field(init=False)
+    start_color: GradientABC[ColorHSV]
+    end_color: GradientABC[ColorHSV]
+    range: LineRangeABC
 
-    def __post_init__(self) -> None:
-        self._start_color = get_gradient_object(self.start_color)
-        self._end_color = get_gradient_object(self.end_color)
-        self._range = get_line_range_object(self.range)
+    @classmethod
+    def from_json(
+        cls,
+        start_color: dict[str, Any],
+        end_color: dict[str, Any],
+        range: dict[str, Any]
+    ) -> LineGradientHSV:
+        return cls(
+            start_color=get_gradient_object(start_color),
+            end_color=get_gradient_object(end_color),
+            range=get_line_range_object(range)
+        )
 
     def get_color(self, edge: Edge, t: float) -> Color:
-        current_start_color = self._start_color.get_color(t)
-        current_end_color = self._end_color.get_color(t)
+        current_start_color = self.start_color.get_color(t)
+        current_end_color = self.end_color.get_color(t)
         return ColorHSV.interpolate(
-            current_start_color, current_end_color, self._range.get_value(edge, t)
+            current_start_color, current_end_color, self.range.get_value(edge, t)
         ).make_drawable()
 
 

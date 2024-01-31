@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Any
 
@@ -9,8 +11,16 @@ from utils.concrete_inheritors import get_object
 
 @dataclass
 class PlainPoint(PointDrawerABC):
-    color: Color = (0, 0, 0)
-    width: int = 1
+    color: Color
+    width: int
+
+    @classmethod
+    def from_json(
+        cls,
+        color: Color = (0, 0, 0),
+        width: int = 1
+    ) -> PlainPoint:
+        return cls(color, width)
 
     def get_color(self, x, y):
         return self.color

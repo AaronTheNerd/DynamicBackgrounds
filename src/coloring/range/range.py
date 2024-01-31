@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import math
 from dataclasses import dataclass, field
 from typing import Any
@@ -10,13 +12,22 @@ from utils.interpolate import interpolate
 
 @dataclass
 class Linear(RangeABC):
+
+    @classmethod
+    def from_json(cls) -> Linear:
+        return cls()
+
     def get_value(self, t: float) -> float:
         return t
 
 
 @dataclass
 class Exponential(RangeABC):
-    alpha: float = 1.0
+    alpha: float
+
+    @classmethod
+    def from_json(cls, alpha: float = 1.0) -> Exponential:
+        return cls(alpha)
 
     def get_value(self, t: float) -> float:
         t = (math.exp(self.alpha * t) - 1) / (math.exp(self.alpha) - 1)
@@ -26,14 +37,21 @@ class Exponential(RangeABC):
 @dataclass
 class Discrete(RangeABC):
     segments: int
-    range: dict[str, Any]
-    _range: RangeABC = field(init=False)
+    range: RangeABC
 
-    def __post_init__(self) -> None:
-        self._range = get_object(RangeABC, self.range)
+    @classmethod
+    def from_json(
+        cls,
+        segments: int,
+        range: dict[str, Any]
+    ) -> Discrete:
+        return cls(
+            segments,
+            get_range_object(range)
+        )
 
     def get_value(self, t: float) -> float:
-        t = self._range.get_value(t)
+        t = self.range.get_value(t)
         t *= self.segments
         t = int(t)
         t /= self.segments - 1
@@ -42,7 +60,11 @@ class Discrete(RangeABC):
 
 @dataclass
 class EaseInOut(RangeABC):
-    degree: int = 2
+    degree: int
+
+    @classmethod
+    def from_json(cls, degree: int = 2) -> EaseInOut:
+        return cls(degree)
 
     def get_value(self, t: float) -> float:
         ease_in = lambda x: math.pow(x, self.degree)

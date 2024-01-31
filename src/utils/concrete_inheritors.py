@@ -23,4 +23,4 @@ def get_object(cls: type[T], configs: ObjectConfigs | dict[str, Any]) -> T:
     if not isinstance(configs, ObjectConfigs):
         configs = ObjectConfigs(**configs)
     subclasses = concrete_inheritors(cls)
-    return subclasses[configs.type](**configs.kwargs)
+    return subclasses[configs.type].from_json(**configs.kwargs)

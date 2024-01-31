@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import random
 from dataclasses import dataclass
 from typing import Any
@@ -11,6 +13,10 @@ from utils.concrete_inheritors import get_object
 class Float(RandomFloatABC):
     value: float
 
+    @classmethod
+    def from_json(cls, *args, **kwargs) -> Float:
+        return cls(*args, **kwargs)
+
     def get_value(self) -> float:
         return self.value
 
@@ -18,6 +24,10 @@ class Float(RandomFloatABC):
 @dataclass
 class Choice(RandomFloatABC):
     choices: list[float]
+
+    @classmethod
+    def from_json(cls, *args, **kwargs) -> Choice:
+        return cls(*args, **kwargs)
 
     def get_value(self) -> float:
         return random.choice(self.choices)
@@ -28,6 +38,10 @@ class Uniform(RandomFloatABC):
     min_value: float
     max_value: float
 
+    @classmethod
+    def from_json(cls, *args, **kwargs) -> Uniform:
+        return cls(*args, **kwargs)
+
     def get_value(self) -> float:
         return random.uniform(self.min_value, self.max_value)
 
@@ -36,6 +50,10 @@ class Uniform(RandomFloatABC):
 class Normal(RandomFloatABC):
     mean: float
     std_dev: float
+
+    @classmethod
+    def from_json(cls, *args, **kwargs) -> Normal:
+        return cls(*args, **kwargs)
 
     def get_value(self) -> float:
         return random.normalvariate(self.mean, self.std_dev)

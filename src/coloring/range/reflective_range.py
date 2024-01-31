@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import math
 from dataclasses import dataclass
 from typing import Any
@@ -9,7 +11,11 @@ from utils.concrete_inheritors import get_object
 
 @dataclass
 class Sine(ReflectiveRangeABC):
-    frequency: int = 1
+    frequency: int
+
+    @classmethod
+    def from_json(cls, frequency: int = 1) -> Sine:
+        return cls(frequency)
 
     def get_value(self, t: float) -> float:
         return (math.sin(t * self.frequency * 2 * math.pi) + 1) / 2
@@ -17,7 +23,11 @@ class Sine(ReflectiveRangeABC):
 
 @dataclass
 class Cosine(ReflectiveRangeABC):
-    frequency: int = 1
+    frequency: int
+
+    @classmethod
+    def from_json(cls, frequency: int = 1) -> Cosine:
+        return cls(frequency)
 
     def get_value(self, t: float) -> float:
         return (math.cos(t * self.frequency * 2 * math.pi) + 1) / 2
@@ -25,6 +35,10 @@ class Cosine(ReflectiveRangeABC):
 
 @dataclass
 class Linear(ReflectiveRangeABC):
+    @classmethod
+    def from_json(cls) -> Linear:
+        return cls()
+
     def get_value(self, t: float) -> float:
         return 2 * t if t <= 0.5 else (1 - t) * 2
 

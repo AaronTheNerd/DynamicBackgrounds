@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Any
 
@@ -9,7 +11,11 @@ from utils.concrete_inheritors import get_object
 
 @dataclass
 class Static(WidthABC):
-    width: int = 1
+    width: int
+
+    @classmethod
+    def from_json(cls, width: int = 1) -> Static:
+        return cls(width)
 
     def get_width(self, edge: Edge, t: float) -> int:
         return self.width

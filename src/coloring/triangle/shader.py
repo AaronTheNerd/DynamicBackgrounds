@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Any
 
@@ -14,8 +16,18 @@ class AmbientShader(ShaderABC):
     ambient_gain: float = 1.0
     ambient_definition: int = 1
 
-    def __post_init__(self) -> None:
-        self.ambient_vector = utils.normalize3d(self.ambient_vector)
+    @classmethod
+    def from_json(
+        cls,
+        ambient_vector: utils.Vector3d = (0, 0, 1),
+        ambient_gain: float = 1.0,
+        ambient_definition: int = 1
+    ) -> AmbientShader:
+        return cls(
+            utils.normalize3d(ambient_vector),
+            ambient_gain,
+            ambient_definition
+        )
 
     def get_facing_ratio(self, triangle: Triangle, t: float) -> float:
         normal = utils.get_normal(triangle)

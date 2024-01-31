@@ -8,7 +8,7 @@ from utils.concrete_inheritors import get_object
 
 
 @dataclass
-class _Sway(ZMoverABC):
+class Sway(ZMoverABC):
     amplitude: float
     x_scale: float
     y_scale: float
@@ -26,7 +26,7 @@ class _Sway(ZMoverABC):
 
 
 @dataclass
-class _NoiseMap(ZMoverABC):
+class NoiseMap(ZMoverABC):
     amplitude: float
     x_scale: float
     y_scale: float
@@ -41,7 +41,7 @@ class _NoiseMap(ZMoverABC):
 
 
 @dataclass
-class _Wave(ZMoverABC):
+class Wave(ZMoverABC):
     amplitude: float
     speed: int
     wavelength: float

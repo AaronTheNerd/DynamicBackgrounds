@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import random
 from dataclasses import dataclass
 from typing import Any
@@ -11,6 +13,10 @@ from utils.concrete_inheritors import get_object
 class Integer(RandomIntABC):
     value: int
 
+    @classmethod
+    def from_json(cls, *args, **kwargs) -> Integer:
+        return cls(*args, **kwargs)
+
     def get_value(self) -> int:
         return self.value
 
@@ -18,6 +24,10 @@ class Integer(RandomIntABC):
 @dataclass
 class Choice(RandomIntABC):
     choices: list[int]
+
+    @classmethod
+    def from_json(cls, *args, **kwargs) -> Choice:
+        return cls(*args, **kwargs)
 
     def get_value(self) -> int:
         return random.choice(self.choices)
@@ -27,6 +37,10 @@ class Choice(RandomIntABC):
 class RandInt(RandomIntABC):
     min_value: int
     max_value: int
+
+    @classmethod
+    def from_json(cls, *args, **kwargs) -> RandInt:
+        return cls(*args, **kwargs)
 
     def get_value(self) -> int:
         return random.randint(self.min_value, self.max_value)

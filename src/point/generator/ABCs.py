@@ -1,18 +1,18 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from dataclasses import dataclass
 
 from point.mover.ABCs import MoverABC, ZMoverABC
-
+from utils.serialABC import SerialABC
 
 @dataclass
-class MoverGeneratorABC(ABC):
+class MoverGeneratorABC(SerialABC):
     @abstractmethod
     def generate(self) -> MoverABC:
         ...
 
 
 @dataclass
-class ZMoverGeneratorABC(ABC):
+class ZMoverGeneratorABC(SerialABC):
     @abstractmethod
     def generate(self) -> ZMoverABC:
         ...

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import math
 from dataclasses import dataclass, field
 from typing import Any
@@ -10,40 +12,47 @@ from utils.concrete_inheritors import get_object
 
 @dataclass
 class Static(PointTranslatorABC):
-    point: list[float]
-    _point: StaticPoint = field(init=False)
+    point: StaticPoint
 
-    def __post_init__(self) -> None:
-        self._point = StaticPoint(self.point[0], self.point[1], 0)
+    @classmethod
+    def from_json(cls, point: list[float]) -> Static:
+        return cls(point=StaticPoint(*point))
 
     def get_point(self, t: float) -> StaticPoint:
-        return self._point
+        return self.point
 
 
 @dataclass
 class Circle(PointTranslatorABC):
-    start: list[float]
-    center: list[float]
+    start: StaticPoint
+    center: StaticPoint
     CW: bool = True
-    _start: StaticPoint = field(init=False)
-    _center: StaticPoint = field(init=False)
 
-    def __post_init__(self) -> None:
-        self._start = StaticPoint(self.start[0], self.start[1], 0)
-        self._center = StaticPoint(self.center[0], self.center[1], 0)
+    @classmethod
+    def from_json(
+        cls,
+        start: list[float],
+        center: list[float],
+        CW: bool
+    ) -> Circle:
+        return cls(
+            start=StaticPoint(*start),
+            center=StaticPoint(*center),
+            CW=CW
+        )
 
     def get_point(self, t: float) -> StaticPoint:
         rad = t * 2 * math.pi
         if not self.CW:
             rad = -rad
-        point = StaticPoint(self._start.x - self._center.x, self._start.y - self._center.y, 0)
+        point = StaticPoint(self.start.x - self.center.x, self.start.y - self.center.y, 0)
         point = StaticPoint(
             point.x * math.cos(rad) - point.y * math.sin(rad),
             point.y * math.cos(rad) + point.x * math.sin(rad),
             0,
         )
-        point.x += self._center.x
-        point.y += self._center.y
+        point.x += self.center.x
+        point.y += self.center.y
         return point
 
 
