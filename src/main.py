@@ -9,12 +9,9 @@ from PIL import Image, ImageDraw
 import point.generator.generate as generate_points
 from point.ABCs import PointABC
 from bowyer_watson import BowyerWatson
-from coloring.triangle.ABCs import TriangleDrawerABC
-from coloring.line.ABCs import LineDrawerABC
-from coloring.point.ABCs import PointDrawerABC
-from coloring.line.line import get_line_object
-from coloring.point.point import get_point_object
-from coloring.triangle.triangle import get_triangle_object
+from coloring.line.line import LineDrawer
+from coloring.point.point import PointDrawer
+from coloring.triangle.triangle import TriangleDrawer
 from configs import CONFIGS
 from utils.progress_bar import progress_bar
 
@@ -26,9 +23,9 @@ def draw(
     image,
     t: float,
     points: list[PointABC],
-    triangle_coloring: Optional[TriangleDrawerABC],
-    line_coloring: Optional[LineDrawerABC],
-    point_coloring: Optional[PointDrawerABC],
+    triangle_coloring: Optional[TriangleDrawer],
+    line_coloring: Optional[LineDrawer],
+    point_coloring: Optional[PointDrawer],
 ):
     new_points = [point.at(t) for point in points]
     triangles = BowyerWatson(new_points)
@@ -82,13 +79,13 @@ def run():
     # Generate objects needed to color the gif
     triangle_coloring = None
     if CONFIGS.triangle_coloring:
-        triangle_coloring = get_triangle_object(CONFIGS.triangle_coloring)
+        triangle_coloring = TriangleDrawer.from_json(**CONFIGS.triangle_coloring)
     line_coloring = None
     if CONFIGS.line_coloring:
-        line_coloring = get_line_object(CONFIGS.line_coloring)
+        line_coloring = LineDrawer.from_json(**CONFIGS.line_coloring)
     point_coloring = None
     if CONFIGS.point_coloring:
-        point_coloring = get_point_object(CONFIGS.point_coloring)
+        point_coloring = PointDrawer.from_json(**CONFIGS.point_coloring)
     # Generate initial points
     points = generate_points.generate_points(open_simplex)
     # Generate frames

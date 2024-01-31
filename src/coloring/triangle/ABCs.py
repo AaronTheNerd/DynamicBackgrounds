@@ -15,9 +15,3 @@ class ShaderABC(SerialABC):
     @abstractmethod
     def get_facing_ratio(self, triangle: Triangle, t: float) -> float:
         ...
-
-
-class TriangleDrawerABC(SerialABC):
-    @abstractmethod
-    def get_color(self, triangle: Triangle, t: float) -> Color:
-        ...

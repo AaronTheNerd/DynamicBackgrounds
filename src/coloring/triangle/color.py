@@ -23,10 +23,10 @@ T = TypeVar("T")
 
 @dataclass
 class Plain(ColorABC):
-    color: Color = (255, 255, 255)
+    color: Color
 
     @classmethod
-    def from_json(cls, color: Color) -> Plain:
+    def from_json(cls, color: Color = (255, 255, 255)) -> Plain:
         return cls(color)
 
     def get_color(self, triangle: Triangle, t: float) -> Color:
@@ -112,19 +112,19 @@ class StaticNoise(ColorABC):
 
 @dataclass
 class TieDyeSwirl(ColorABC):
-    start_x: int = 0
-    start_y: int = 0
-    scale: float = 1
-    alpha: float = 1
+    start_x: int
+    start_y: int
+    scale: float
+    alpha: float
     colors: list[ColorHSV] = field(init=False)
 
     @classmethod
     def from_json(
         cls,
-        start_x: int,
-        start_y: int,
-        scale: float,
-        alpha: float
+        start_x: int = 0,
+        start_y: int = 0,
+        scale: float = 1,
+        alpha: float = 1
     ) -> TieDyeSwirl:
         return cls(
             start_x,

@@ -12,9 +12,9 @@ from utils.concrete_inheritors import get_object
 
 @dataclass
 class AmbientShader(ShaderABC):
-    ambient_vector: utils.Vector3d = (0, 0, 1)
-    ambient_gain: float = 1.0
-    ambient_definition: int = 1
+    ambient_vector: utils.Vector3d
+    ambient_gain: float
+    ambient_definition: int
 
     @classmethod
     def from_json(

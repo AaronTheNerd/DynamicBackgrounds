@@ -4,18 +4,16 @@ from dataclasses import dataclass
 from typing import Any, Optional
 
 from coloring.color import Color, ColorRGB
-from coloring.triangle.ABCs import ColorABC, ShaderABC, TriangleDrawerABC
+from coloring.triangle.ABCs import ColorABC, ShaderABC
 from coloring.triangle.color import get_triangle_color_object
 from coloring.triangle.shader import get_shader_object
-from configs import ObjectConfigs
 from triangle import Triangle
-from utils.concrete_inheritors import get_object
-
+from utils.serialABC import SerialABC
 
 @dataclass
-class TriangleDrawer(TriangleDrawerABC):
-    gradient: Optional[ColorABC] = None
-    shader: Optional[ShaderABC] = None
+class TriangleDrawer(SerialABC):
+    gradient: Optional[ColorABC]
+    shader: Optional[ShaderABC]
 
     @classmethod
     def from_json(
@@ -41,7 +39,3 @@ class TriangleDrawer(TriangleDrawerABC):
         return ColorRGB.interpolate(
             ColorRGB(0, 0, 0), ColorRGB.generate(color), facing_ratio
         ).make_drawable()
-
-
-def get_triangle_object(configs: dict[str, Any] | ObjectConfigs) -> TriangleDrawerABC:
-    return get_object(TriangleDrawerABC, configs)

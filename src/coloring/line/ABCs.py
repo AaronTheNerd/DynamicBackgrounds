@@ -14,13 +14,3 @@ class WidthABC(SerialABC):
     @abstractmethod
     def get_width(self, edge: Edge, t: float) -> int:
         ...
-
-
-class LineDrawerABC(SerialABC):
-    @abstractmethod
-    def get_color(self, edge: Edge, t: float) -> Color:
-        ...
-
-    @abstractmethod
-    def get_width(self, edge: Edge, t: float) -> int:
-        ...
