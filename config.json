@@ -1,19 +1,24 @@
 {
-  "generate_seed": true,
-  "seed": 1626244211,
+  "generate_seed": false,
+  "seed": -2118053362,
   "gif_configs": {
-    "width": 1366,
+    "width": 1024,
     "height": 768,
-    "num": 5,
-    "background_color": [0, 0, 0],
-    "margin": 150,
+    "num": 3,
+    "background_color": [
+      0,
+      0,
+      0
+    ],
+    "margin": 75,
     "ms_per_frame": 11,
-    "num_of_frames": 250
+    "num_of_frames": 250,
+    "file_extension": "png"
   },
   "point_generation_configs": {
-    "num_of_points": 500,
-    "separation_radius": 40,
-    "max_fails": 10000,
+    "num_of_points": 250,
+    "separation_radius": 50,
+    "max_fails": 100,
     "border_configs": {
       "top": false,
       "bottom": false,
@@ -25,121 +30,58 @@
   "point_movement_configs": {
     "x_movers": [
       {
-        "type": "Drift",
+        "type": "ReflectiveDriftGenerator",
         "kwargs": {
-          "frequency": {
-            "type": "Integer",
+          "amplitude": {
+            "type": "Normal",
             "kwargs": {
-              "value": 1
+              "mean": 0.25,
+              "std_dev": 0.05
+            }
+          },
+          "frequency": {
+            "type": "RandInt",
+            "kwargs": {
+              "min_value": 0,
+              "max_value": 2
             }
           }
         }
       },
       {
-        "type": "Sway",
+        "type": "SwayGenerator",
         "kwargs": {
-          "amplitude": 60,
+          "amplitude": 0.5,
           "intensity": 1,
-          "x_scale": 0.004,
-          "y_scale": 0.01,
+          "x_scale": 0.1,
+          "y_scale": 0.1,
           "x_offset": 0,
-          "y_offset": 0
+          "y_offset": 100
         }
       }
     ],
     "y_movers": [
       {
-        "type": "Sway",
+        "type": "SwayGenerator",
         "kwargs": {
-          "amplitude": 30,
+          "amplitude": 0.5,
           "intensity": 1,
-          "x_scale": 0.004,
-          "y_scale": 0.01,
+          "x_scale": 0.1,
+          "y_scale": 0.1,
           "x_offset": 100,
-          "y_offset": 100
+          "y_offset": 200
         }
       }
     ],
-    "z_movers": [
-      {
-        "type": "NoiseMap",
-        "kwargs": {
-          "amplitude": 3,
-          "x_scale": 0.004,
-          "y_scale": 0.004,
-          "x_offset": 0,
-          "y_offset": 0
-        }
-      },
-      {
-        "type": "Sway",
-        "kwargs": {
-          "amplitude": 0.5,
-          "intensity": 0.005,
-          "x_scale": 50,
-          "y_scale": 50,
-          "x_offset": 100,
-          "y_offset": 0
-        }
-      },
-      {
-        "type": "Wave",
-        "kwargs": {
-          "amplitude": 1,
-          "speed": -5,
-          "wavelength": 5
-        }
-      }
-    ]
+    "z_movers": []
   },
   "triangle_coloring": {
     "type": "TriangleDrawer",
     "kwargs": {
       "gradient": {
-        "type": "GradientHSV",
+        "type": "ImageBlur",
         "kwargs": {
-          "start_color": {
-            "type": "PlainHSV",
-            "kwargs": {
-              "color": [235, 52, 52]
-            }
-          },
-          "end_color": {
-            "type": "PlainHSV",
-            "kwargs": {
-              "color": [66, 224, 245]
-            }
-          },
-          "range": {
-            "type": "Linear",
-            "kwargs": {
-              "start": {
-                "type": "Circle",
-                "kwargs": {
-                  "start": [150, 150],
-                  "center": [833, 534]
-                }
-              },
-              "end": {
-                "type": "Circle",
-                "kwargs": {
-                  "start": [1516, 918],
-                  "center": [833, 534]
-                }
-              },
-              "range": {
-                "type": "EaseInOut"
-              }
-            }
-          }
-        }
-      },
-      "shader": {
-        "type": "AmbientShader",
-        "kwargs": {
-          "ambient_vector": [1.0, 1.0, 0.5],
-          "ambient_gain": 110000,
-          "ambient_definition": 11
+          "filepath": "~/Pictures/space.jpeg"
         }
       }
     }

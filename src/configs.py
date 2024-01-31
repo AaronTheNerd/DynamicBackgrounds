@@ -48,6 +48,7 @@ class GIFConfigs:
     margin: int
     ms_per_frame: int
     num_of_frames: int
+    file_extension: str
 
 
 @dataclass

@@ -101,16 +101,16 @@ def run():
         image_draw = ImageDraw.Draw(image)
         progress_bar(t)
         draw(image_draw, t, points, triangle_coloring, line_coloring, point_coloring)
-        file_name = f"{GIFS_PATH}/{CONFIGS.gif_configs.num}/image#{str(i).zfill(3)}.bmp"
+        file_name = f"{GIFS_PATH}/{CONFIGS.gif_configs.num}/image#{str(i).zfill(3)}.{CONFIGS.gif_configs.file_extension}"
         image.save(file_name)
     # Convert frames to gif
     progress_bar(1.0)
     print("\nCompiling Frames...")
     os.system(
-        f"convert -delay {CONFIGS.gif_configs.ms_per_frame} -loop 0 {GIFS_PATH}/{CONFIGS.gif_configs.num}/*.bmp -crop {CONFIGS.gif_configs.width}x{CONFIGS.gif_configs.height}+{CONFIGS.gif_configs.margin}+{CONFIGS.gif_configs.margin} +repage {GIFS_PATH}/{CONFIGS.gif_configs.num}/gif{CONFIGS.gif_configs.num}.gif"
+        f"convert -delay {CONFIGS.gif_configs.ms_per_frame} -loop 0 {GIFS_PATH}/{CONFIGS.gif_configs.num}/*.{CONFIGS.gif_configs.file_extension} -crop {CONFIGS.gif_configs.width}x{CONFIGS.gif_configs.height}+{CONFIGS.gif_configs.margin}+{CONFIGS.gif_configs.margin} +repage {GIFS_PATH}/{CONFIGS.gif_configs.num}/gif{CONFIGS.gif_configs.num}.gif"
     )
     # Remove frames
-    os.system(f"rm {GIFS_PATH}/{CONFIGS.gif_configs.num}/*.bmp")
+    os.system(f"rm {GIFS_PATH}/{CONFIGS.gif_configs.num}/*.{CONFIGS.gif_configs.file_extension}")
 
 
 if __name__ == "__main__":

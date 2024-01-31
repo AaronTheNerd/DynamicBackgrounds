@@ -2,8 +2,8 @@
     "generate_seed": false,
     "seed": -2118053362,
     "gif_configs": {
-        "width": 1920,
-        "height": 1080,
+        "width": 1024,
+        "height": 768,
         "num": 3,
         "background_color": [
             0,
@@ -12,11 +12,11 @@
         ],
         "margin": 75,
         "ms_per_frame": 11,
-        "num_of_frames": 600
+        "num_of_frames": 250
     },
     "point_generation_configs": {
-        "num_of_points": 500,
-        "separation_radius": 45,
+        "num_of_points": 250,
+        "separation_radius": 50,
         "max_fails": 100,
         "border_configs": {
             "top": false,
@@ -29,96 +29,62 @@
     "point_movement_configs": {
         "x_movers": [
             {
-                "type": "ReflectiveDrift",
+                "type": "ReflectiveDriftGenerator",
                 "kwargs": {
-                    "frequency": {
+                    "amplitude": {
                         "type": "Normal",
                         "kwargs": {
                             "mean": 0.25,
-                            "std_dev": 0.125
+                            "std_dev": 0.05
+                        }
+                    },
+                    "frequency": {
+                        "type": "RandInt",
+                        "kwargs": {
+                            "min_value": 0,
+                            "max_value": 2
                         }
                     }
                 }
             },
             {
-                "type": "Sway",
+                "type": "SwayGenerator",
                 "kwargs": {
-                    "amplitude": 1200,
-                    "intensity": 0.075,
-                    "scale": 30,
-                    "offset": 0
+                    "amplitude": 0.5,
+                    "intensity": 1,
+                    "x_scale": 0.1,
+                    "y_scale": 0.1,
+                    "x_offset": 0,
+                    "y_offset": 100
                 }
             }
         ],
         "y_movers": [
             {
-                "type": "Sway",
+                "type": "SwayGenerator",
                 "kwargs": {
-                    "amplitude": 1200,
-                    "intensity": 0.075,
-                    "scale": 30,
-                    "offset": 100
+                    "amplitude": 0.5,
+                    "intensity": 1,
+                    "x_scale": 0.1,
+                    "y_scale": 0.1,
+                    "x_offset": 100,
+                    "y_offset": 200
                 }
             }
         ],
         "z_movers": []
     },
-    "triangle_coloring": null,
-    "line_coloring": {
-        "type": "LineColorer",
+    "triangle_coloring": {
+        "type": "TriangleDrawer",
         "kwargs": {
-            "color": {
-                "type": "LineGradientRGB",
+            "gradient": {
+                "type": "ImageBlur",
                 "kwargs": {
-                    "start_color": {
-                        "type": "PlainRGB",
-                        "kwargs": {
-                            "color": [
-                                37,
-                                153,
-                                247
-                            ]
-                        }
-                    },
-                    "end_color": {
-                        "type": "PlainRGB",
-                        "kwargs": {
-                            "color": [
-                                0,
-                                0,
-                                0
-                            ]
-                        }
-                    },
-                    "range": {
-                        "type": "Length",
-                        "kwargs": {
-                            "min_length": 20,
-                            "max_length": 100,
-                            "range": {
-                                "type": "EaseInOut"
-                            }
-                        }
-                    }
-                }
-            },
-            "width": {
-                "type": "Static",
-                "kwargs": {
-                    "width": 3
+                    "filepath": "~/Pictures/space.jpeg"
                 }
             }
         }
     },
-    "point_coloring": {
-        "type": "PlainPoint",
-        "kwargs": {
-            "color": [
-                255,
-                255,
-                255
-            ],
-            "width": 4
-        }
-    }
+    "line_coloring": null,
+    "point_coloring": null
 }
