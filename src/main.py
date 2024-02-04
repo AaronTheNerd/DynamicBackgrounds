@@ -7,12 +7,12 @@ from opensimplex import OpenSimplex
 from PIL import Image, ImageDraw
 
 import point.generator.generate as generate_points
-from point.ABCs import PointABC
 from bowyer_watson import BowyerWatson
-from coloring.line.line import LineDrawer
-from coloring.point.point import PointDrawer
-from coloring.triangle.triangle import TriangleDrawer
+from coloring.edge import EdgeDrawer
+from coloring.triangle import TriangleDrawer
+from coloring.vertex import VertexDrawer
 from configs import CONFIGS
+from point.ABCs import PointABC
 from utils.progress_bar import progress_bar
 
 SRC_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -24,8 +24,8 @@ def draw(
     t: float,
     points: list[PointABC],
     triangle_coloring: Optional[TriangleDrawer],
-    line_coloring: Optional[LineDrawer],
-    point_coloring: Optional[PointDrawer],
+    line_coloring: Optional[EdgeDrawer],
+    point_coloring: Optional[VertexDrawer],
 ):
     new_points = [point.at(t) for point in points]
     triangles = BowyerWatson(new_points)
@@ -49,7 +49,11 @@ def draw(
             for edge in edges:
                 color = line_coloring.get_color(edge, t)
                 width = line_coloring.get_width(edge, t)
-                image.line([edge.a.x, edge.a.y, edge.b.x, edge.b.y], width=width, fill=tuple(color))
+                image.line(
+                    [edge.a.x, edge.a.y, edge.b.x, edge.b.y],
+                    width=width,
+                    fill=tuple(color),
+                )
     if point_coloring is not None:
         for point in new_points:
             color = point_coloring.get_color(point, t)
@@ -82,14 +86,16 @@ def run():
         triangle_coloring = TriangleDrawer.from_json(**CONFIGS.triangle_coloring)
     line_coloring = None
     if CONFIGS.line_coloring:
-        line_coloring = LineDrawer.from_json(**CONFIGS.line_coloring)
+        line_coloring = EdgeDrawer.from_json(**CONFIGS.line_coloring)
     point_coloring = None
     if CONFIGS.point_coloring:
-        point_coloring = PointDrawer.from_json(**CONFIGS.point_coloring)
+        point_coloring = VertexDrawer.from_json(**CONFIGS.point_coloring)
     # Generate initial points
     points = generate_points.generate_points(open_simplex)
     # Generate frames
-    for i, t in enumerate(np.linspace(0.0, 1.0, CONFIGS.gif_configs.num_of_frames, endpoint=False)):
+    for i, t in enumerate(
+        np.linspace(0.0, 1.0, CONFIGS.gif_configs.num_of_frames, endpoint=False)
+    ):
         image = Image.new(
             "RGB",
             (CONFIGS.full_width, CONFIGS.full_height),
@@ -107,7 +113,9 @@ def run():
         f"convert -delay {CONFIGS.gif_configs.ms_per_frame} -loop 0 {GIFS_PATH}/{CONFIGS.gif_configs.num}/*.{CONFIGS.gif_configs.file_extension} -crop {CONFIGS.gif_configs.width}x{CONFIGS.gif_configs.height}+{CONFIGS.gif_configs.margin}+{CONFIGS.gif_configs.margin} +repage {GIFS_PATH}/{CONFIGS.gif_configs.num}/gif{CONFIGS.gif_configs.num}.gif"
     )
     # Remove frames
-    os.system(f"rm {GIFS_PATH}/{CONFIGS.gif_configs.num}/*.{CONFIGS.gif_configs.file_extension}")
+    os.system(
+        f"rm {GIFS_PATH}/{CONFIGS.gif_configs.num}/*.{CONFIGS.gif_configs.file_extension}"
+    )
 
 
 if __name__ == "__main__":

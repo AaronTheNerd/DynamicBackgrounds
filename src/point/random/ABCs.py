@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from dataclasses import dataclass
 
-from utils.serialABC import SerialABC
+from serial.ABCs import SerialABC
 
 @dataclass
 class RandomIntABC(SerialABC):

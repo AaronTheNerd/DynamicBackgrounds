@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Any
 
 import utils.vector3d as utils
-from coloring.triangle.ABCs import ShaderABC
+from coloring.shader.ABCs import ShaderABC
 from configs import ObjectConfigs
 from triangle import Triangle
 from utils.concrete_inheritors import get_object

@@ -2,21 +2,17 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from coloring.color import Color
-from utils.serialABC import SerialABC
+from color import Color
+from serial.ABCs import SerialABC
 
 
 @dataclass
-class PointDrawer(SerialABC):
+class VertexDrawer(SerialABC):
     color: Color
     width: int
 
     @classmethod
-    def from_json(
-        cls,
-        color: Color = (0, 0, 0),
-        width: int = 1
-    ) -> PointDrawer:
+    def from_json(cls, color: Color = (0, 0, 0), width: int = 1) -> VertexDrawer:
         return cls(color, width)
 
     def get_color(self, x, y):

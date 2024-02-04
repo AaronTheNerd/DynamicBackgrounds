@@ -1,49 +1,38 @@
 {
-  "generate_seed": false,
+  "generate_seed": true,
   "seed": -2118053362,
   "gif_configs": {
     "width": 1024,
     "height": 768,
-    "num": 3,
-    "background_color": [
-      0,
-      0,
-      0
-    ],
-    "margin": 75,
+    "num": 4,
+    "background_color": [0, 0, 0],
+    "margin": 150,
     "ms_per_frame": 11,
     "num_of_frames": 250,
     "file_extension": "png"
   },
   "point_generation_configs": {
-    "num_of_points": 250,
-    "separation_radius": 50,
+    "num_of_points": 500,
+    "separation_radius": 40,
     "max_fails": 100,
     "border_configs": {
-      "top": false,
-      "bottom": false,
-      "left": false,
-      "right": false,
+      "top": true,
+      "bottom": true,
+      "left": true,
+      "right": true,
       "separation": 50
     }
   },
   "point_movement_configs": {
     "x_movers": [
       {
-        "type": "ReflectiveDriftGenerator",
+        "type": "DriftGenerator",
         "kwargs": {
-          "amplitude": {
-            "type": "Normal",
-            "kwargs": {
-              "mean": 0.25,
-              "std_dev": 0.05
-            }
-          },
           "frequency": {
             "type": "RandInt",
             "kwargs": {
-              "min_value": 0,
-              "max_value": 2
+              "min_value": -1,
+              "max_value": 1
             }
           }
         }
@@ -51,12 +40,12 @@
       {
         "type": "SwayGenerator",
         "kwargs": {
-          "amplitude": 0.5,
-          "intensity": 1,
-          "x_scale": 0.1,
-          "y_scale": 0.1,
+          "amplitude": 0.2,
+          "x_scale": 1,
+          "y_scale": 1,
+          "intensity": 0.5,
           "x_offset": 0,
-          "y_offset": 100
+          "y_offset": 0
         }
       }
     ],
@@ -64,24 +53,102 @@
       {
         "type": "SwayGenerator",
         "kwargs": {
-          "amplitude": 0.5,
-          "intensity": 1,
-          "x_scale": 0.1,
-          "y_scale": 0.1,
+          "amplitude": 0.4,
+          "x_scale": 0.01,
+          "y_scale": 0.01,
+          "intensity": 0.5,
           "x_offset": 100,
-          "y_offset": 200
+          "y_offset": 100
         }
       }
     ],
-    "z_movers": []
+    "z_movers": [
+      {
+        "type": "NoiseMapGenerator",
+        "kwargs": {
+          "amplitude": 1.0,
+          "x_scale": 0.01,
+          "y_scale": 0.01,
+          "x_offset": 0.0,
+          "y_offset": 100.0
+        }
+      }
+    ]
   },
   "triangle_coloring": {
-    "type": "TriangleDrawer",
-    "kwargs": {
+    "color": {
       "gradient": {
-        "type": "ImageBlur",
+        "type": "Plain",
         "kwargs": {
-          "filepath": "~/Pictures/space.jpeg"
+          "color": {
+            "type": "Static",
+            "kwargs": {
+              "color": [255, 255, 255]
+            }
+          }
+        }
+      },
+      "shader": {
+        "type": "AmbientShader",
+        "kwargs": {
+          "ambient_vector": [1, 1, 0.5],
+          "ambient_gain": 15000000,
+          "ambient_definition": 15
+        }
+      }
+    }
+  },
+  "line_coloring": {
+    "color": {
+      "gradient": {
+        "type": "Gradient",
+        "kwargs": {
+          "start_color": {
+            "type": "Static",
+            "kwargs": {
+              "color": [255, 0, 0]
+            }
+          },
+          "end_color": {
+            "type": "Static",
+            "kwargs": {
+              "color": [125, 50, 168]
+            }
+          },
+          "interpolator": "HSV"
+        }
+      },
+      "metric": {
+        "type": "DistanceOnLine",
+        "kwargs": {
+          "start": {
+            "type": "Static",
+            "kwargs": {
+              "point": [150, 150, 0]
+            }
+          },
+          "end": {
+            "type": "Static",
+            "kwargs": {
+              "point": [1174, 898, 0]
+            }
+          }
+        }
+      },
+      "metric_modifiers": [
+        {
+          "type": "EaseInOut",
+          "kwargs": {
+            "degree": 2
+          }
+        }
+      ]
+    },
+    "width": {
+      "width": {
+        "type": "Static",
+        "kwargs": {
+          "width": 2
         }
       }
     }
