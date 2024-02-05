@@ -83,7 +83,7 @@
           "color": {
             "type": "Static",
             "kwargs": {
-              "color": [255, 255, 255]
+              "color": [34, 35, 36]
             }
           }
         }

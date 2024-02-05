@@ -42,11 +42,9 @@ class Color(SerialABC):
     def interpolateHSV(cls, color1: Color, color2: Color, t: float) -> Color:
         hsv_color1 = rgb_to_hsv(color1.r, color1.g, color1.b)
         hsv_color2 = rgb_to_hsv(color2.r, color2.g, color2.b)
-        interpolated_hsv = (
-            interpolate(hsv_color1[0], hsv_color2[0], t),
-            interpolate(hsv_color1[1], hsv_color2[1], t),
-            interpolate(hsv_color1[2], hsv_color2[2], t),
-        )
+        interpolated_hsv = [
+            interpolate(c1, c2, t) for c1, c2 in zip(hsv_color1, hsv_color2)
+        ]
         return cls(
             *hsv_to_rgb(*interpolated_hsv)
         )
