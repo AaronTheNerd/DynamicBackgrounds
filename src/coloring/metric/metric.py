@@ -3,7 +3,12 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
-from coloring.metric.ABCs import MetricABC, TriangleMetricABC, VertexMetricABC, EdgeMetricABC
+from coloring.metric.ABCs import (
+    EdgeMetricABC,
+    MetricABC,
+    TriangleMetricABC,
+    VertexMetricABC,
+)
 from coloring.shifting.ABCs import ShiftingPointABC
 from coloring.shifting.point import get_shifting_point_object
 from configs import ObjectConfigs

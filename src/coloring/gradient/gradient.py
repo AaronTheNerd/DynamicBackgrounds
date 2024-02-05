@@ -7,7 +7,7 @@ from coloring.gradient.ABCs import GradientABC
 from coloring.shifting.ABCs import ShiftingColorABC
 from coloring.shifting.color import get_shifting_color_object
 from configs import ObjectConfigs
-from serial.JSON_types import JSON_color, JSON_object
+from serial.JSON_types import JSON_object
 from utils.concrete_inheritors import get_object
 
 

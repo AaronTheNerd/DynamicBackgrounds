@@ -39,7 +39,9 @@ def perpenBisectorFromLine(
 
 # Returns the intersection of
 # two lines
-def LineInterX(a1: float, b1: float, c1: float, a2: float, b2: float, c2: float) -> float:
+def LineInterX(
+    a1: float, b1: float, c1: float, a2: float, b2: float, c2: float
+) -> float:
     # Find determinant
     determ = a1 * b2 - a2 * b1
     x = b2 * c1 - b1 * c2
@@ -52,7 +54,9 @@ def LineInterX(a1: float, b1: float, c1: float, a2: float, b2: float, c2: float)
 
 # Returns the intersection of
 # two lines
-def LineInterY(a1: float, b1: float, c1: float, a2: float, b2: float, c2: float) -> float:
+def LineInterY(
+    a1: float, b1: float, c1: float, a2: float, b2: float, c2: float
+) -> float:
     # Find determinant
     determ = a1 * b2 - a2 * b1
     y = a1 * c2 - a2 * c1

@@ -22,6 +22,7 @@ class Static(ShiftingColorABC):
     def get_color(self, time: float) -> Color:
         return self.color
 
+
 @dataclass
 class Gradient(ShiftingColorABC):
     start_color: Color
@@ -42,16 +43,15 @@ class Gradient(ShiftingColorABC):
             start_color=Color.from_json(start_color),
             end_color=Color.from_json(end_color),
             hsv=hsv,
-            reflection=get_reflective_metric_modifier_object(reflection)
+            reflection=get_reflective_metric_modifier_object(reflection),
         )
-    
+
     def get_color(self, time: float) -> Color:
         t = self.reflection.get_value(time)
         if self.hsv:
             return Color.interpolateHSV(self.start_color, self.end_color, t)
         return Color.interpolateRGB(self.start_color, self.end_color, t)
 
-def get_shifting_color_object(
-    configs: ObjectConfigs | JSON_object
-) -> ShiftingColorABC:
+
+def get_shifting_color_object(configs: ObjectConfigs | JSON_object) -> ShiftingColorABC:
     return get_object(ShiftingColorABC, configs)

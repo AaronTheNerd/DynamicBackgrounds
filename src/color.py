@@ -3,11 +3,12 @@ from __future__ import annotations
 from colorsys import hsv_to_rgb, rgb_to_hsv
 from dataclasses import dataclass
 
-from utils.interpolate import interpolate
 from serial.ABCs import SerialABC
 from serial.JSON_types import JSON_color
+from utils.interpolate import interpolate
 
 image_color = tuple[int, int, int]
+
 
 @dataclass
 class Color(SerialABC):
@@ -17,19 +18,11 @@ class Color(SerialABC):
 
     @classmethod
     def from_json(cls, color: JSON_color) -> Color:
-        return cls(
-            color[0] / 255,
-            color[1] / 255,
-            color[2] / 255
-        )
-    
+        return cls(color[0] / 255, color[1] / 255, color[2] / 255)
+
     def image_color(self) -> image_color:
-        return (
-            int(self.r * 255),
-            int(self.g * 255),
-            int(self.b * 255)
-        )
-    
+        return (int(self.r * 255), int(self.g * 255), int(self.b * 255))
+
     @classmethod
     def interpolateRGB(cls, color1: Color, color2: Color, t: float) -> Color:
         return cls(
@@ -45,6 +38,4 @@ class Color(SerialABC):
         interpolated_hsv = [
             interpolate(c1, c2, t) for c1, c2 in zip(hsv_color1, hsv_color2)
         ]
-        return cls(
-            *hsv_to_rgb(*interpolated_hsv)
-        )
+        return cls(*hsv_to_rgb(*interpolated_hsv))

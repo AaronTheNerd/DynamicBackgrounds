@@ -18,7 +18,10 @@ def seed(seed: int) -> None:
 def generate_border_points() -> list[PointABC]:
     border_points = []
     num_of_x_border_points = (
-        math.floor(CONFIGS.full_width / CONFIGS.point_generation_configs.border_configs.separation)
+        math.floor(
+            CONFIGS.full_width
+            / CONFIGS.point_generation_configs.border_configs.separation
+        )
         + 1
     )
     x_dist = CONFIGS.full_width / (num_of_x_border_points - 1)
@@ -28,7 +31,10 @@ def generate_border_points() -> list[PointABC]:
         if CONFIGS.point_generation_configs.border_configs.bottom:
             border_points.append(Static(x_dist * i, CONFIGS.full_height - 1, 0))
     num_of_y_border_points = (
-        math.floor(CONFIGS.full_height / CONFIGS.point_generation_configs.border_configs.separation)
+        math.floor(
+            CONFIGS.full_height
+            / CONFIGS.point_generation_configs.border_configs.separation
+        )
         + 1
     )
     y_dist = CONFIGS.full_height / (num_of_y_border_points - 1)
@@ -65,13 +71,16 @@ def generate_points(open_simplex: OpenSimplex) -> list[PointABC]:
     border_points_length = len(points)
 
     x_movers = [
-        get_mover_generator_object(config) for config in CONFIGS.point_movement_configs.x_movers
+        get_mover_generator_object(config)
+        for config in CONFIGS.point_movement_configs.x_movers
     ]
     y_movers = [
-        get_mover_generator_object(config) for config in CONFIGS.point_movement_configs.y_movers
+        get_mover_generator_object(config)
+        for config in CONFIGS.point_movement_configs.y_movers
     ]
     z_movers = [
-        get_zmover_generator_object(config) for config in CONFIGS.point_movement_configs.z_movers
+        get_zmover_generator_object(config)
+        for config in CONFIGS.point_movement_configs.z_movers
     ]
 
     # Add one initial interior point
@@ -79,7 +88,8 @@ def generate_points(open_simplex: OpenSimplex) -> list[PointABC]:
     # Add points while there is space to
     fails = 0
     while (
-        len(points) - border_points_length < CONFIGS.point_generation_configs.num_of_points
+        len(points) - border_points_length
+        < CONFIGS.point_generation_configs.num_of_points
         and fails < CONFIGS.point_generation_configs.max_fails
     ):
         # Create a new point

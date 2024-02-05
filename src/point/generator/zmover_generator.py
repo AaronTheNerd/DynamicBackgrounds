@@ -24,7 +24,14 @@ class SwayGenerator(ZMoverGeneratorABC):
         return cls(*args, **kwargs)
 
     def generate(self) -> ZMoverABC:
-        return Sway(self.amplitude, self.x_scale, self.y_scale, self.intensity, self.x_offset, self.y_offset)
+        return Sway(
+            self.amplitude,
+            self.x_scale,
+            self.y_scale,
+            self.intensity,
+            self.x_offset,
+            self.y_offset,
+        )
 
 
 @dataclass
@@ -40,7 +47,9 @@ class NoiseMapGenerator(ZMoverGeneratorABC):
         return cls(*args, **kwargs)
 
     def generate(self) -> ZMoverABC:
-        return NoiseMap(self.amplitude, self.x_scale, self.y_scale, self.x_offset, self.y_offset)
+        return NoiseMap(
+            self.amplitude, self.x_scale, self.y_scale, self.x_offset, self.y_offset
+        )
 
 
 @dataclass
@@ -58,5 +67,7 @@ class WaveGenerator(ZMoverGeneratorABC):
         return Wave(self.amplitude, self.speed, self.wavelength, self.axis)
 
 
-def get_zmover_generator_object(configs: ObjectConfigs | dict[str, Any]) -> ZMoverGeneratorABC:
+def get_zmover_generator_object(
+    configs: ObjectConfigs | dict[str, Any]
+) -> ZMoverGeneratorABC:
     return get_object(ZMoverGeneratorABC, configs)

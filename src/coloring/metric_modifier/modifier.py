@@ -58,7 +58,7 @@ class Reverse(ModifierABC):
     @classmethod
     def from_json(cls, *args, **kwargs) -> Reverse:
         return cls(*args, **kwargs)
-    
+
     def get_value(self, t: float) -> float:
         return 1 - t
 
@@ -100,5 +100,8 @@ class Linear(ReflectiveModifierABC):
 def get_metric_modifier_object(configs: JSON_object | ObjectConfigs) -> ModifierABC:
     return get_object(ModifierABC, configs)
 
-def get_reflective_metric_modifier_object(configs: JSON_object | ObjectConfigs) -> ReflectiveModifierABC:
+
+def get_reflective_metric_modifier_object(
+    configs: JSON_object | ObjectConfigs,
+) -> ReflectiveModifierABC:
     return get_object(ReflectiveModifierABC, configs)

@@ -11,7 +11,7 @@ def concrete_inheritors(cls: T) -> dict[str, T]:
     work = [cls]
     while work:
         parent = work.pop()
-        for child in parent.__subclasses__():  # type: ignore
+        for child in parent.__subclasses__():
             if child.__name__ not in subclasses:
                 work.append(child)
                 if not inspect.isabstract(child):

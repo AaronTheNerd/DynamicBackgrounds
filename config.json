@@ -4,7 +4,7 @@
   "gif_configs": {
     "width": 1024,
     "height": 768,
-    "num": 4,
+    "num": 5,
     "background_color": [0, 0, 0],
     "margin": 150,
     "ms_per_frame": 11,

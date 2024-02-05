@@ -32,19 +32,12 @@ class ReflectiveDriftGenerator(MoverGeneratorABC):
 
     @classmethod
     def from_json(
-        cls,
-        amplitude: dict[str, Any],
-        frequency: dict[str, Any]
+        cls, amplitude: dict[str, Any], frequency: dict[str, Any]
     ) -> ReflectiveDriftGenerator:
-        return cls(
-            get_rand_float_object(amplitude),
-            get_rand_int_object(frequency)
-        )
+        return cls(get_rand_float_object(amplitude), get_rand_int_object(frequency))
 
     def generate(self) -> MoverABC:
-        return ReflectiveDrift(
-            self.amplitude.get_value(), self.frequency.get_value()
-        )
+        return ReflectiveDrift(self.amplitude.get_value(), self.frequency.get_value())
 
 
 @dataclass
@@ -62,9 +55,16 @@ class SwayGenerator(MoverGeneratorABC):
 
     def generate(self) -> MoverABC:
         return Sway(
-            self.amplitude, self.x_scale, self.y_scale, self.intensity, self.x_offset, self.y_offset
+            self.amplitude,
+            self.x_scale,
+            self.y_scale,
+            self.intensity,
+            self.x_offset,
+            self.y_offset,
         )
 
 
-def get_mover_generator_object(configs: ObjectConfigs | dict[str, Any]) -> MoverGeneratorABC:
+def get_mover_generator_object(
+    configs: ObjectConfigs | dict[str, Any]
+) -> MoverGeneratorABC:
     return get_object(MoverGeneratorABC, configs)

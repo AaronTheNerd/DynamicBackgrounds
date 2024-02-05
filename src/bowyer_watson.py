@@ -53,7 +53,9 @@ def BowyerWatson(points: list[PointABC]) -> list[Triangle]:
     triangles = [Triangle(super_a, super_b, super_c)]
     points = sorted(points, key=lambda x: [x.x, x.y])
     for curr_point in points:
-        bad_triangles = [triangle for triangle in triangles if isInside(triangle, curr_point)]
+        bad_triangles = [
+            triangle for triangle in triangles if isInside(triangle, curr_point)
+        ]
         polygon = []
         for triangle in bad_triangles:
             edges = triangle.edges()

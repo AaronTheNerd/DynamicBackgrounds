@@ -23,7 +23,9 @@ class Moving(PointABC):
     def at(self, t: float) -> PointABC:
         original_point = Static(self.x, self.y, self.z)
         current_point = Static(self.x, self.y, self.z)
-        state = MoverState(CONFIGS.full_width, self.open_simplex, original_point, current_point)
+        state = MoverState(
+            CONFIGS.full_width, self.open_simplex, original_point, current_point
+        )
         for mover in self.x_movers:
             offset = mover.get_offset(t, state)
             current_point.x += offset

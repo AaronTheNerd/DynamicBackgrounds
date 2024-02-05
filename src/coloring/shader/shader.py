@@ -21,13 +21,9 @@ class AmbientShader(ShaderABC):
         cls,
         ambient_vector: utils.Vector3d = (0, 0, 1),
         ambient_gain: float = 1.0,
-        ambient_definition: int = 1
+        ambient_definition: int = 1,
     ) -> AmbientShader:
-        return cls(
-            utils.normalize3d(ambient_vector),
-            ambient_gain,
-            ambient_definition
-        )
+        return cls(utils.normalize3d(ambient_vector), ambient_gain, ambient_definition)
 
     def get_facing_ratio(self, triangle: Triangle, t: float) -> float:
         normal = utils.get_normal(triangle)
@@ -35,7 +31,8 @@ class AmbientShader(ShaderABC):
         # Generate facing ratio
         facing_ratio = (
             self.ambient_gain
-            * max(0.0, utils.dot_product3d(normal, self.ambient_vector)) ** self.ambient_definition
+            * max(0.0, utils.dot_product3d(normal, self.ambient_vector))
+            ** self.ambient_definition
         )
         # Clamp facing ratio between 0 and 1
         return min(facing_ratio, 1.0)
