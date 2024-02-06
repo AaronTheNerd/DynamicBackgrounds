@@ -1,19 +1,22 @@
 import json
+import logging
 import os
+from log.enable import enable_logging
 from typing import Optional
 
 import numpy as np
 from opensimplex import OpenSimplex
 from PIL import Image, ImageDraw
+from log.performance import measure
 
 import point.generator.generate as generate_points
-from bowyer_watson import BowyerWatson
 from coloring.edge import EdgeDrawer
 from coloring.triangle import TriangleDrawer
 from coloring.vertex import VertexDrawer
 from configs import CONFIGS
 from point.ABCs import PointABC
 from triangle import Edge, Triangle
+from triangulation.bowyer_watson import BowyerWatson
 from utils.progress_bar import progress_bar
 
 SRC_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -34,14 +37,13 @@ def draw(
         draw_triangles(image, triangle_coloring, triangles, t)
 
     if line_coloring is not None:
-        for triangle in triangles:
-            edges = triangle.edges()
-            draw_lines(image, line_coloring, edges, t)
+        draw_lines(image, line_coloring, triangles, t)
 
     if point_coloring is not None:
         draw_points(image, point_coloring, new_points, t)
 
 
+@measure
 def draw_triangles(
     image: ImageDraw.ImageDraw,
     triangle_coloring: TriangleDrawer,
@@ -63,19 +65,23 @@ def draw_triangles(
         )
 
 
+@measure
 def draw_lines(
-    image: ImageDraw.ImageDraw, line_coloring: EdgeDrawer, edges: list[Edge], t: float
+    image: ImageDraw.ImageDraw, line_coloring: EdgeDrawer, triangles: list[Triangle], t: float
 ) -> None:
-    for edge in edges:
-        color = line_coloring.get_color(edge, t)
-        width = line_coloring.get_width(edge, t)
-        image.line(
-            [edge.a.x, edge.a.y, edge.b.x, edge.b.y],
-            width=width,
-            fill=tuple(color),
-        )
+    for triangle in triangles:
+        edges = triangle.edges()
+        for edge in edges:
+            color = line_coloring.get_color(edge, t)
+            width = line_coloring.get_width(edge, t)
+            image.line(
+                [edge.a.x, edge.a.y, edge.b.x, edge.b.y],
+                width=width,
+                fill=tuple(color),
+            )
 
 
+@measure
 def draw_points(
     image: ImageDraw.ImageDraw,
     point_coloring: VertexDrawer,
@@ -97,6 +103,8 @@ def draw_points(
 
 
 def run():
+    enable_logging()
+    logger = logging.getLogger(__name__)
     # Create directory for files if necessary
     os.system(f"mkdir -p {GIFS_PATH}/{CONFIGS.gif_configs.num}")
     # Remove any existing files in directory
@@ -135,7 +143,8 @@ def run():
         image.save(file_name)
     # Convert frames to gif
     progress_bar(1.0)
-    print("\nCompiling Frames...")
+    print()
+    logger.info("Compiling Frames...")
     os.system(
         f"convert -delay {CONFIGS.gif_configs.ms_per_frame} -loop 0 {GIFS_PATH}/{CONFIGS.gif_configs.num}/*.{CONFIGS.gif_configs.file_extension} -crop {CONFIGS.gif_configs.width}x{CONFIGS.gif_configs.height}+{CONFIGS.gif_configs.margin}+{CONFIGS.gif_configs.margin} +repage {GIFS_PATH}/{CONFIGS.gif_configs.num}/gif{CONFIGS.gif_configs.num}.gif"
     )

@@ -3,3 +3,4 @@ __pycache__/
 build/
 .vscode/
 quadtree.pdf
+log.txt

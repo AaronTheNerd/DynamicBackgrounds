@@ -1,9 +1,11 @@
+import logging
 import math
 import random
 
 from opensimplex import OpenSimplex
 
 from configs import CONFIGS
+from log.performance import measure
 from point.ABCs import PointABC
 from point.generator.ABCs import MoverGeneratorABC, ZMoverGeneratorABC
 from point.generator.mover_generator import get_mover_generator_object
@@ -63,8 +65,10 @@ def random_point(
     )
 
 
+@measure
 def generate_points(open_simplex: OpenSimplex) -> list[PointABC]:
-    print("Generating Initial Points...", end="   ")
+    logger = logging.getLogger(__name__)
+    logger.info("Generating Initial Points...")
     # Generate evenly separated border points
     points = generate_border_points()
     # Find how many points are border points
@@ -108,6 +112,6 @@ def generate_points(open_simplex: OpenSimplex) -> list[PointABC]:
         if not failed:
             points.append(new_point)
             fails = 0
-    print("FINISHED")
-    print(f"Generated {len(points)} points")
+    logger.info("Finished generating initial points")
+    logger.info(f"Generated {len(points)} points")
     return points
