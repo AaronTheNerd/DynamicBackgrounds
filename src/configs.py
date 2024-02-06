@@ -2,7 +2,9 @@ import json
 import os
 import random
 from dataclasses import dataclass, field, fields, is_dataclass
-from typing import Any, Optional, TypeVar
+from typing import Optional, TypeVar
+
+from serial.JSON_types import JSON_object
 
 
 @dataclass
@@ -34,9 +36,9 @@ class PointGenerationConfigs:
 
 @dataclass
 class PointMovementConfigs:
-    x_movers: list[dict[str, Any]]
-    y_movers: list[dict[str, Any]]
-    z_movers: list[dict[str, Any]]
+    x_movers: list[JSON_object]
+    y_movers: list[JSON_object]
+    z_movers: list[JSON_object]
 
 
 @dataclass
@@ -54,7 +56,7 @@ class GIFConfigs:
 @dataclass
 class ObjectConfigs:
     type: str
-    kwargs: dict[str, Any] = field(default_factory=dict)
+    kwargs: JSON_object = field(default_factory=dict)
 
 
 @dataclass(kw_only=True)
@@ -65,9 +67,9 @@ class Configs:
     gif_configs: GIFConfigs
     point_generation_configs: PointGenerationConfigs
     point_movement_configs: PointMovementConfigs
-    triangle_coloring: Optional[ObjectConfigs] = None
-    line_coloring: Optional[ObjectConfigs] = None
-    point_coloring: Optional[ObjectConfigs] = None
+    triangle_coloring: Optional[JSON_object] = None
+    line_coloring: Optional[JSON_object] = None
+    point_coloring: Optional[JSON_object] = None
     full_width: int = field(init=False)
     full_height: int = field(init=False)
 
@@ -78,11 +80,11 @@ class Configs:
         self.full_width = self.gif_configs.width + 2 * self.gif_configs.margin
         self.full_height = self.gif_configs.height + 2 * self.gif_configs.margin
 
-    def dumpJSON(self) -> dict[str, Any]:
+    def dumpJSON(self) -> JSON_object:
         return _dumpJSON(self)
 
 
-def _dumpJSON(obj: object) -> dict[str, Any]:
+def _dumpJSON(obj: object) -> JSON_object:
     result = dict()
     if not is_dataclass(obj):
         return result
@@ -99,7 +101,7 @@ def _dumpJSON(obj: object) -> dict[str, Any]:
 T = TypeVar("T")
 
 
-def _replaceWithDataclass(raw_configs: dict[str, Any], cls: type[T]) -> T:
+def _replaceWithDataclass(raw_configs: JSON_object, cls: type[T]) -> T:
     for field in fields(cls):
         if is_dataclass(field.type):
             raw_configs[field.name] = _replaceWithDataclass(
