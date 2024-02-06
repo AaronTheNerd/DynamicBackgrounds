@@ -8,9 +8,10 @@
 import math
 
 from configs import CONFIGS
+from log.performance import measure
 from point.ABCs import PointABC
 from point.point import Static
-from triangle import Triangle
+from triangle import Edge, Triangle
 
 ################################### Methods ###################################
 
@@ -46,6 +47,7 @@ def isInside(t: Triangle, p: PointABC) -> bool:
 #        = -HEIGHT                                                            #
 #    Point a: (WIDTH / 2, -HEIGHT)                                            #
 ###############################################################################
+@measure
 def BowyerWatson(points: list[PointABC]) -> list[Triangle]:
     super_a = Static(CONFIGS.full_width / 2, -CONFIGS.full_height, 0)
     super_b = Static(-CONFIGS.full_width / 2, CONFIGS.full_height, 0)
@@ -56,7 +58,7 @@ def BowyerWatson(points: list[PointABC]) -> list[Triangle]:
         bad_triangles = [
             triangle for triangle in triangles if isInside(triangle, curr_point)
         ]
-        polygon = []
+        polygon: list[Edge] = []
         for triangle in bad_triangles:
             edges = triangle.edges()
             for edge in edges:
