@@ -2,7 +2,7 @@ import json
 import logging
 import os
 from log.enable import enable_logging
-from typing import Optional
+from typing import Callable, Optional
 
 import numpy as np
 from opensimplex import OpenSimplex
@@ -16,7 +16,7 @@ from coloring.vertex import VertexDrawer
 from configs import CONFIGS
 from point.ABCs import PointABC
 from triangle import Edge, Triangle
-from triangulation.bowyer_watson import BowyerWatson
+from triangulation.triangulation import get_triangulation
 from utils.progress_bar import progress_bar
 
 SRC_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -27,12 +27,13 @@ def draw(
     image: ImageDraw.ImageDraw,
     t: float,
     points: list[PointABC],
+    triangulation: Callable[[list[PointABC]], list[Triangle]],
     triangle_coloring: Optional[TriangleDrawer],
     line_coloring: Optional[EdgeDrawer],
     point_coloring: Optional[VertexDrawer],
 ):
     new_points = [point.at(t) for point in points]
-    triangles = BowyerWatson(new_points)
+    triangles = triangulation(new_points)
     if triangle_coloring is not None:
         draw_triangles(image, triangle_coloring, triangles, t)
 
@@ -115,6 +116,7 @@ def run():
     # Create copy of configs to be able to remake the gif
     with open(f"{GIFS_PATH}/{CONFIGS.gif_configs.num}/config.json", "w+") as file:
         json.dump(CONFIGS.dumpJSON(), file, indent=4)
+    triangulation = get_triangulation(CONFIGS.triangulation)
     # Generate objects needed to color the gif
     triangle_coloring = None
     if CONFIGS.triangle_coloring:
@@ -138,7 +140,7 @@ def run():
         )
         image_draw = ImageDraw.Draw(image)
         progress_bar(t)
-        draw(image_draw, t, points, triangle_coloring, line_coloring, point_coloring)
+        draw(image_draw, t, points, triangulation, triangle_coloring, line_coloring, point_coloring)
         file_name = f"{GIFS_PATH}/{CONFIGS.gif_configs.num}/image#{str(i).zfill(3)}.{CONFIGS.gif_configs.file_extension}"
         image.save(file_name)
     # Convert frames to gif

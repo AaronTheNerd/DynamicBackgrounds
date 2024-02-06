@@ -8,6 +8,7 @@ numpy = "*"
 pillow = "*"
 opensimplex = "*"
 scikit-image = "*"
+scipy = "*"
 
 [dev-packages]
 yapf = "*"

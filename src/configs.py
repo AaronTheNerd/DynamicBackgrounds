@@ -57,10 +57,11 @@ class ObjectConfigs:
     kwargs: dict[str, Any] = field(default_factory=dict)
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Configs:
     generate_seed: bool
     seed: int
+    triangulation: str = "SciPy"
     gif_configs: GIFConfigs
     point_generation_configs: PointGenerationConfigs
     point_movement_configs: PointMovementConfigs
