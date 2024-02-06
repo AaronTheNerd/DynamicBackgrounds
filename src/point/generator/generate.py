@@ -20,30 +20,22 @@ def seed(seed: int) -> None:
 def generate_border_points() -> list[PointABC]:
     border_points = []
     num_of_x_border_points = (
-        math.floor(
-            CONFIGS.full_width
-            / CONFIGS.point_generation_configs.border_configs.separation
-        )
-        + 1
+        math.floor(CONFIGS.full_width / CONFIGS.point_generation.border.separation) + 1
     )
     x_dist = CONFIGS.full_width / (num_of_x_border_points - 1)
     for i in range(num_of_x_border_points):
-        if CONFIGS.point_generation_configs.border_configs.top:
+        if CONFIGS.point_generation.border.top:
             border_points.append(Static(x_dist * i, 1, 0))
-        if CONFIGS.point_generation_configs.border_configs.bottom:
+        if CONFIGS.point_generation.border.bottom:
             border_points.append(Static(x_dist * i, CONFIGS.full_height - 1, 0))
     num_of_y_border_points = (
-        math.floor(
-            CONFIGS.full_height
-            / CONFIGS.point_generation_configs.border_configs.separation
-        )
-        + 1
+        math.floor(CONFIGS.full_height / CONFIGS.point_generation.border.separation) + 1
     )
     y_dist = CONFIGS.full_height / (num_of_y_border_points - 1)
     for i in range(num_of_y_border_points - 2):
-        if CONFIGS.point_generation_configs.border_configs.left:
+        if CONFIGS.point_generation.border.left:
             border_points.append(Static(1, y_dist * (i + 1), 0))
-        if CONFIGS.point_generation_configs.border_configs.right:
+        if CONFIGS.point_generation.border.right:
             border_points.append(Static(CONFIGS.full_width - 1, y_dist * (i + 1), 0))
     return border_points
 
@@ -75,16 +67,13 @@ def generate_points(open_simplex: OpenSimplex) -> list[PointABC]:
     border_points_length = len(points)
 
     x_movers = [
-        get_mover_generator_object(config)
-        for config in CONFIGS.point_movement_configs.x_movers
+        get_mover_generator_object(config) for config in CONFIGS.point_movement.x
     ]
     y_movers = [
-        get_mover_generator_object(config)
-        for config in CONFIGS.point_movement_configs.y_movers
+        get_mover_generator_object(config) for config in CONFIGS.point_movement.y
     ]
     z_movers = [
-        get_zmover_generator_object(config)
-        for config in CONFIGS.point_movement_configs.z_movers
+        get_zmover_generator_object(config) for config in CONFIGS.point_movement.z
     ]
 
     # Add one initial interior point
@@ -92,9 +81,8 @@ def generate_points(open_simplex: OpenSimplex) -> list[PointABC]:
     # Add points while there is space to
     fails = 0
     while (
-        len(points) - border_points_length
-        < CONFIGS.point_generation_configs.num_of_points
-        and fails < CONFIGS.point_generation_configs.max_fails
+        len(points) - border_points_length < CONFIGS.point_generation.num_of_points
+        and fails < CONFIGS.point_generation.max_fails
     ):
         # Create a new point
         new_point = random_point(x_movers, y_movers, z_movers, open_simplex)
@@ -103,7 +91,7 @@ def generate_points(open_simplex: OpenSimplex) -> list[PointABC]:
         for point in points:
             if (
                 math.pow(point.x - new_point.x, 2) + math.pow(point.y - new_point.y, 2)
-                < CONFIGS.point_generation_configs.separation_radius**2
+                < CONFIGS.point_generation.separation_radius**2
             ):
                 fails += 1
                 failed = True

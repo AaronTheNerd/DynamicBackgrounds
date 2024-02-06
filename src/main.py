@@ -1,19 +1,19 @@
 import json
 import logging
 import os
-from log.enable import enable_logging
 from typing import Callable, Optional
 
 import numpy as np
 from opensimplex import OpenSimplex
 from PIL import Image, ImageDraw
-from log.performance import measure
 
 import point.generator.generate as generate_points
 from coloring.edge import EdgeDrawer
 from coloring.triangle import TriangleDrawer
 from coloring.vertex import VertexDrawer
 from configs import CONFIGS
+from log.enable import enable_logging
+from log.performance import measure
 from point.ABCs import PointABC
 from triangle import Edge, Triangle
 from triangulation.triangulation import get_triangulation
@@ -68,7 +68,10 @@ def draw_triangles(
 
 @measure
 def draw_lines(
-    image: ImageDraw.ImageDraw, line_coloring: EdgeDrawer, triangles: list[Triangle], t: float
+    image: ImageDraw.ImageDraw,
+    line_coloring: EdgeDrawer,
+    triangles: list[Triangle],
+    t: float,
 ) -> None:
     for triangle in triangles:
         edges = triangle.edges()
@@ -107,14 +110,14 @@ def run():
     enable_logging()
     logger = logging.getLogger(__name__)
     # Create directory for files if necessary
-    os.system(f"mkdir -p {GIFS_PATH}/{CONFIGS.gif_configs.num}")
+    os.system(f"mkdir -p {GIFS_PATH}/{CONFIGS.gif.num}")
     # Remove any existing files in directory
-    os.system(f"rm {GIFS_PATH}/{CONFIGS.gif_configs.num}/*")
+    os.system(f"rm {GIFS_PATH}/{CONFIGS.gif.num}/*")
     # Seed components
     generate_points.seed(CONFIGS.seed)
     open_simplex = OpenSimplex(CONFIGS.seed)
     # Create copy of configs to be able to remake the gif
-    with open(f"{GIFS_PATH}/{CONFIGS.gif_configs.num}/config.json", "w+") as file:
+    with open(f"{GIFS_PATH}/{CONFIGS.gif.num}/config.json", "w+") as file:
         json.dump(CONFIGS.dumpJSON(), file, indent=4)
     triangulation = get_triangulation(CONFIGS.triangulation)
     # Generate objects needed to color the gif
@@ -131,29 +134,35 @@ def run():
     points = generate_points.generate_points(open_simplex)
     # Generate frames
     for i, t in enumerate(
-        np.linspace(0.0, 1.0, CONFIGS.gif_configs.num_of_frames, endpoint=False)
+        np.linspace(0.0, 1.0, CONFIGS.gif.num_of_frames, endpoint=False)
     ):
         image = Image.new(
             "RGB",
             (CONFIGS.full_width, CONFIGS.full_height),
-            tuple(CONFIGS.gif_configs.background_color),
+            tuple(CONFIGS.gif.background_color),
         )
         image_draw = ImageDraw.Draw(image)
         progress_bar(t)
-        draw(image_draw, t, points, triangulation, triangle_coloring, line_coloring, point_coloring)
-        file_name = f"{GIFS_PATH}/{CONFIGS.gif_configs.num}/image#{str(i).zfill(3)}.{CONFIGS.gif_configs.file_extension}"
+        draw(
+            image_draw,
+            t,
+            points,
+            triangulation,
+            triangle_coloring,
+            line_coloring,
+            point_coloring,
+        )
+        file_name = f"{GIFS_PATH}/{CONFIGS.gif.num}/image#{str(i).zfill(3)}.{CONFIGS.gif.file_extension}"
         image.save(file_name)
     # Convert frames to gif
     progress_bar(1.0)
     print()
     logger.info("Compiling Frames...")
     os.system(
-        f"convert -delay {CONFIGS.gif_configs.ms_per_frame} -loop 0 {GIFS_PATH}/{CONFIGS.gif_configs.num}/*.{CONFIGS.gif_configs.file_extension} -crop {CONFIGS.gif_configs.width}x{CONFIGS.gif_configs.height}+{CONFIGS.gif_configs.margin}+{CONFIGS.gif_configs.margin} +repage {GIFS_PATH}/{CONFIGS.gif_configs.num}/gif{CONFIGS.gif_configs.num}.gif"
+        f"convert -delay {CONFIGS.gif.ms_per_frame} -loop 0 {GIFS_PATH}/{CONFIGS.gif.num}/*.{CONFIGS.gif.file_extension} -crop {CONFIGS.gif.width}x{CONFIGS.gif.height}+{CONFIGS.gif.margin}+{CONFIGS.gif.margin} +repage {GIFS_PATH}/{CONFIGS.gif.num}/gif{CONFIGS.gif.num}.gif"
     )
     # Remove frames
-    os.system(
-        f"rm {GIFS_PATH}/{CONFIGS.gif_configs.num}/*.{CONFIGS.gif_configs.file_extension}"
-    )
+    os.system(f"rm {GIFS_PATH}/{CONFIGS.gif.num}/*.{CONFIGS.gif.file_extension}")
 
 
 if __name__ == "__main__":
