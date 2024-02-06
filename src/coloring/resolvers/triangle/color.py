@@ -9,15 +9,19 @@ from coloring.gradient.gradient import get_gradient_object
 from coloring.metric.ABCs import TriangleMetricABC
 from coloring.metric.metric import get_metric_object
 from coloring.metric_modifier.ABCs import ModifierABC
+from coloring.misc_triangle_color.color import get_misc_triangle_color_object
+from coloring.resolvers.triangle.ABCs import TriangleColorResolverABC
 from coloring.shader.ABCs import ShaderABC
 from coloring.shader.shader import get_shader_object
-from serial.ABCs import SerialABC
+from coloring.misc_triangle_color.ABCs import MiscTriangleColorABC
+from configs import ObjectConfigs
 from serial.JSON_types import JSON_object
 from triangle import Triangle
+from utils.concrete_inheritors import get_object
 
 
 @dataclass
-class TriangleColorResolver(SerialABC):
+class TriangleGradient(TriangleColorResolverABC):
     gradient: GradientABC
     metric: Optional[TriangleMetricABC]
     metric_modifiers: list[ModifierABC]
@@ -30,7 +34,7 @@ class TriangleColorResolver(SerialABC):
         metric: Optional[JSON_object] = None,
         metric_modifiers: Optional[list[JSON_object]] = None,
         shader: Optional[JSON_object] = None,
-    ) -> TriangleColorResolver:
+    ) -> TriangleGradient:
         parsed_metric = None
         if metric is not None:
             parsed_metric = get_metric_object(metric)
@@ -57,3 +61,17 @@ class TriangleColorResolver(SerialABC):
         if self.shader is not None:
             shading_ratio = self.shader.get_facing_ratio(triangle, time)
         return Color.interpolateRGB(Color(0, 0, 0), unshaded_color, shading_ratio)
+
+@dataclass
+class MiscTriangleColor(TriangleColorResolverABC):
+    color: MiscTriangleColorABC
+
+    @classmethod
+    def from_json(cls, color: JSON_object) -> MiscTriangleColor:
+        return cls(get_misc_triangle_color_object(color))
+    
+    def get_color(self, triangle: Triangle, time: float) -> Color:
+        return self.color.get_color(triangle, time)
+
+def get_triangle_color_resolver_object(configs: ObjectConfigs | JSON_object) -> TriangleColorResolverABC:
+    return get_object(TriangleColorResolverABC, configs)
