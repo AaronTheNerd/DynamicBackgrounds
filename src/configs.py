@@ -42,15 +42,15 @@ class PointMovementConfigs:
 
 
 @dataclass
-class GIFConfigs:
+class OutputConfigs:
     width: int
     height: int
     num: int
     background_color: list[int]
     margin: int
-    ms_per_frame: int
+    framerate: float
     num_of_frames: int
-    file_extension: str
+    frame_file_extension: str
 
 
 @dataclass
@@ -64,7 +64,7 @@ class Configs:
     generate_seed: bool
     seed: int
     triangulation: str = "SciPy"
-    gif: GIFConfigs
+    output: OutputConfigs
     point_generation: PointGenerationConfigs
     point_movement: PointMovementConfigs
     triangle_coloring: Optional[JSON_object] = None
@@ -77,8 +77,8 @@ class Configs:
         if self.generate_seed:
             self.seed = random.randint(-2147483648, 2147483647)
             self.generate_seed = False
-        self.full_width = self.gif.width + 2 * self.gif.margin
-        self.full_height = self.gif.height + 2 * self.gif.margin
+        self.full_width = self.output.width + 2 * self.output.margin
+        self.full_height = self.output.height + 2 * self.output.margin
 
     def dumpJSON(self) -> JSON_object:
         return _dumpJSON(self)

@@ -13,7 +13,7 @@ class OutputDirectory:
             os.path.abspath(os.path.dirname(__file__)),
             "..",
             "gifs",
-            str(CONFIGS.gif.num),
+            str(CONFIGS.output.num),
         )
 
     def __str__(self) -> str:

@@ -1,15 +1,15 @@
 {
   "generate_seed": true,
   "seed": -2118053362,
-  "gif": {
+  "output": {
     "width": 1024,
-    "height": 768,
+    "height": 1068,
     "num": 6,
     "background_color": [0, 0, 0],
-    "margin": 5,
-    "ms_per_frame": 11,
+    "margin": 10,
+    "framerate": 30,
     "num_of_frames": 250,
-    "file_extension": "png"
+    "frame_file_extension": "png"
   },
   "point_generation": {
     "num_of_points": 5000,
@@ -28,7 +28,7 @@
       {
         "type": "SwayGenerator",
         "kwargs": {
-          "amplitude": 0.2,
+          "amplitude": 0.5,
           "x_scale": 1,
           "y_scale": 1,
           "intensity": 0.1,
@@ -41,7 +41,7 @@
       {
         "type": "SwayGenerator",
         "kwargs": {
-          "amplitude": 0.4,
+          "amplitude": 0.5,
           "x_scale": 0.01,
           "y_scale": 0.01,
           "intensity": 0.1,
@@ -59,7 +59,7 @@
         "color": {
           "type": "ImageBlur",
           "kwargs": {
-            "filepath": "~/Pictures/space.jpeg"
+            "filepath": "~/Pictures/space.jpg"
           }
         }
       }

@@ -9,6 +9,7 @@ pillow = "*"
 opensimplex = "*"
 scikit-image = "*"
 scipy = "*"
+opencv-python = "*"
 
 [dev-packages]
 yapf = "*"

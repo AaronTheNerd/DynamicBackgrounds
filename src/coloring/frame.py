@@ -49,7 +49,7 @@ class FrameDrawer(SerialABC):
         frame = Image.new(
             "RGB",
             (CONFIGS.full_width, CONFIGS.full_height),
-            tuple(CONFIGS.gif.background_color),
+            tuple(CONFIGS.output.background_color),
         )
         frame_draw = ImageDraw.Draw(frame)
         if self.triangle_drawer is not None:
