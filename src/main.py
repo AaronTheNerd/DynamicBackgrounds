@@ -26,22 +26,23 @@ def main():
     # Create copy of configs to be able to remake the gif
     with open(os.path.join(str(output_dir), "config.json"), "w+") as file:
         json.dump(CONFIGS.dumpJSON(), file, indent=2)
-    triangulation = get_triangulation(CONFIGS.triangulation)
+    algorithm = get_triangulation(CONFIGS.triangulation)
     frame_drawer = FrameDrawer.from_json(
         CONFIGS.triangle_coloring, CONFIGS.line_coloring, CONFIGS.point_coloring
     )
     # Generate initial points
     points = generate_points.generate_points(open_simplex)
     # Generate frames
-    for i, t in enumerate(
+    for frame_index, time in enumerate(
         np.linspace(0.0, 1.0, CONFIGS.gif.num_of_frames, endpoint=False)
     ):
-        progress_bar(t)
-        new_points = [point.at(t) for point in points]
-        triangles = triangulation(new_points)
-        frame = frame_drawer.draw(new_points, triangles, t)
+        progress_bar(time)
+        new_points = [point.at(time) for point in points]
+        triangles = algorithm(new_points)
+        frame = frame_drawer.draw(new_points, triangles, time)
         file_name = os.path.join(
-            str(output_dir), f"image#{str(i).zfill(3)}.{CONFIGS.gif.file_extension}"
+            str(output_dir),
+            f"image#{str(frame_index).zfill(3)}.{CONFIGS.gif.file_extension}",
         )
         frame.save(file_name)
     # Convert frames to gif
