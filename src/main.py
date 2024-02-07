@@ -9,6 +9,7 @@ import point.generator.generate as generate_points
 from coloring.frame import FrameDrawer
 from configs import CONFIGS
 from log.enable import enable_logging
+from output_directory import OutputDirectory
 from triangulation.triangulation import get_triangulation
 from utils.progress_bar import progress_bar
 
@@ -16,18 +17,14 @@ from utils.progress_bar import progress_bar
 def main():
     enable_logging()
     logger = logging.getLogger(__name__)
-    output_dir = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)), "..", "gifs", str(CONFIGS.gif.num)
-    )
-    # Create directory for files if necessary
-    os.system(f"mkdir -p {output_dir}")
-    # Remove any existing files in directory
-    os.system(f"rm {output_dir}/*")
+
+    output_dir = OutputDirectory()
+    output_dir.create_empty_directory()
     # Seed components
     generate_points.seed(CONFIGS.seed)
     open_simplex = OpenSimplex(CONFIGS.seed)
     # Create copy of configs to be able to remake the gif
-    with open(os.path.join(output_dir, "config.json"), "w+") as file:
+    with open(os.path.join(str(output_dir), "config.json"), "w+") as file:
         json.dump(CONFIGS.dumpJSON(), file, indent=2)
     triangulation = get_triangulation(CONFIGS.triangulation)
     frame_drawer = FrameDrawer.from_json(
@@ -44,7 +41,7 @@ def main():
         triangles = triangulation(new_points)
         frame = frame_drawer.draw(new_points, triangles, t)
         file_name = os.path.join(
-            output_dir, f"image#{str(i).zfill(3)}.{CONFIGS.gif.file_extension}"
+            str(output_dir), f"image#{str(i).zfill(3)}.{CONFIGS.gif.file_extension}"
         )
         frame.save(file_name)
     # Convert frames to gif
@@ -54,8 +51,7 @@ def main():
     os.system(
         f"convert -delay {CONFIGS.gif.ms_per_frame} -loop 0 {output_dir}/*.{CONFIGS.gif.file_extension} -crop {CONFIGS.gif.width}x{CONFIGS.gif.height}+{CONFIGS.gif.margin}+{CONFIGS.gif.margin} +repage {output_dir}/gif{CONFIGS.gif.num}.gif"
     )
-    # Remove frames
-    os.system(f"rm {output_dir}/*.{CONFIGS.gif.file_extension}")
+    output_dir.clear_files(CONFIGS.gif.file_extension)
 
 
 if __name__ == "__main__":
