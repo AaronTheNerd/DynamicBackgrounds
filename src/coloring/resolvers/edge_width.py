@@ -11,7 +11,7 @@ from coloring.width.ABCs import WidthABC
 from coloring.width.width import get_width_object
 from serial.ABCs import SerialABC
 from serial.JSON_types import JSON_object
-from triangle import Edge
+from triangle.triangle import Edge
 
 
 @dataclass

@@ -7,7 +7,7 @@ from coloring.resolvers.triangle.ABCs import TriangleColorResolverABC
 from coloring.resolvers.triangle.color import get_triangle_color_resolver_object
 from serial.ABCs import SerialABC
 from serial.JSON_types import JSON_object
-from triangle import Triangle
+from triangle.triangle import Triangle
 
 
 @dataclass

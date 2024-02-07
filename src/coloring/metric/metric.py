@@ -14,7 +14,7 @@ from coloring.shifting.point import get_shifting_point_object
 from configs import ObjectConfigs
 from point.ABCs import PointABC
 from serial.JSON_types import JSON_object
-from triangle import Edge, Triangle
+from triangle.triangle import Edge, Triangle
 from utils.concrete_inheritors import get_object
 
 

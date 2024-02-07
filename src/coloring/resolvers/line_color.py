@@ -12,7 +12,7 @@ from coloring.metric_modifier.ABCs import ModifierABC
 from coloring.metric_modifier.modifier import get_metric_modifier_object
 from serial.ABCs import SerialABC
 from serial.JSON_types import JSON_object
-from triangle import Edge
+from triangle.triangle import Edge
 
 
 @dataclass

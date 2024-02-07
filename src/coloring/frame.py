@@ -13,7 +13,7 @@ from log.performance import measure
 from point.ABCs import PointABC
 from serial.ABCs import SerialABC
 from serial.JSON_types import JSON_object
-from triangle import Triangle
+from triangle.triangle import Triangle
 
 
 @dataclass

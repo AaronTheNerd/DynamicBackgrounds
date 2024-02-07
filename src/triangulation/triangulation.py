@@ -1,7 +1,7 @@
 from typing import Callable
 
 from point.ABCs import PointABC
-from triangle import Triangle
+from triangle.triangle import Triangle
 from triangulation.bowyer_watson import BowyerWatson
 from triangulation.scipy import SciPy
 

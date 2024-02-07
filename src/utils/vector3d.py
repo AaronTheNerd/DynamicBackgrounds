@@ -1,6 +1,6 @@
 import math
 
-from triangle import Triangle
+from triangle.triangle import Triangle
 
 Vector3d = tuple[float, float, float]
 

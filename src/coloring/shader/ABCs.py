@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
 from serial.ABCs import SerialABC
-from triangle import Triangle
+from triangle.triangle import Triangle
 
 
 class ShaderABC(SerialABC):

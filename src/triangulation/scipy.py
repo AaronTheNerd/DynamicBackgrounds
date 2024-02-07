@@ -1,6 +1,6 @@
 from log.performance import measure
 from point.ABCs import PointABC
-from triangle import Triangle
+from triangle.triangle import Triangle
 import numpy
 from scipy.spatial import Delaunay
 

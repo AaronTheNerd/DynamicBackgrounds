@@ -7,7 +7,7 @@ from coloring.resolvers.edge_color import EdgeColorResolver
 from coloring.resolvers.edge_width import EdgeWidthResolver
 from serial.ABCs import SerialABC
 from serial.JSON_types import JSON_object
-from triangle import Edge
+from triangle.triangle import Edge
 
 
 @dataclass

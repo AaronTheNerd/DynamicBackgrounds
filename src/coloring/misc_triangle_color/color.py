@@ -9,7 +9,7 @@ from color import Color
 from coloring.misc_triangle_color.ABCs import MiscTriangleColorABC
 from configs import CONFIGS, ObjectConfigs
 from serial.JSON_types import JSON_object
-from triangle import Triangle
+from triangle.triangle import Triangle
 from utils.concrete_inheritors import get_object
 
 

@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 from color import Color
 from serial.ABCs import SerialABC
-from triangle import Triangle
+from triangle.triangle import Triangle
 
 
 class MiscTriangleColorABC(SerialABC):

@@ -11,7 +11,7 @@ from configs import CONFIGS
 from log.performance import measure
 from point.ABCs import PointABC
 from point.point import Static
-from triangle import Edge, Triangle
+from triangle.triangle import Edge, Triangle
 
 ################################### Methods ###################################
 

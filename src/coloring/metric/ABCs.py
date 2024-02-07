@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 from point.ABCs import PointABC
 from serial.ABCs import SerialABC
-from triangle import Edge, Triangle
+from triangle.triangle import Edge, Triangle
 
 
 class MetricABC(SerialABC): ...
