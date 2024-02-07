@@ -58,9 +58,13 @@ def random_point(
 
 
 @measure
-def generate_points(open_simplex: OpenSimplex) -> list[PointABC]:
+def generate_points() -> list[PointABC]:
     logger = logging.getLogger(__name__)
     logger.info("Generating Initial Points...")
+
+    seed(CONFIGS.seed)
+    open_simplex = OpenSimplex(CONFIGS.seed)
+
     # Generate evenly separated border points
     points = generate_border_points()
     # Find how many points are border points
