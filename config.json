@@ -1,21 +1,21 @@
 {
   "generate_seed": true,
   "seed": -2118053362,
-  "gif_configs": {
+  "gif": {
     "width": 1024,
     "height": 768,
-    "num": 5,
+    "num": 6,
     "background_color": [0, 0, 0],
-    "margin": 150,
+    "margin": 5,
     "ms_per_frame": 11,
     "num_of_frames": 250,
     "file_extension": "png"
   },
-  "point_generation_configs": {
-    "num_of_points": 500,
-    "separation_radius": 40,
+  "point_generation": {
+    "num_of_points": 5000,
+    "separation_radius": 10,
     "max_fails": 100,
-    "border_configs": {
+    "border": {
       "top": true,
       "bottom": true,
       "left": true,
@@ -23,132 +23,44 @@
       "separation": 50
     }
   },
-  "point_movement_configs": {
-    "x_movers": [
-      {
-        "type": "DriftGenerator",
-        "kwargs": {
-          "frequency": {
-            "type": "RandInt",
-            "kwargs": {
-              "min_value": -1,
-              "max_value": 1
-            }
-          }
-        }
-      },
+  "point_movement": {
+    "x": [
       {
         "type": "SwayGenerator",
         "kwargs": {
           "amplitude": 0.2,
           "x_scale": 1,
           "y_scale": 1,
-          "intensity": 0.5,
+          "intensity": 0.1,
           "x_offset": 0,
           "y_offset": 0
         }
       }
     ],
-    "y_movers": [
+    "y": [
       {
         "type": "SwayGenerator",
         "kwargs": {
           "amplitude": 0.4,
           "x_scale": 0.01,
           "y_scale": 0.01,
-          "intensity": 0.5,
+          "intensity": 0.1,
           "x_offset": 100,
           "y_offset": 100
         }
       }
     ],
-    "z_movers": [
-      {
-        "type": "NoiseMapGenerator",
-        "kwargs": {
-          "amplitude": 1.0,
-          "x_scale": 0.01,
-          "y_scale": 0.01,
-          "x_offset": 0.0,
-          "y_offset": 100.0
-        }
-      }
-    ]
+    "z": []
   },
   "triangle_coloring": {
     "color": {
-      "gradient": {
-        "type": "Plain",
-        "kwargs": {
-          "color": {
-            "type": "Static",
-            "kwargs": {
-              "color": [34, 35, 36]
-            }
-          }
-        }
-      },
-      "shader": {
-        "type": "AmbientShader",
-        "kwargs": {
-          "ambient_vector": [1, 1, 0.5],
-          "ambient_gain": 15000000,
-          "ambient_definition": 15
-        }
-      }
-    }
-  },
-  "line_coloring": {
-    "color": {
-      "gradient": {
-        "type": "Gradient",
-        "kwargs": {
-          "start_color": {
-            "type": "Static",
-            "kwargs": {
-              "color": [255, 0, 0]
-            }
-          },
-          "end_color": {
-            "type": "Static",
-            "kwargs": {
-              "color": [125, 50, 168]
-            }
-          },
-          "interpolator": "HSV"
-        }
-      },
-      "metric": {
-        "type": "DistanceOnLine",
-        "kwargs": {
-          "start": {
-            "type": "Static",
-            "kwargs": {
-              "point": [150, 150, 0]
-            }
-          },
-          "end": {
-            "type": "Static",
-            "kwargs": {
-              "point": [1174, 898, 0]
-            }
-          }
-        }
-      },
-      "metric_modifiers": [
-        {
-          "type": "EaseInOut",
+      "type": "MiscTriangleColor",
+      "kwargs": {
+        "color": {
+          "type": "ImageBlur",
           "kwargs": {
-            "degree": 2
+            "filepath": "~/Pictures/space.jpeg"
           }
-        }
-      ]
-    },
-    "width": {
-      "width": {
-        "type": "Static",
-        "kwargs": {
-          "width": 2
         }
       }
     }
