@@ -44,13 +44,20 @@ def main():
             str(output_dir),
             f"image#{str(frame_index).zfill(3)}.{CONFIGS.gif.file_extension}",
         )
+        crop_box = (
+            CONFIGS.gif.margin,
+            CONFIGS.gif.margin,
+            CONFIGS.gif.margin + CONFIGS.gif.width,
+            CONFIGS.gif.margin + CONFIGS.gif.height
+        )
+        frame = frame.crop(crop_box)
         frame.save(file_name)
     # Convert frames to gif
     progress_bar(1.0)
     print()
     logger.info("Compiling Frames...")
     os.system(
-        f"convert -delay {CONFIGS.gif.ms_per_frame} -loop 0 {output_dir}/*.{CONFIGS.gif.file_extension} -crop {CONFIGS.gif.width}x{CONFIGS.gif.height}+{CONFIGS.gif.margin}+{CONFIGS.gif.margin} +repage {output_dir}/gif{CONFIGS.gif.num}.gif"
+        f"convert -delay {CONFIGS.gif.ms_per_frame} -loop 0 {output_dir}/*.{CONFIGS.gif.file_extension} +repage {output_dir}/gif{CONFIGS.gif.num}.gif"
     )
     output_dir.clear_files(CONFIGS.gif.file_extension)
 
