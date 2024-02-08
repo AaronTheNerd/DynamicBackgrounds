@@ -46,9 +46,10 @@ def create_image(
     points: list[PointABC],
     algorithm: Callable[[list[PointABC]], list[Triangle]],
 ) -> None:
-    triangles = algorithm(points)
+    new_points = [point.at(0) for point in points]
+    triangles = algorithm(new_points)
     image_factory.create(
-        f"image.{CONFIGS.output.image.file_extension}", points, triangles, 0
+        f"image.{CONFIGS.output.image.file_extension}", new_points, triangles, 0
     )
 
 

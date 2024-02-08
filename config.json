@@ -6,37 +6,49 @@
       "file_extension": "png"
     },
     "video": {
-      "framerate": 24,
-      "num_of_frames": 200,
+      "framerate": 18,
+      "num_of_frames": 500,
       "frame_file_extension": "png"
     },
     "width": 1024,
-    "height": 700,
-    "num": 6,
+    "height": 768,
+    "num": 7,
     "background_color": [0, 0, 0],
-    "margin": 10
+    "margin": 150
   },
   "point_generation": {
     "num_of_points": 5000,
-    "separation_radius": 20,
+    "separation_radius": 100,
     "max_fails": 100,
     "border": {
       "top": true,
       "bottom": true,
       "left": true,
       "right": true,
-      "separation": 50
+      "separation": 150
     }
   },
   "point_movement": {
     "x": [
       {
+        "type": "DriftGenerator",
+        "kwargs": {
+          "frequency": {
+            "type": "RandInt",
+            "kwargs": {
+              "min_value": -1,
+              "max_value": 1
+            }
+          }
+        }
+      },
+      {
         "type": "SwayGenerator",
         "kwargs": {
-          "amplitude": 0.5,
+          "amplitude": 0.2,
           "x_scale": 1,
           "y_scale": 1,
-          "intensity": 0.1,
+          "intensity": 0.2,
           "x_offset": 0,
           "y_offset": 0
         }
@@ -49,23 +61,102 @@
           "amplitude": 0.5,
           "x_scale": 0.01,
           "y_scale": 0.01,
-          "intensity": 0.1,
+          "intensity": 0.2,
           "x_offset": 100,
           "y_offset": 100
         }
       }
     ],
-    "z": []
+    "z": [
+      {
+        "type": "NoiseMapGenerator",
+        "kwargs": {
+          "amplitude": 5.0,
+          "x_scale": 0.01,
+          "y_scale": 0.01,
+          "x_offset": 0,
+          "y_offset": 100
+        }
+      }
+    ]
   },
   "triangle_coloring": {
     "color": {
-      "type": "MiscTriangleColor",
+      "type": "TriangleGradient",
       "kwargs": {
-        "color": {
-          "type": "ImageBlur",
+        "gradient": {
+          "type": "Plain",
           "kwargs": {
-            "filepath": "~/Pictures/sunset.jpeg"
+            "color": {
+              "type": "Static",
+              "kwargs": {
+                "color": [34, 35, 36]
+              }
+            }
           }
+        },
+        "shader": {
+          "type": "AmbientShader",
+          "kwargs": {
+            "ambient_vector": [1, 1, 0.5],
+            "ambient_gain": 10000000,
+            "ambient_definition": 15
+          }
+        }
+      }
+    }
+  },
+  "line_coloring": {
+    "color": {
+      "gradient": {
+        "type": "Gradient",
+        "kwargs": {
+          "start_color": {
+            "type": "Static",
+            "kwargs": {
+              "color": [255, 0, 0]
+            }
+          },
+          "end_color": {
+            "type": "Static",
+            "kwargs": {
+              "color": [125, 50, 168]
+            }
+          },
+          "interpolator": "HSV"
+        }
+      },
+      "metric": {
+        "type": "DistanceOnLine",
+        "kwargs": {
+          "start": {
+            "type": "Static",
+            "kwargs": {
+              "point": [200, 200, 0]
+            }
+          },
+          "end": {
+            "type": "Static",
+            "kwargs": {
+              "point": [1124, 848, 0]
+            }
+          }
+        }
+      },
+      "metric_modifiers": [
+        {
+          "type": "EaseInOut",
+          "kwargs": {
+            "degree": 2
+          }
+        }
+      ]
+    },
+    "width": {
+      "width": {
+        "type": "Static",
+        "kwargs": {
+          "width": 2
         }
       }
     }
