@@ -1,67 +1,64 @@
 import json
-import logging
 import os
-
-import numpy as np
+from typing import Callable
 
 import point.generator.generate as generate_points
 from coloring.frame import FrameDrawer
 from configs import CONFIGS
 from log.enable import enable_logging
-from output_directory import OutputDirectory
+from output.directory import OutputDirectory
+from output.image import ImageFactory
+from output.video import VideoFactory
+from point.ABCs import PointABC
+from triangle.triangle import Triangle
 from triangulation.triangulation import get_triangulation
-from utils.progress_bar import progress_bar
-from video_compiler import compile_frames
 
 
 def main():
     enable_logging()
-
     output_dir = OutputDirectory()
     output_dir.create_empty_directory()
-
-    dump_configs(output_dir)
-    create_frames(output_dir)
-    compile_frames(output_dir)
-
-    output_dir.clear_files(CONFIGS.output.frame_file_extension)
+    dump_configs()
+    create_outputs()
 
 
-def dump_configs(output_dir: OutputDirectory) -> None:
+def dump_configs() -> None:
+    output_dir = OutputDirectory()
     with open(os.path.join(str(output_dir), "config.json"), "w+") as file:
         json.dump(CONFIGS.dumpJSON(), file, indent=2)
 
 
-def create_frames(output_dir: OutputDirectory) -> None:
+def create_outputs() -> None:
+    algorithm = get_triangulation(CONFIGS.triangulation)
+    points = generate_points.generate_points()
     frame_drawer = FrameDrawer.from_json(
         CONFIGS.triangle_coloring, CONFIGS.line_coloring, CONFIGS.point_coloring
     )
-    algorithm = get_triangulation(CONFIGS.triangulation)
-    points = generate_points.generate_points()
-    for frame_index, time in enumerate_frames(CONFIGS.output.num_of_frames):
-        progress_bar(time)
-        new_points = [point.at(time) for point in points]
-        triangles = algorithm(new_points)
-        frame = frame_drawer.draw(new_points, triangles, time)
-        file_name = os.path.join(
-            str(output_dir),
-            f"image#{str(frame_index).zfill(3)}.{CONFIGS.output.frame_file_extension}",
-        )
-        frame = frame.crop(
-            (
-                CONFIGS.output.margin,
-                CONFIGS.output.margin,
-                CONFIGS.output.margin + CONFIGS.output.width,
-                CONFIGS.output.margin + CONFIGS.output.height,
-            )
-        )
-        frame.save(file_name)
-    progress_bar(1.0)
-    print()
+    image_factory = ImageFactory(frame_drawer)
+    if CONFIGS.output.image is not None:
+        create_image(image_factory, points, algorithm)
+    if CONFIGS.output.video is not None:
+        create_video(image_factory, points, algorithm)
 
 
-def enumerate_frames(num_frames: int) -> enumerate:
-    return enumerate(np.linspace(0.0, 1.0, num_frames, endpoint=False))
+def create_image(
+    image_factory: ImageFactory,
+    points: list[PointABC],
+    algorithm: Callable[[list[PointABC]], list[Triangle]],
+) -> None:
+    triangles = algorithm(points)
+    image_factory.create(
+        f"image.{CONFIGS.output.image.file_extension}", points, triangles, 0
+    )
+
+
+def create_video(
+    image_factory: ImageFactory,
+    points: list[PointABC],
+    algorithm: Callable[[list[PointABC]], list[Triangle]],
+):
+    video_factory = VideoFactory(image_factory)
+    video_factory.create("video.avi", points, algorithm)
 
 
 if __name__ == "__main__":

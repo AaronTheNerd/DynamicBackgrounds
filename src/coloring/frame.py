@@ -58,6 +58,14 @@ class FrameDrawer(SerialABC):
             self.draw_lines(frame_draw, triangles, time)
         if self.vertex_drawer is not None:
             self.draw_points(frame_draw, points, time)
+        frame = frame.crop(
+            (
+                CONFIGS.output.margin,
+                CONFIGS.output.margin,
+                CONFIGS.output.margin + CONFIGS.output.width,
+                CONFIGS.output.margin + CONFIGS.output.height,
+            )
+        )
         return frame
 
     @measure

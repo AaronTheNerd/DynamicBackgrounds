@@ -2,18 +2,23 @@
   "generate_seed": true,
   "seed": -2118053362,
   "output": {
+    "image": {
+      "file_extension": "png"
+    },
+    "video": {
+      "framerate": 24,
+      "num_of_frames": 200,
+      "frame_file_extension": "png"
+    },
     "width": 1024,
-    "height": 1068,
+    "height": 700,
     "num": 6,
     "background_color": [0, 0, 0],
-    "margin": 10,
-    "framerate": 30,
-    "num_of_frames": 250,
-    "frame_file_extension": "png"
+    "margin": 10
   },
   "point_generation": {
     "num_of_points": 5000,
-    "separation_radius": 10,
+    "separation_radius": 20,
     "max_fails": 100,
     "border": {
       "top": true,
@@ -59,7 +64,7 @@
         "color": {
           "type": "ImageBlur",
           "kwargs": {
-            "filepath": "~/Pictures/space.jpg"
+            "filepath": "~/Pictures/sunset.jpeg"
           }
         }
       }

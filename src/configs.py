@@ -42,15 +42,31 @@ class PointMovementConfigs:
 
 
 @dataclass
+class ImageConfigs:
+    file_extension: str
+
+
+@dataclass
+class VideoConfigs:
+    framerate: float
+    num_of_frames: int
+    frame_file_extension: str
+
+
+@dataclass(kw_only=True)
 class OutputConfigs:
+    image: ImageConfigs = None
+    video: VideoConfigs = None
     width: int
     height: int
     num: int
     background_color: list[int]
     margin: int
-    framerate: float
-    num_of_frames: int
-    frame_file_extension: str
+
+    def __post_init__(self) -> None:
+        if self.image is None and self.video is None:
+            raise Exception("No output defined")
+    
 
 
 @dataclass
@@ -103,7 +119,7 @@ T = TypeVar("T")
 
 def _replaceWithDataclass(raw_configs: JSON_object, cls: type[T]) -> T:
     for field in fields(cls):
-        if is_dataclass(field.type):
+        if is_dataclass(field.type) and field.name in raw_configs:
             raw_configs[field.name] = _replaceWithDataclass(
                 raw_configs[field.name], field.type
             )
