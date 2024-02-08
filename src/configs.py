@@ -59,14 +59,13 @@ class OutputConfigs:
     video: VideoConfigs = None
     width: int
     height: int
-    num: int
+    name: str
     background_color: list[int]
     margin: int
 
     def __post_init__(self) -> None:
         if self.image is None and self.video is None:
             raise Exception("No output defined")
-    
 
 
 @dataclass

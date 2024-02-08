@@ -1,6 +1,5 @@
-gifs/*
+output/*
 __pycache__/
-build/
 .vscode/
 quadtree.pdf
 log.txt

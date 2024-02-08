@@ -5,20 +5,15 @@
     "image": {
       "file_extension": "png"
     },
-    "video": {
-      "framerate": 18,
-      "num_of_frames": 500,
-      "frame_file_extension": "png"
-    },
-    "width": 1024,
+    "width": 1360,
     "height": 768,
-    "num": 7,
+    "name": "background",
     "background_color": [0, 0, 0],
     "margin": 150
   },
   "point_generation": {
     "num_of_points": 5000,
-    "separation_radius": 100,
+    "separation_radius": 40,
     "max_fails": 100,
     "border": {
       "top": true,
@@ -29,49 +24,13 @@
     }
   },
   "point_movement": {
-    "x": [
-      {
-        "type": "DriftGenerator",
-        "kwargs": {
-          "frequency": {
-            "type": "RandInt",
-            "kwargs": {
-              "min_value": -1,
-              "max_value": 1
-            }
-          }
-        }
-      },
-      {
-        "type": "SwayGenerator",
-        "kwargs": {
-          "amplitude": 0.2,
-          "x_scale": 1,
-          "y_scale": 1,
-          "intensity": 0.2,
-          "x_offset": 0,
-          "y_offset": 0
-        }
-      }
-    ],
-    "y": [
-      {
-        "type": "SwayGenerator",
-        "kwargs": {
-          "amplitude": 0.5,
-          "x_scale": 0.01,
-          "y_scale": 0.01,
-          "intensity": 0.2,
-          "x_offset": 100,
-          "y_offset": 100
-        }
-      }
-    ],
+    "x": [],
+    "y": [],
     "z": [
       {
         "type": "NoiseMapGenerator",
         "kwargs": {
-          "amplitude": 5.0,
+          "amplitude": 1.0,
           "x_scale": 0.01,
           "y_scale": 0.01,
           "x_offset": 0,
@@ -85,16 +44,48 @@
       "type": "TriangleGradient",
       "kwargs": {
         "gradient": {
-          "type": "Plain",
+          "type": "Gradient",
           "kwargs": {
-            "color": {
+            "start_color": {
               "type": "Static",
               "kwargs": {
                 "color": [34, 35, 36]
               }
+            },
+            "end_color": {
+              "type": "Static",
+              "kwargs": {
+                "color": [0, 35, 80]
+              }
+            },
+            "interpolator": "RGB"
+          }
+        },
+        "metric": {
+          "type": "DistanceOnLine",
+          "kwargs": {
+            "start": {
+              "type": "Static",
+              "kwargs": {
+                "point": [0, 200, 0]
+              }
+            },
+            "end": {
+              "type": "Static",
+              "kwargs": {
+                "point": [0, 800, 0]
+              }
             }
           }
         },
+        "metric_modifiers": [
+          {
+            "type": "Exponential",
+            "kwargs": {
+              "alpha": 2
+            }
+          }
+        ],
         "shader": {
           "type": "AmbientShader",
           "kwargs": {
@@ -102,61 +93,6 @@
             "ambient_gain": 10000000,
             "ambient_definition": 15
           }
-        }
-      }
-    }
-  },
-  "line_coloring": {
-    "color": {
-      "gradient": {
-        "type": "Gradient",
-        "kwargs": {
-          "start_color": {
-            "type": "Static",
-            "kwargs": {
-              "color": [255, 0, 0]
-            }
-          },
-          "end_color": {
-            "type": "Static",
-            "kwargs": {
-              "color": [125, 50, 168]
-            }
-          },
-          "interpolator": "HSV"
-        }
-      },
-      "metric": {
-        "type": "DistanceOnLine",
-        "kwargs": {
-          "start": {
-            "type": "Static",
-            "kwargs": {
-              "point": [200, 200, 0]
-            }
-          },
-          "end": {
-            "type": "Static",
-            "kwargs": {
-              "point": [1124, 848, 0]
-            }
-          }
-        }
-      },
-      "metric_modifiers": [
-        {
-          "type": "EaseInOut",
-          "kwargs": {
-            "degree": 2
-          }
-        }
-      ]
-    },
-    "width": {
-      "width": {
-        "type": "Static",
-        "kwargs": {
-          "width": 2
         }
       }
     }
