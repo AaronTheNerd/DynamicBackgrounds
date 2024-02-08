@@ -1,5 +1,4 @@
 import logging
-import os
 from dataclasses import dataclass
 from typing import Callable
 
@@ -57,7 +56,7 @@ class VideoFactory:
         logger = logging.getLogger(__name__)
         logger.info("Began Compiling Frames")
         output_dir = OutputDirectory()
-        video_name = os.path.join(str(output_dir), file_name)
+        video_name = output_dir.join(file_name)
         video = cv2.VideoWriter(
             video_name,
             0,
@@ -66,7 +65,7 @@ class VideoFactory:
         )
         try:
             for frame_name in frame_names:
-                frame = cv2.imread(os.path.join(str(output_dir), frame_name))
+                frame = cv2.imread(output_dir.join(frame_name))
                 video.write(frame)
         finally:
             cv2.destroyAllWindows()

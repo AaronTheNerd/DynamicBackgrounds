@@ -1,5 +1,4 @@
 import json
-import os
 from typing import Callable
 
 import point.generator.generate as generate_points
@@ -24,7 +23,7 @@ def main():
 
 def dump_configs() -> None:
     output_dir = OutputDirectory()
-    with open(os.path.join(str(output_dir), "config.json"), "w+") as file:
+    with open(output_dir.join("config.json"), "w+") as file:
         json.dump(CONFIGS.dumpJSON(), file, indent=2)
 
 

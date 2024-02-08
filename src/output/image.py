@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-import os
 
 from coloring.frame import FrameDrawer
 from output.directory import OutputDirectory
@@ -20,4 +19,4 @@ class ImageFactory:
     ) -> None:
         output_dir = OutputDirectory()
         image = self.frame_drawer.draw(points, triangles, time)
-        image.save(os.path.join(str(output_dir), file_name))
+        image.save(output_dir.join(file_name))

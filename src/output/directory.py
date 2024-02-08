@@ -17,12 +17,6 @@ class OutputDirectory:
             str(CONFIGS.output.name),
         )
 
-    def __str__(self) -> str:
-        return self.directory
-
-    def __repr__(self) -> str:
-        return self.directory
-
     def create_empty_directory(self) -> None:
         os.system(f"mkdir -p {self.directory}")
         os.system(f"rm {self.directory}/*")
@@ -30,3 +24,6 @@ class OutputDirectory:
     def clear_files(self, file_names: list[str]) -> None:
         for file_name in file_names:
             os.remove(os.path.join(self.directory, file_name))
+
+    def join(self, *args) -> str:
+        return os.path.join(self.directory, *args)
