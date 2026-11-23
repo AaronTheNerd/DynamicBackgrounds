@@ -23,6 +23,6 @@ I have tried to make it fairly simple to add options to this project. If you hav
 
 ## Future Work
 
-1. The most pressing issue at this point is the amount of time it takes for the triangulation algorithm to run with >100 points. I would like to spend some times looking into new algorithms and potentially add some multiprocessing to significantly reduce the overall runtime of the program.
-2. In an attempt to allow for a higher variety of GIFs generated from the project, I have made it fairly tedious to manually write the configurations for a GIF. Because of this, I would like to write up a GUI for this project to simplify this task.
-3. Add a more complex shading system to enhance the look of shaded GIFs.
+1. In an attempt to allow for a higher variety of GIFs generated from the project, I have made it fairly tedious to manually write the configurations for a GIF. Because of this, I would like to write up a GUI for this project to simplify this task.
+2. Add a more complex system of coloring the triangles so that options other than one uniform color can be used on each triangle.
+3. Rewrite the project to be simpler to understand.
