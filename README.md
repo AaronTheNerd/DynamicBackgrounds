@@ -5,16 +5,13 @@
 
 ## Installation
 
-*`Python3.10` and `pipenv` required*
+*`Python3.11` and `pipenv` required*
 
 Install Python dependencies with
 ```
 pipenv install
 ```
 in the root directory of the project.
-
-Third Party Dependencies:
-- [ImageMagick](https://imagemagick.org/script/download.php)
 
 ## Notes on Usage
 
